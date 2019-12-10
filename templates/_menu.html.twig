@@ -1,0 +1,60 @@
+<div class="collapse navbar-collapse" id="navbarCollapse">
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle"
+               href="#" id="dropdown01"
+               data-toggle="dropdown"
+               aria-haspopup="true"
+               aria-expanded="false">Benutzerverwaltung</a>
+            <div class="dropdown-menu" aria-labelledby="dropdown01">
+                {% if app.user %}
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <a class="dropdown-item" href="{{ path('user_index') }}">Liste der Benutzer</a>
+                        <a class="dropdown-item" href="{{ path('user_mypw_change') }}">Passwort ändern</a>
+                    {% endif %}
+                    <a class="dropdown-item" href="{{ path('user_mypw_change') }}">Mein Passwort ändern</a>
+                    <a class="dropdown-item" href="{{ path('app_logout') }}">Logout</a>
+                {% else %}
+                    <a class="dropdown-item" href="{{ path('app_login') }}">Login</a>
+                {% endif %}
+            </div>
+        </li>
+
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle"
+               href="#" id="dropdown02"
+               data-toggle="dropdown"
+               aria-haspopup="true"
+               aria-expanded="false">Events</a>
+            <div class="dropdown-menu" aria-labelledby="dropdown02">
+                {% if app.user %}
+                    <a class="dropdown-item" href="{{ path('event_calendar') }}">Kalender</a>
+                {% endif %}
+            </div>
+        </li>
+
+
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle"
+               href="#" id="dropdown03"
+               data-toggle="dropdown"
+               aria-haspopup="true"
+               aria-expanded="false">Daten</a>
+            <div class="dropdown-menu" aria-labelledby="dropdown03">
+                {% if app.user %}
+                    {% if is_granted('ROLE_ADMIN')%}
+                        <a class="dropdown-item" href="{{ path('addresse_index') }}">Adressen</a>
+                        <a class="dropdown-item" href="{{ path('klo_ki_event_index') }}">Events</a>
+                        <a class="dropdown-item" href="{{ path('room_index') }}">Räume</a>
+                        <a class="dropdown-item" href="{{ path('bestuhlungsplan_index') }}">Bestuhlungspläne</a>
+                        <a class="dropdown-item" href="{{ path('stage_order_index') }}">Bühnenanweisungen</a>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </li>
+
+
+
+    </ul>
+    <span style="color: #FFFFFF">{{ app.user }}</span>
+</div>
