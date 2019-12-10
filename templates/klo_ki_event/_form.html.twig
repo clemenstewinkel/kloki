@@ -1,0 +1,55 @@
+{{ form_start(form, {attr: {novalidate: 'novalidate'}}) }}
+<div class="row mb-3">
+    <div class="col-md-8">{{ form_row(form.name) }}</div>
+   <div class="col-md-4">
+       {% if form.isFixed is defined %}
+           {{ form_row(form.isFixed) }}
+       {% endif %}
+   </div>
+</div>
+<div class="row mb-3">
+    <div class="col-md-6">{{ form_row(form.beginAt) }}</div>
+    <div class="col-md-6">{{ form_row(form.endAt) }}</div>
+</div>
+<div class="row mb-3">
+    <div class="col-md-4">{{ form_row(form.art) }}</div>
+    <div class="col-md-4">{{ form_row(form.kategorie) }}</div>
+    <div class="col-md-4">{{ form_row(form.room) }}</div>
+</div>
+<div class="row mb-3">
+    <div class="col-md-4">{{ form_row(form.anzahlArtists) }}</div>
+    <div class="col-md-4">{{ form_row(form.isBestBenoetigt) }}</div>
+    <div class="col-md-4">{{ form_row(form.bestPlan) }}</div>
+</div>
+    {{ form_row(form.isLichtBenoetigt) }}
+    {{ form_row(form.isTonBenoetigt) }}
+
+<hr/>
+    {{ form_row(form.helperRequired) }}
+
+<div class="row mb-3">
+    <div class="col-md-6">{{ form_row(form.helperEinlassEins) }}</div>
+    <div class="col-md-6">{{ form_row(form.helperEinlassZwei) }}</div>
+</div>
+<div class="row mb-3">
+    <div class="col-md-4">{{ form_row(form.helperKasse) }}</div>
+    <div class="col-md-4">{{ form_row(form.helperSpringerEins) }}</div>
+    <div class="col-md-4">{{ form_row(form.helperSpringerZwei) }}</div>
+</div>
+<hr/>
+
+<div class="js-take-existing-address">
+    {{ form_row(form.kontakt) }}
+</div>
+{% if form.takeNewAddress is defined %}
+    {{ form_row(form.takeNewAddress) }}
+<div class="js-take-new-address" style="display: none;">
+    {{ include('addresse/_inner_form.html.twig', {'form': form.kontaktNeu}) }}
+</div>
+{% endif %}
+    {{ form_row(form.stageOrder) }}
+    {{ form_row(form.ausstattung) }}
+    {{ form_row(form.ParentEvent) }}
+    {{ form_row(form.bemerkung) }}
+    <button class="btn btn-primary">{{ button_label|default('Speichern') }}</button>
+{{ form_end(form) }}

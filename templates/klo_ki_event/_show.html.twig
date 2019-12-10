@@ -1,0 +1,125 @@
+    <h1>{{ klo_ki_event.name }}</h1>
+
+    <table class="table">
+        <tbody>
+        {% if is_granted('ROLE_ADMIN') %}
+            <tr>
+                <th>Status</th>
+                <td>{{ klo_ki_event.isFixed ? 'fest' : 'optioniert' }}</td>
+            </tr>
+        {% endif %}
+            <tr>
+                <th>Begin</th>
+                <td>{{ klo_ki_event.beginAt ? klo_ki_event.beginAt|localizeddate('full', 'short') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Ende</th>
+                <td>{{ klo_ki_event.endAt ? klo_ki_event.endAt|localizeddate('full', 'short') : 'ganzer Tag' }}</td>
+            </tr>
+            <tr>
+                <th>Anzahl der Künstler</th>
+                <td>{{ klo_ki_event.anzahlArtists }}</td>
+            </tr>
+            <tr>
+                <th>Bestuhlung nötig?</th>
+                <td>{{ klo_ki_event.isBestBenoetigt ? 'Ja' : 'Nein' }}</td>
+            </tr>
+            <tr>
+                <th>Licht nötig?</th>
+                <td>{{ klo_ki_event.isLichtBenoetigt ? 'Ja' : 'Nein' }}</td>
+            </tr>
+            <tr>
+                <th>Helfer nötig?</th>
+                <td>{% if klo_ki_event.helperRequired %}
+                        Ja<br/>
+                    <b>Einlass 1:  </b>{{ klo_ki_event.helperEinlassEins ?:  'N/N'  }}<br/>
+                    <b>Einlass 2:  </b>{{ klo_ki_event.helperEinlassZwei ?:  'N/N'  }}<br/>
+                    <b>Kasse:      </b>{{ klo_ki_event.helperKasse ?:        'N/N'  }}<br/>
+                    <b>Springer 1: </b>{{ klo_ki_event.helperSpringerEins ?: 'N/N'  }}<br/>
+                    <b>Springer 2: </b>{{ klo_ki_event.helperSpringerEins ?: 'N/N'  }}<br/>
+                        <hr/>
+                        {% for helper in klo_ki_event.availableHelpers %}
+                            {{ helper }}
+                        {% endfor %}
+                    {% endif %}
+                </td>
+            </tr>
+            {% if klo_ki_event.parentEvent %}
+                <tr>
+                    <th>Hauptereignis:</th>
+                    <td><a href="{{ path('klo_ki_event_show', {'id': klo_ki_event.parentEvent.id } ) }}">{{ klo_ki_event.parentEvent }}</a></td>
+                </tr>
+            {% endif %}
+
+        </tbody>
+    </table>
+
+    {% if klo_ki_event.kontakt %}
+        <h2>Kontakt:</h2>
+        {{ include('addresse/addresse_kompakt.html.twig', {'addresse': klo_ki_event.kontakt}) }}
+    {% endif  %}
+
+    {% if klo_ki_event.ausstattung.count > 0 %}
+    <h2>Weitere Ausstattung</h2>
+    <ul>
+        {%  for a in klo_ki_event.ausstattung  %}
+            {# @ var a App\Entity\Ausstattung #}
+        <li>{{ a }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    {% if klo_ki_event.bestPlan %}
+        <h2>Bestuhlung</h2>
+        <a class="js-no-retarget" href="/getPdf/{{ klo_ki_event.bestPlan.pdfFilePath }}"><img src="/getPng/{{ klo_ki_event.bestPlan.pngFilePath }}"/></a>
+        {{ klo_ki_event.bestPlan }}
+    {% endif %}
+
+    {% if klo_ki_event.stageOrder %}
+        <h2>Bühnenanweisung</h2>
+        <a class="js-no-retarget" href="/getPdf/{{ klo_ki_event.stageOrder.pdfFileName }}"><img src="/getPng/{{ klo_ki_event.stageOrder.pngFileName }}"/></a>
+        {{ klo_ki_event.stageOrder }}
+    {% endif %}
+
+
+    {% if klo_ki_event.childEvents.count > 0 %}
+    <h2>Dazugehörige Events</h2>
+        <ul>
+        {% for event in klo_ki_event.childEvents %}
+            <li>
+                <a href="{{ path('klo_ki_event_show', {'id': event.id } ) }}">{{ event }}</a>
+            </li>
+        {% endfor %}
+        </ul>
+
+    {% endif %}
+
+    {% if klo_ki_event.bemerkung %}
+    <h2>Bemerkung:</h2>
+    {{ klo_ki_event.bemerkung | raw }}
+    {% endif %}
+
+
+    {% if is_granted('ROLE_HELPER') %}
+        {% if userInHelpers %}
+            <form method="post" action="{{ path('klo_ki_event_icannothelp', {'id': klo_ki_event.id}) }}">
+                <input type="hidden" name="_token" value="{{ csrf_token('icannothelp' ~ klo_ki_event.id) }}">
+                <button class="btn btn-danger">Ich kann doch nicht helfen!</button>
+            </form>
+            {% else %}
+            <form method="post" action="{{ path('klo_ki_event_icanhelp', {'id': klo_ki_event.id}) }}">
+                <input type="hidden" name="_token" value="{{ csrf_token('icanhelp' ~ klo_ki_event.id) }}">
+                <button class="btn btn-primary">Ich kann helfen!</button>
+            </form>
+        {% endif %}
+    {% endif %}
+
+
+    {% if klo_ki_event.beginAt %}
+    <script>
+        if(fullcalendar)
+        {
+            fullcalendar.gotoDate('{{ klo_ki_event.beginAt | date('Y-m-d') }}');
+        }
+    </script>
+    {% endif%}

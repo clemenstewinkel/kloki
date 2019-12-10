@@ -30,8 +30,8 @@ class Ausstattung
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\KloKiEvent", mappedBy="Ausstattung")
-    private $kloKiEvents;
      */
+    private $kloKiEvents;
 
     public function __toString()
     {
@@ -74,6 +74,7 @@ class Ausstattung
 
     /**
      * @return Collection|KloKiEvent[]
+     */
     public function getKloKiEvents(): Collection
     {
         return $this->kloKiEvents;
@@ -98,5 +99,4 @@ class Ausstattung
 
         return $this;
     }
-     */
 }

@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Neues Event{% endblock %}
+
+{% block body %}
+    <h1>Neues Event</h1>
+
+    {{ include('klo_ki_event/_form.html.twig') }}
+
+    <a href="{{ path('klo_ki_event_index') }}">Zurück zur Liste</a>
+
+    {{ encore_entry_script_tags('new-event-form') }}
+
+{% endblock %}

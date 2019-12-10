@@ -211,6 +211,11 @@ class KloKiEvent
      */
     private $helperSpringerZwei;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $isFullDay;
+
 
 
     /**
@@ -591,6 +596,18 @@ class KloKiEvent
     public function setHelperRequired(bool $helperRequired): self
     {
         $this->helperRequired = $helperRequired;
+
+        return $this;
+    }
+
+    public function getIsFullDay(): ?bool
+    {
+        return $this->isFullDay;
+    }
+
+    public function setIsFullDay(?bool $isFullDay): self
+    {
+        $this->isFullDay = $isFullDay;
 
         return $this;
     }

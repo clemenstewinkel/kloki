@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block styles %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('calendar') }}
+{% endblock %}
+
+{% block body %}
+    <!--<div class="container-fluid" style="height: 100%;">
+        <div class="row" style="height: 100%;">
+            <div id="js-calendar-detail" class="col-4" style="position: relative; height: 100%; overflow-y: auto;" ></div>
+            <div id="calendar" class="col-8" style="position: relative; height: 100%; overflow-y: auto;"></div>
+        </div>
+    </div>-->
+
+    <style>
+        body, html {
+            margin: 0;
+            height:100%;
+        }
+        body{
+            overflow: hidden;
+        }
+        #left {
+            background-color: #FC6E51;
+        }
+
+        .container-fluid, .parent{
+            height: 97%;
+        }
+
+        #js-calendar-detail{
+            position: relative;
+            float: left;
+            height:100%;
+            overflow-y: auto;
+        }
+    </style>
+    <div class="container-fluid">
+        <div class="row parent">
+            <div class="col-4" id="js-calendar-detail">
+            </div>
+            <div class="col-8" id="calendar">
+            </div><br/><br/><br/>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascript %}
+    {{ encore_entry_script_tags('calendar') }}
+    {{ encore_entry_script_tags('new-event-form') }}
+{% endblock %}
+

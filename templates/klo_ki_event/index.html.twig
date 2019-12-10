@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Events in der Klosterkirche{% endblock %}
+
+{% block body %}
+    <h1>Events in der Klosterkirche</h1>
+
+    <form action="{{ path('klo_ki_event_index') }}" method="GET">
+        <div class="row">
+            <div class="col">
+                <input type="text" class="form-control" name="name_contains" value="{{ app.request.query.get('name_contains') }}" placeholder="Name enthält"/>
+            </div>
+            <div class="col">
+                <input type="submit" value="Filter" class="btn btn-primary" />
+            </div>
+        </div>
+    </form>
+    <hr/>
+    {{ knp_pagination_render(pagination) }}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>{{ knp_pagination_sortable(pagination, 'Name', 'event.name') }}</th>
+                <th>Ort</th>
+                <th>Begin</th>
+                <th>Ende</th>
+                <th>Anz. Künstl.</th>
+                <th>Bestuhlt?</th>
+                <th>Licht?</th>
+                <th>Ton?</th>
+                <th>Kontakt</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for klo_ki_event in pagination %}
+            <tr>
+                <td>{{ klo_ki_event.name }}</td>
+                <td>{{ klo_ki_event.room }}</td>
+                <td>{{ klo_ki_event.beginAt ? klo_ki_event.beginAt|localizeddate('full', 'short') : '' }}</td>
+                <td>{{ klo_ki_event.endAt ? klo_ki_event.endAt|localizeddate('full', 'short') : 'ganzer Tag' }}</td>
+                <td>{{ klo_ki_event.anzahlArtists }}</td>
+                <td>{{ klo_ki_event.isBestBenoetigt ? 'Ja' : 'Nein' }}</td>
+                <td>{{ klo_ki_event.isLichtBenoetigt ? 'Ja' : 'Nein' }}</td>
+                <td>{{ klo_ki_event.isTonBenoetigt ? 'Ja' : 'Nein' }}</td>
+                <td>{{ klo_ki_event.kontakt }}</td>
+                <td>
+                    <a href="{{ path('klo_ki_event_show', {'id': klo_ki_event.id}) }}"><span class="fas fa-eye"></span></a>
+                    <a href="{{ path('klo_ki_event_edit', {'id': klo_ki_event.id}) }}"><span class="fas fa-edit"></span></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-primary" href="{{ path('klo_ki_event_new') }}">Neues Event <span class="fas fa-edit"></span></a>
+{% endblock %}

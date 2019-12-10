@@ -25,7 +25,7 @@ class AppFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         // Event-Typen
-        foreach(['Vermietung', 'Eigenveranstaltung'] as $type)
+        foreach(['Vermietung', 'Kultur', 'Markt / Börse/ Messe'] as $type)
         {
             $x = new KloKiEventType();
             $x->setName($type);

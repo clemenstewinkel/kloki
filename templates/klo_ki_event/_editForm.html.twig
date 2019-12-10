@@ -1,0 +1,33 @@
+{{ form_start(form, {attr: {novalidate: 'novalidate'}}) }}
+    {{ form_row(form.name) }}
+<div class="row mb-3">
+    <div class="col-md-6">
+        {{ form_row(form.beginAt) }}
+    </div>
+    <div class="col-md-6">{{ form_row(form.endAt) }}</div>
+</div>
+    {{ form_row(form.anzahlArtists) }}
+    {{ form_row(form.isBestBenoetigt) }}
+    {{ form_row(form.isLichtBenoetigt) }}
+<div class="row mb-3">
+    <div class="col-md-4">
+        {{ form_row(form.art) }}
+    </div>
+    <div class="col-md-4">
+        {{ form_row(form.kategorie) }}
+    </div>
+    <div class="col-md-4">
+        {{ form_row(form.room) }}
+    </div>
+</div>
+
+<div class="js-take-existing-address">
+    {{ form_row(form.kontakt) }}
+</div>
+    {{ form_row(form.bestPlan) }}
+    {{ form_row(form.stageOrder) }}
+    {{ form_row(form.ausstattung) }}
+    {{ form_row(form.ParentEvent) }}
+    {{ form_row(form.bemerkung) }}
+    <button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}

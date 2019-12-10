@@ -14,8 +14,19 @@
         "build": "encore production --progress"
     },
     "dependencies": {
+        "@ckeditor/ckeditor5-build-classic": "^16.0.0",
+        "@fortawesome/fontawesome-free": "^5.11.2",
+        "@fullcalendar/bootstrap": "^4.3.0",
+        "@fullcalendar/core": "^4.3.1",
+        "@fullcalendar/daygrid": "^4.3.0",
+        "@fullcalendar/interaction": "^4.3.0",
+        "@fullcalendar/resource-timegrid": "^4.3.0",
+        "@fullcalendar/timegrid": "^4.3.0",
         "bootstrap": "^4.4.1",
         "jquery": "^3.4.1",
-        "popper.js": "^1.16.0"
+        "jquery-contextmenu": "^2.9.0",
+        "jquery-datetimepicker": "^2.5.21",
+        "popper.js": "^1.16.0",
+        "sweetalert2": "^9.5.3"
     }
 }
