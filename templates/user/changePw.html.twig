@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Passwort ändern{% endblock %}
+
+{% block body %}
+    <h1>Passwort ändern</h1>
+
+    {{ include('user/_form.html.twig', {'button_label': 'Ändern'}) }}
+
+{% endblock %}
