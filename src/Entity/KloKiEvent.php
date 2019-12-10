@@ -2,12 +2,9 @@
 
 namespace App\Entity;
 
-//use ApiPlatform\Core\Annotation\ApiResource;
 use Gedmo\Blameable\Traits\BlameableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
-//use ApiPlatform\Core\Annotation\ApiFilter;
-//use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 
 use Gedmo\Mapping\Annotation as Gedmo;
 
@@ -42,15 +39,15 @@ class KloKiEvent
      * @ORM\ManyToOne(targetEntity="App\Entity\KloKiEventType", inversedBy="kloKiEvents")
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"events:read"})
-    private $art;
      */
+    private $art;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\KloKiEventKategorie", inversedBy="kloKiEvents")
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"events:read"})
-    private $kategorie;
      */
+    private $kategorie;
 
     /**
      * @ORM\Column(type="datetime")
@@ -81,8 +78,8 @@ class KloKiEvent
      * @Assert\Type(type="App\Entity\Addresse")
      * @Assert\Valid
      * @Groups({"events:read"})
-    private $kontakt;
      */
+    private $kontakt;
 
     /**
      * @ORM\Column(type="boolean")
@@ -95,8 +92,8 @@ class KloKiEvent
      * @ORM\ManyToOne(targetEntity="App\Entity\Bestuhlungsplan", inversedBy="kloKiEvents")
      * @Groups({"events:read"})
      * Verweis auf Bestuhlungsplan
-    private $bestPlan;
      */
+    private $bestPlan;
 
     /**
      * @ORM\Column(type="boolean")
@@ -114,8 +111,8 @@ class KloKiEvent
      * @ORM\ManyToOne(targetEntity="App\Entity\Room", inversedBy="kloKiEvents")
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"events:read", "room:read"})
-    private $room;
      */
+    private $room;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\KloKiEvent", inversedBy="childEvents")
@@ -157,8 +154,8 @@ class KloKiEvent
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\StageOrder", inversedBy="kloKiEvents")
-    private $stageOrder;
      */
+    private $stageOrder;
 
     /**
      * @ORM\Column(type="boolean")
@@ -218,11 +215,11 @@ class KloKiEvent
 
     /**
      * @Groups({"events:read"})
+     */
     public function getResourceId()
     {
         return $this->getRoom()->getId();
     }
-     */
 
 
 
@@ -255,19 +252,6 @@ class KloKiEvent
         return $this;
     }
 
-/*
-    public function getKontakt(): ?Addresse
-    {
-        return $this->kontakt;
-    }
-
-    public function setKontakt(?Addresse $kontakt): self
-    {
-        $this->kontakt = $kontakt;
-
-        return $this;
-    }
-
     public function getArt(): ?KloKiEventType
     {
         return $this->art;
@@ -291,6 +275,29 @@ class KloKiEvent
 
         return $this;
     }
+    public function getRoom(): ?Room
+    {
+        return $this->room;
+    }
+
+    public function setRoom(?Room $room): self
+    {
+        $this->room = $room;
+
+        return $this;
+    }
+
+    public function getKontakt(): ?Addresse
+    {
+        return $this->kontakt;
+    }
+
+    public function setKontakt(?Addresse $kontakt): self
+    {
+        $this->kontakt = $kontakt;
+
+        return $this;
+    }
     public function getBestPlan(): ?Bestuhlungsplan
     {
         return $this->bestPlan;
@@ -303,17 +310,6 @@ class KloKiEvent
         return $this;
     }
 
-    public function getRoom(): ?Room
-    {
-        return $this->room;
-    }
-
-    public function setRoom(?Room $room): self
-    {
-        $this->room = $room;
-
-        return $this;
-    }
     public function getStageOrder(): ?StageOrder
     {
         return $this->stageOrder;
@@ -326,7 +322,6 @@ class KloKiEvent
         return $this;
     }
 
- */
     public function getHelperEinlassEins(): ?User
     {
         return $this->helperEinlassEins;
@@ -599,6 +594,5 @@ class KloKiEvent
 
         return $this;
     }
-
 
 }
