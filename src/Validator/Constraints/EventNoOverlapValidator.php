@@ -28,7 +28,7 @@ class EventNoOverlapValidator extends ConstraintValidator
 
         if ($event->getName() != 'Tuppes') {
             $this->context->buildViolation("So nicht mein Freund, dein Wert war: {{ string }}")
-                ->setParameter('{{ string }}', $event->getBeginAt()->format('Y-m-d H:i'))
+                ->setParameter('{{ string }}', count($collidingEvents))
                 ->atPath('startDate')
                 ->addViolation();
         }

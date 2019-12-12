@@ -667,7 +667,10 @@ class KloKiEvent
     public function setStartTime($startTime): void
     {
         $this->startTime = $startTime;
-        $this->beginAt = new \DateTime($this->startDate->format('Y-m-d ') . $startTime->format('H:i'));
+        if($this->startDate)
+        {
+            $this->beginAt = new \DateTime($this->startDate->format('Y-m-d ') . $startTime->format('H:i'));
+        }
     }
 
     /**
