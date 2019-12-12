@@ -47,6 +47,8 @@ class EventFixtures extends Fixture
 
     public function load(ObjectManager $manager)
     {
+        $eventKatIds = $this->katRepo->createQueryBuilder('a')->select('a.id')->getQuery()->getArrayResult();
+        $roomIds = $this->roomRepo->createQueryBuilder('a')->select('a.id')->getQuery()->getArrayResult();
         /**
          * Events aus einer CSV-Datei lesen
          */
@@ -103,7 +105,8 @@ class EventFixtures extends Fixture
                 $e->setHelperSpringerZwei($this->userRepo->findOneBy(['name' => trim($a[11])]));
 
                 $e->setArt($this->typeRepo->findOneBy(['name' => trim($a[3])]));
-                $e->setRoom($this->roomRepo->findOneBy(['name' => 'Minoritensaal']));
+                $roomId = array_rand($roomIds);
+                $e->setRoom($this->roomRepo->findOneBy(['id' => $roomIds[$roomId]['id']]));
 
                 $e->setIsBestBenoetigt(false); // TODO
                 $e->setIsFixed(true);// TODO

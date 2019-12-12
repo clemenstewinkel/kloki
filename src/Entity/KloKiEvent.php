@@ -12,9 +12,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Validator\Constraints as MyAssert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\KloKiEventRepository")
+ * @MyAssert\EventNoOverlap()
  */
 class KloKiEvent
 {
@@ -216,6 +218,11 @@ class KloKiEvent
      */
     private $isFullDay;
 
+    // Fields without ORM
+    private $startDate;
+    private $endDate;
+    private $startTime;
+    private $endTime;
 
 
     /**
@@ -225,6 +232,7 @@ class KloKiEvent
     {
         return $this->getRoom()->getId();
     }
+
 
 
 
@@ -610,6 +618,72 @@ class KloKiEvent
         $this->isFullDay = $isFullDay;
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStartDate()
+    {
+        return $this->startDate;
+    }
+
+    /**
+     * @param mixed $startDate
+     */
+    public function setStartDate($startDate): void
+    {
+        $this->startDate = $startDate;
+        $this->beginAt = $startDate;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEndDate()
+    {
+        return $this->endDate;
+    }
+
+    /**
+     * @param mixed $endDate
+     */
+    public function setEndDate($endDate): void
+    {
+        $this->endDate = $endDate;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStartTime()
+    {
+        return $this->startTime;
+    }
+
+    /**
+     * @param mixed $startTime
+     */
+    public function setStartTime($startTime): void
+    {
+        $this->startTime = $startTime;
+        $this->beginAt = new \DateTime($this->startDate->format('Y-m-d ') . $startTime->format('H:i'));
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEndTime()
+    {
+        return $this->endTime;
+    }
+
+    /**
+     * @param mixed $endTime
+     */
+    public function setEndTime($endTime): void
+    {
+        $this->endTime = $endTime;
     }
 
 }

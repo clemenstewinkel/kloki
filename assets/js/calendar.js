@@ -22,7 +22,8 @@ import 'bootstrap'
 
 function prepareEventForm()
 {
-    $('#klo_ki_event_beginAt').datetimepicker({
+    console.log('prepareEventForm');
+    let $test = $('#klo_ki_event_beginAt').datetimepicker({
         inline: false,
         step: 30,
         format: 'Y-m-d H:i',
@@ -35,6 +36,8 @@ function prepareEventForm()
             alert(ct);
         }
     });
+    console.dir($test);
+
     $('#klo_ki_event_endAt').datetimepicker({
         inline: false,
         step: 30,

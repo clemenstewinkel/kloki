@@ -1,16 +1,13 @@
 {{ form_start(form, {attr: {novalidate: 'novalidate'}}) }}
-<div class="row mb-3">
-    <div class="col-md-8">{{ form_row(form.name) }}</div>
-   <div class="col-md-4">
+{{ form_row(form.name) }}
        {% if form.isFixed is defined %}
-           {{ form_row(form.isFixed) }}
+           {{ form_widget(form.isFixed) }}
        {% endif %}
-   </div>
-</div>
-<div class="row mb-3">
-    <div class="col-md-6">{{ form_row(form.beginAt) }}</div>
-    <div class="col-md-6">{{ form_row(form.endAt) }}</div>
-</div>
+    {{ form_row(form.isFullDay) }}
+    <div class="col-md-4">{{ form_row(form.startDate) }}</div>
+    <div class="col-md-4">{{ form_row(form.endDate) }}</div>
+    <div class="col-md-4">{{ form_row(form.startTime) }}</div>
+    <div class="col-md-4">{{ form_row(form.endTime) }}</div>
 <div class="row mb-3">
     <div class="col-md-4">{{ form_row(form.art) }}</div>
     <div class="col-md-4">{{ form_row(form.kategorie) }}</div>

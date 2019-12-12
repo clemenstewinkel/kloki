@@ -1,4 +1,7 @@
 @import '~bootstrap/dist/css/bootstrap.css';
+@import '~jquery-datetimepicker/jquery.datetimepicker.css';
+
+
 body {
     padding-top: 4.5rem;
 }

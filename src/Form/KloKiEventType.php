@@ -11,8 +11,10 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -31,8 +33,14 @@ class KloKiEventType extends AbstractType
 
         $builder
             ->add('name')
-            ->add('beginAt', DateTimeType::class, ['html5'=> false, 'widget' => 'single_text', 'label' => "Beginn", 'attr' => ['autocomplete' => 'off']])
-            ->add('endAt', DateTimeType::class, ['html5'=> false, 'widget' => 'single_text', 'label' => "Ende", 'attr' => ['autocomplete' => 'off']])
+
+            ->add('isFullDay')
+            ->add('startDate', DateType::class, ['widget' => 'single_text', 'label' => 'Von'])
+            ->add('endDate',   DateType::class, ['widget' => 'single_text', 'label' => 'Bis'])
+            ->add('startTime', TimeType::class, ['widget' => 'single_text', 'label' => false])
+            ->add('endTime',   TimeType::class, ['widget' => 'single_text', 'label' => false])
+
+
             ->add('anzahlArtists', null, ['label' => 'Anzahl der Künstler'])
             ->add('isBestBenoetigt', null, ['label' => "Bestuhlung erforderlich"])
             ->add('isLichtBenoetigt', null, ['label' => "Licht erforderlich"])
