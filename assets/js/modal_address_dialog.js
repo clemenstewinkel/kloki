@@ -42,7 +42,7 @@ function retargetModal()
                 if(data.substr(0,3) === 'OK;')
                 {
                     console.log(data.substr(3));
-                    $('#klo_ki_event_kontakt').val(data.substr(3))
+                    $('#klo_ki_event_kontakt').val(data.substr(3));
                     $('#klokiModal').modal('hide');
                 }
                 else
