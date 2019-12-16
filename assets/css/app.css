@@ -5,3 +5,11 @@
 body {
     padding-top: 4.5rem;
 }
+nav.bg-kloki {
+    background-color: #750000;
+    background-image: url("../images/kloki_38x40.png");
+    background-repeat: no-repeat;
+    background-position-x: 20px;
+    background-position-y: 5px;
+    padding-left: 64px;
+}

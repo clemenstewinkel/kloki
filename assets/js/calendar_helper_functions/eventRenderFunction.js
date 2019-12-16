@@ -1,5 +1,6 @@
 import $ from "jquery";
 import isAssignedHelper from "./isAssignedHelper";
+import isInAvailableHelpers from "./isInAvailableHelpers";
 import {userRoles} from "../calendar";
 
 export default function eventRenderFunction(info)

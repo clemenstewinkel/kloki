@@ -16,7 +16,7 @@ export default function eventResized(e)
         url: '/event/resize',
         method: 'POST',
         data: JSON.stringify(formData),
-        success: function(data){
+        success: function(){
             console.log('Event Resize AJAX Call: success!');
             loadShowEvent(formData['id']);
         }
