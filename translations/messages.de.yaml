@@ -1,0 +1,6 @@
+ROLE_ADMIN: Administrator
+ROLE_FOOD: Schänke
+ROLE_TECH: Technik
+ROLE_HELPER: Helferkreis
+ROLE_LANDLORD: Vermieter
+ROLE_USER: Normaler Nutzer

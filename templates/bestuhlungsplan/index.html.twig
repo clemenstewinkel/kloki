@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Bestuhlungspläne{% endblock %}
+
+{% block body %}
+    <h1>Bestuhlungspläne</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Sitzplaetze</th>
+                <th>Stehplaetze</th>
+                <th></th>
+                <th>Aktionen</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for bestuhlungsplan in bestuhlungsplans %}
+            <tr>
+                <td>{{ bestuhlungsplan.name }}</td>
+                <td>{{ bestuhlungsplan.sitzplaetze }}</td>
+                <td>{{ bestuhlungsplan.stehplaetze }}</td>
+                <td><a href="/getPdf/{{ bestuhlungsplan.pdfFilePath }}"><img src="/getPng/{{ bestuhlungsplan.pngFilePath }}" /></a></td>
+                <td>
+                    <a href="{{ path('bestuhlungsplan_show', {'id': bestuhlungsplan.id}) }}">show</a>
+                    <a href="{{ path('bestuhlungsplan_edit', {'id': bestuhlungsplan.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('bestuhlungsplan_new') }}">Create new</a>
+{% endblock %}

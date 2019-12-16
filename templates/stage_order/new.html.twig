@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New StageOrder{% endblock %}
+
+{% block body %}
+    <h1>Create new StageOrder</h1>
+
+    {{ include('stage_order/_form.html.twig') }}
+
+    <a href="{{ path('stage_order_index') }}">back to list</a>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Bestuhlungsplan{% endblock %}
+
+{% block body %}
+    <h1>Bestuhlungsplan</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ bestuhlungsplan.id }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ bestuhlungsplan.name }}</td>
+            </tr>
+            <tr>
+                <th>Sitzplaetze</th>
+                <td>{{ bestuhlungsplan.sitzplaetze }}</td>
+            </tr>
+            <tr>
+                <th>Stehplaetze</th>
+                <td>{{ bestuhlungsplan.stehplaetze }}</td>
+            </tr>
+            <tr>
+                <th>PdfFilePath</th>
+                <td>{{ bestuhlungsplan.pdfFilePath }}</td>
+            </tr>
+            <tr>
+                <th>PngFilePath</th>
+                <td>{{ bestuhlungsplan.pngFilePath }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('bestuhlungsplan_index') }}">back to list</a>
+
+    <a href="{{ path('bestuhlungsplan_edit', {'id': bestuhlungsplan.id}) }}">edit</a>
+
+    {{ include('bestuhlungsplan/_delete_form.html.twig') }}
+{% endblock %}

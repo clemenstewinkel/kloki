@@ -1,52 +1,141 @@
-{{ form_start(form, {attr: {novalidate: 'novalidate'}}) }}
-{{ form_row(form.name) }}
-       {% if form.isFixed is defined %}
-           {{ form_widget(form.isFixed) }}
-       {% endif %}
-    {{ form_row(form.isFullDay) }}
-    <div class="col-md-4">{{ form_row(form.startDate) }}</div>
-    <div class="col-md-4">{{ form_row(form.endDate) }}</div>
-    <div class="col-md-4">{{ form_row(form.startTime) }}</div>
-    <div class="col-md-4">{{ form_row(form.endTime) }}</div>
-<div class="row mb-3">
-    <div class="col-md-4">{{ form_row(form.art) }}</div>
-    <div class="col-md-4">{{ form_row(form.kategorie) }}</div>
-    <div class="col-md-4">{{ form_row(form.room) }}</div>
-</div>
-<div class="row mb-3">
-    <div class="col-md-4">{{ form_row(form.anzahlArtists) }}</div>
-    <div class="col-md-4">{{ form_row(form.isBestBenoetigt) }}</div>
-    <div class="col-md-4">{{ form_row(form.bestPlan) }}</div>
-</div>
-    {{ form_row(form.isLichtBenoetigt) }}
-    {{ form_row(form.isTonBenoetigt) }}
+{{ form_start(form, {'action': klo_ki_form_action, attr: {novalidate: 'novalidate'}}) }}
+<style>
+    .ck-editor__editable_inline {
+        min-height: 200px;
+    }
+</style>
 
-<hr/>
-    {{ form_row(form.helperRequired) }}
 
-<div class="row mb-3">
-    <div class="col-md-6">{{ form_row(form.helperEinlassEins) }}</div>
-    <div class="col-md-6">{{ form_row(form.helperEinlassZwei) }}</div>
+<div class="form-group row">
+    <label class="col-form-label col-sm-2">Name</label>
+    <div class="col-sm-8">
+        {{ form_widget(form.name) }}
+        {{ form_errors(form.name) }}
+    </div>
+    <div class="col-sm-2">
+    {% if form.isFixed is defined %}
+        {{ form_widget(form.isFixed) }}
+    {% endif %}
+    </div>
 </div>
-<div class="row mb-3">
-    <div class="col-md-4">{{ form_row(form.helperKasse) }}</div>
-    <div class="col-md-4">{{ form_row(form.helperSpringerEins) }}</div>
-    <div class="col-md-4">{{ form_row(form.helperSpringerZwei) }}</div>
-</div>
-<hr/>
 
-<div class="js-take-existing-address">
-    {{ form_row(form.kontakt) }}
+
+<div class="form-group row">
+    <label class="col-form-label col-sm-2">Art / Ort</label>
+    <div class="col-sm-3">
+        {{ form_widget(form.art) }}
+    </div>
+    <div class="col-sm-3">
+        {{ form_widget(form.kategorie) }}
+    </div>
+    <div class="col-sm-4">
+        {{ form_widget(form.room) }}
+        {{ form_errors(form.room) }}
+    </div>
 </div>
-{% if form.takeNewAddress is defined %}
-    {{ form_row(form.takeNewAddress) }}
-<div class="js-take-new-address" style="display: none;">
-    {{ include('addresse/_inner_form.html.twig', {'form': form.kontaktNeu}) }}
+
+
+{{ form_row(form.isFullDay) }}
+
+<div class="form-group row {% if form.startDate.vars.errors|length %} is-invalid {% endif %}">
+    {{ form_label(form.startDate) }}
+    <div class="col-sm-8">
+        {{ form_widget(form.startDate) }}
+        {{ form_errors(form.startDate) }}
+    </div>
+    <div class="col-sm-2">
+        {{ form_widget(form.startTime, {attr: {class: form.endDate.vars.errors|length ? 'is-invalid js-event-time-field' : 'js-event-time-field'}}) }}
+    </div>
 </div>
-{% endif %}
-    {{ form_row(form.stageOrder) }}
-    {{ form_row(form.ausstattung) }}
-    {{ form_row(form.ParentEvent) }}
-    {{ form_row(form.bemerkung) }}
-    <button class="btn btn-primary">{{ button_label|default('Speichern') }}</button>
+
+
+<div class="form-group row {% if form.endDate.vars.errors|length %} is-invalid {% endif %}">
+    {{ form_label(form.endDate) }}
+    <div class="col-sm-8">
+        {{ form_widget(form.endDate) }}
+        {{ form_errors(form.endDate) }}
+    </div>
+    <div class="col-sm-2">
+        {{ form_widget(form.endTime, {attr: {class: form.endDate.vars.errors|length ? 'is-invalid js-event-time-field' : 'js-event-time-field'}}) }}
+    </div>
+</div>
+
+
+<div class="form-group row">
+    <label class="col-form-label col-sm-2">Benötigt:</label>
+    <div class="col-sm-2">
+        {{ form_widget(form.isBestBenoetigt, {'label': 'Bestuhlung'}) }}
+    </div>
+    <div class="col-sm-2">
+        {{ form_widget(form.isLichtBenoetigt, {'label': 'Licht'}) }}
+    </div>
+    <div class="col-sm-2">
+        {{ form_widget(form.isTonBenoetigt, {'label': 'Ton'}) }}
+    </div>
+    <div class="col-sm-2">
+        {{ form_widget(form.helperRequired, {'label': 'Helfer'}) }}
+    </div>
+    <div class="col-sm-2">
+    </div>
+</div>
+
+
+
+
+
+{{ form_row(form.anzahlArtists) }}
+
+<div id="js-event-helper-section">
+    <div class="form-group row ">
+        <label class="col-form-label col-sm-2">Helfer</label>
+        <div class="col-sm-10">
+            {{ form_row(form.helperEinlassEins) }}
+            {{ form_row(form.helperEinlassZwei) }}
+            {{ form_row(form.helperSpringerEins) }}
+            {{ form_row(form.helperSpringerZwei) }}
+            {{ form_row(form.helperKasse) }}
+            Verfügbar:
+            {% for helper in klo_ki_event.availableHelpers %}
+                {{ helper }}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+
+<div class="form-group row">
+    <label class="col-form-label col-sm-2">AP</label>
+    <div class="col-sm-8">
+        {{ form_widget(form.kontakt) }}
+        {{ form_errors(form.kontakt) }}
+    </div>
+    <div class="col-sm-2">
+        <a id="js-new-address-button" class="js-no-retarget btn btn-primary">Neu...</a>
+    </div>
+</div>
+
+{{ form_widget(form) }}
+<button class="btn btn-primary">{{ button_label|default('Speichern') }}</button>
+
 {{ form_end(form) }}
+
+
+<!-- The Modal -->
+<div class="modal fade" id="klokiModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Modal Heading</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                Modal body..
+            </div>
+
+        </div>
+    </div>
+</div>

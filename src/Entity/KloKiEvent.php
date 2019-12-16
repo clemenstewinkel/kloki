@@ -53,7 +53,6 @@ class KloKiEvent
 
     /**
      * @ORM\Column(type="datetime")
-     * @Assert\NotBlank()
      * @Assert\DateTime()
      * @Groups({"events:read"})
      */
@@ -622,10 +621,11 @@ class KloKiEvent
 
     /**
      * @return mixed
+     * @Assert\NotBlank()
      */
     public function getStartDate()
     {
-        return $this->startDate;
+        return $this->beginAt;
     }
 
     /**
@@ -642,7 +642,7 @@ class KloKiEvent
      */
     public function getEndDate()
     {
-        return $this->endDate;
+        return $this->endAt;
     }
 
     /**
@@ -651,6 +651,7 @@ class KloKiEvent
     public function setEndDate($endDate): void
     {
         $this->endDate = $endDate;
+        $this->endAt = $endDate;
     }
 
     /**
@@ -658,7 +659,7 @@ class KloKiEvent
      */
     public function getStartTime()
     {
-        return $this->startTime;
+        return $this->beginAt;
     }
 
     /**
@@ -667,7 +668,7 @@ class KloKiEvent
     public function setStartTime($startTime): void
     {
         $this->startTime = $startTime;
-        if($this->startDate)
+        if($this->startDate && (!$this->isFullDay) && $startTime)
         {
             $this->beginAt = new \DateTime($this->startDate->format('Y-m-d ') . $startTime->format('H:i'));
         }
@@ -678,7 +679,7 @@ class KloKiEvent
      */
     public function getEndTime()
     {
-        return $this->endTime;
+        return $this->endAt;
     }
 
     /**
@@ -687,6 +688,10 @@ class KloKiEvent
     public function setEndTime($endTime): void
     {
         $this->endTime = $endTime;
+        if($this->endDate && (!$this->isFullDay) && $endTime)
+        {
+            $this->endAt = new \DateTime($this->endDate->format('Y-m-d ') . $endTime->format('H:i'));
+        }
     }
 
 }

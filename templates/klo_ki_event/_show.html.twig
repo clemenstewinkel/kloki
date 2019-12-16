@@ -1,4 +1,4 @@
-    <h1>{{ klo_ki_event.name }}</h1>
+    <h1>{{ klo_ki_event.name }} ({{ klo_ki_event.room }})</h1>
 
     <table class="table">
         <tbody>
@@ -113,6 +113,18 @@
             </form>
         {% endif %}
     {% endif %}
+
+
+
+    {% if is_granted('ROLE_ADMIN') %}
+        <hr/>
+        <a class="btn btn-primary" href="{{ path('klo_ki_event_edit', {'id': klo_ki_event.id}) }}">
+            Bearbeiten
+        </a>
+    {% endif %}
+
+
+
 
 
     {% if klo_ki_event.beginAt %}

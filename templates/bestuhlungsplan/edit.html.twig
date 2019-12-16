@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Bestuhlungsplan{% endblock %}
+
+{% block body %}
+    <h1>Edit Bestuhlungsplan</h1>
+
+    {{ include('bestuhlungsplan/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('bestuhlungsplan_index') }}">back to list</a>
+
+    {{ include('bestuhlungsplan/_delete_form.html.twig') }}
+{% endblock %}

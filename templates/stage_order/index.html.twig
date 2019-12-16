@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Bühnenanweisungen{% endblock %}
+
+{% block body %}
+    <h1>Bühnenanweisungen</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Beschreibung</th>
+                <th>PDF</th>
+                <th>Aktionen</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for stage_order in stage_orders %}
+            <tr>
+                <td>{{ stage_order.name }}</td>
+                <td>{{ stage_order.description }}</td>
+                <td><a href="{{ path('getPdf', {'id': stage_order.pdfFileName}) }}"><img src="{{ path('getPng', {'id': stage_order.pngFileName}) }}"/></a></td>
+                <td>
+                    <a href="{{ path('stage_order_show', {'id': stage_order.id}) }}">show</a>
+                    <a href="{{ path('stage_order_edit', {'id': stage_order.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('stage_order_new') }}">Create new</a>
+{% endblock %}

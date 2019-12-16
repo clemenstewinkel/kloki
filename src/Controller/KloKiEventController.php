@@ -92,9 +92,7 @@ class KloKiEventController extends AbstractController
     public function new(Request $request): Response
     {
         $kloKiEvent = new KloKiEvent();
-        $form = $this->createForm(KloKiEventType::class, $kloKiEvent)
-            ->add('takeNewAddress', CheckboxType::class,['mapped' => false, 'required' => false, 'label' => 'Neue Adresse anlegen...'])
-            ->add('kontaktNeu',     AddresseType::class,['mapped' => false, 'required' => false, 'property_path' => 'kontaktNeu']);
+        $form = $this->createForm(KloKiEventType::class, $kloKiEvent);
 
         // Wenn wir keine Admin sind, dürfen wir nur optionale Events anlegen!
         if (!$this->isGranted("ROLE_ADMIN"))
@@ -106,9 +104,7 @@ class KloKiEventController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            //dd($form);
             $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($kloKiEvent->getKontakt());
             $entityManager->persist($kloKiEvent);
             $entityManager->flush();
 
@@ -125,12 +121,14 @@ class KloKiEventController extends AbstractController
         if ($request->isXmlHttpRequest()) {
             return $this->render('klo_ki_event/_form.html.twig', [
                 'klo_ki_event' => $kloKiEvent,
+                'klo_ki_form_action' => '/event/new',
                 'form' => $form->createView()
             ]);
         }
 
         return $this->render('klo_ki_event/new.html.twig', [
             'klo_ki_event' => $kloKiEvent,
+            'klo_ki_form_action' => '/event/new',
             'form' => $form->createView(),
         ]);
     }
@@ -252,22 +250,25 @@ class KloKiEventController extends AbstractController
             $entityManager->flush();
 
             if ($request->isXmlHttpRequest()) {
-                return new Response('Event geändert!');
+                return $this->render('klo_ki_event/_show.html.twig', [
+                    'klo_ki_event' => $kloKiEvent,
+                ]);
             }
             return $this->redirectToRoute('klo_ki_event_index');
         }
 
         // Wenn die Anfrage über AJAX kam, rendern wir nur das Formular!
-        if ($request->isXmlHttpRequest()) {
+         if ($request->isXmlHttpRequest()) {
             return $this->render('klo_ki_event/_form.html.twig', [
                 'klo_ki_event' => $kloKiEvent,
+                'klo_ki_form_action' => '/event/' . $kloKiEvent->getId() . '/edit',
                 'form' => $form->createView()
             ]);
         }
 
-
         return $this->render('klo_ki_event/edit.html.twig', [
             'klo_ki_event' => $kloKiEvent,
+            'klo_ki_form_action' => '/event/' . $kloKiEvent->getId() . '/edit',
             'form' => $form->createView(),
         ]);
     }

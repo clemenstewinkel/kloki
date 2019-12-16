@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}StageOrder{% endblock %}
+
+{% block body %}
+    <h1>StageOrder</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ stage_order.id }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ stage_order.name }}</td>
+            </tr>
+            <tr>
+                <th>PdfFileName</th>
+                <td>{{ stage_order.pdfFileName }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ stage_order.description }}</td>
+            </tr>
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ stage_order.createdAt ? stage_order.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>UpdatedAt</th>
+                <td>{{ stage_order.updatedAt ? stage_order.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('stage_order_index') }}">back to list</a>
+
+    <a href="{{ path('stage_order_edit', {'id': stage_order.id}) }}">edit</a>
+
+    {{ include('stage_order/_delete_form.html.twig') }}
+{% endblock %}

@@ -19,6 +19,22 @@ class AddresseRepository extends ServiceEntityRepository
         parent::__construct($registry, Addresse::class);
     }
 
+    /**
+     * @param string $query
+     * @param int $limit
+     * @return Addresse[]
+     */
+    public function findAllMatching(string $query, int $limit = 10)
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.vorname LIKE :query OR a.nachname LIKE :query OR a.strasse LIKE :query OR a.ort LIKE :query')
+            ->setParameter('query', '%' .  $query . '%')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
+
+
     // /**
     //  * @return Addresse[] Returns an array of Addresse objects
     //  */

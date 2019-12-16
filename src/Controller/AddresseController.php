@@ -16,6 +16,15 @@ use Symfony\Component\Routing\Annotation\Route;
 class AddresseController extends AbstractController
 {
     /**
+     * @Route("/autoComplete", name="addresse_auto_complete", methods={"GET"})
+     */
+    public function forAutoComplete(Request $request, AddresseRepository $addresseRepo)
+    {
+        $addresses = $addresseRepo->findAllMatching($request->query->get('query'));
+        return $this->json(['addresses' => $addresses], 200, [], ['groups' => ['address:autocomplete']]);
+    }
+
+    /**
      * @Route("/", name="addresse_index", methods={"GET"})
      */
     public function index(AddresseRepository $addresseRepository): Response
@@ -39,8 +48,21 @@ class AddresseController extends AbstractController
             $entityManager->persist($addresse);
             $entityManager->flush();
 
+            if ($request->isXmlHttpRequest()) {
+                return new Response('OK;'.$addresse->getForAutoComplete());
+            }
+
             return $this->redirectToRoute('addresse_index');
         }
+
+        if ($request->isXmlHttpRequest()) {
+            return $this->render('addresse/_form.html.twig', [
+                'addresse' => $addresse,
+                'klo_ki_form_action' => '/addresse/new',
+                'form' => $form->createView()
+            ]);
+        }
+
 
         return $this->render('addresse/new.html.twig', [
             'addresse' => $addresse,

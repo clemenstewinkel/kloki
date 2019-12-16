@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Bestuhlungsplan{% endblock %}
+
+{% block body %}
+    <h1>Create new Bestuhlungsplan</h1>
+
+    {{ include('bestuhlungsplan/_form.html.twig') }}
+
+    <a href="{{ path('bestuhlungsplan_index') }}">back to list</a>
+{% endblock %}

@@ -34,12 +34,11 @@ class KloKiEventType extends AbstractType
         $builder
             ->add('name')
 
-            ->add('isFullDay')
-            ->add('startDate', DateType::class, ['widget' => 'single_text', 'label' => 'Von'])
-            ->add('endDate',   DateType::class, ['widget' => 'single_text', 'label' => 'Bis'])
-            ->add('startTime', TimeType::class, ['widget' => 'single_text', 'label' => false])
-            ->add('endTime',   TimeType::class, ['widget' => 'single_text', 'label' => false])
-
+            ->add('isFullDay', null, ['label' => 'Ganzer Tag'])
+            ->add('startDate', DateType::class, ['html5' => false, 'widget' => 'single_text', 'label' => 'Von'])
+            ->add('endDate',   DateType::class, ['html5' => false, 'widget' => 'single_text', 'label' => 'Bis'])
+            ->add('startTime', TimeType::class, ['html5' => false, 'widget' => 'single_text', 'label' => false])
+            ->add('endTime',   TimeType::class, ['html5' => false, 'widget' => 'single_text', 'label' => false])
 
             ->add('anzahlArtists', null, ['label' => 'Anzahl der Künstler'])
             ->add('isBestBenoetigt', null, ['label' => "Bestuhlung erforderlich"])
@@ -80,50 +79,14 @@ class KloKiEventType extends AbstractType
             ->add('art', null, ['label' => "Art"])
             ->add('kategorie', null, ['label' => "Kategorie"])
             ->add('room', null, ['label' => 'Raum'])
-            ->add('kontakt', null, ['required' => true])
-            ->add('bestPlan', null, ['label' => 'Auswahl des Bestuhlungsplanes'])
-            ->add('stageOrder', null, ['label' => 'Auswahl der Bühnenanweisung'])
+            ->add('kontakt', AddressSelectType::class, ['required' => true])
+            ->add('bestPlan', null, ['label' => 'Bestuhlung'])
+            ->add('stageOrder', null, ['label' => 'Bühnenanw.'])
             ->add('ParentEvent', null, ['label' => 'Hauptevent'])
             ->add('ausstattung', EntityType::class, ['class' => 'App:Ausstattung', 'multiple' => true, 'expanded' => true])
             ->add('bemerkung', TextareaType::class)
-            ->add('isFixed', ChoiceType::class, ['label' => 'Vertragsstatus', 'choices' => ['optioniert' => 0, 'fest' => 1]])
+            ->add('isFixed', ChoiceType::class, ['label' => 'Vertragsstatus', 'choices' => ['option' => 0, 'fest' => 1]])
         ;
-
-        $builder->addEventListener(
-            FormEvents::PRE_SUBMIT,
-            function (FormEvent $event) {
-                $data = $event->getData();
-                $form = $event->getForm();
-                if($form->has('takeNewAddress'))
-                {
-                    if (isset($data['takeNewAddress'])) {
-                        $form
-                            //->remove('kontakt')
-                            ->add('kontakt', null, ['required' => true])
-                            ->add('kontaktNeu', AddresseType::class, [
-                                    'required' => true,
-                                    'mapped' => true,
-                                    'property_path' => 'kontakt'
-                                ]
-                            )
-                        ;
-                    }
-                    else {
-                        $form
-                            ->add('kontakt', null, ['required' => true, 'mapped' => true])
-                            ->add('kontaktNeu', AddresseType::class, [
-                                    'required' => false,
-                                    'mapped' => false,
-                                    'property_path' => 'kontakt'
-                                ]
-                            )
-                        ;
-                    }
-                }
-            }
-        );
-
-
     }
 
     public function configureOptions(OptionsResolver $resolver)

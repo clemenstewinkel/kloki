@@ -7,6 +7,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
+
 
 
 /**
@@ -57,6 +59,16 @@ class Addresse
      * @ORM\OneToMany(targetEntity="App\Entity\KloKiEvent", mappedBy="kontakt")
      */
     private $kloKiEvents;
+
+    /**
+     * @Groups({"address:autocomplete"})
+     */
+    public function getForAutoComplete()
+    {
+        return $this->getVorname() . ' ' . $this->getNachname() . ', ' .
+            $this->getStrasse() . ', ' . $this->getPlz() . ' ' . $this->getOrt() .
+            ' (' . $this->getId() .')';
+    }
 
     public function __toString()
     {

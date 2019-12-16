@@ -1,7 +1,7 @@
 import $ from 'jquery';
-import 'jquery-datetimepicker';
+import prepare_event_form from "./prepare_event_form";
 
 
 $(document).ready(function() {
-    console.log('new-event-form.js geladen!');
+    prepare_event_form();
 });
