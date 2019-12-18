@@ -4,11 +4,25 @@
 
 {% block body %}
     <h1>Events in der Klosterkirche</h1>
-
     <form action="{{ path('klo_ki_event_index') }}" method="GET">
         <div class="row">
             <div class="col">
                 <input type="text" class="form-control" name="name_contains" value="{{ app.request.query.get('name_contains') }}" placeholder="Name enthält"/>
+            </div>
+            <div class="col">
+                <select name="room_id[]" data-width="fit" class="selectpicker" title="Räume auswählen..." multiple>
+                    {% for room in rooms %}
+                    <option value="{{ room.id }}" {% if room.id in app.request.query.get('room_id') %} selected="selected" {% endif %}> {{ room.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col">
+                <input type="text" id="event_filter_startDate" class="form-control" autocomplete="off" name="beginAtAfter" value="{{ app.request.query.get('beginAtAfter') }}" placeholder="Datum ab"/>
+            </div>
+            <div class="col">
+                <input type="text" id="event_filter_endDate" class="form-control" autocomplete="off" name="beginAtBefore" value="{{ app.request.query.get('beginAtBefore') }}" placeholder="Datum bis"/>
+                <input type="hidden" name="sort" value="{{ app.request.query.get('sort') }}"/>
+                <input type="hidden" name="direction" value="{{ app.request.query.get('direction') }}"/>
             </div>
             <div class="col">
                 <input type="submit" value="Filter" class="btn btn-primary" />
@@ -21,8 +35,8 @@
         <thead>
             <tr>
                 <th>{{ knp_pagination_sortable(pagination, 'Name', 'event.name') }}</th>
-                <th>Ort</th>
-                <th>Begin</th>
+                <th>{{ knp_pagination_sortable(pagination, 'Ort', 'room.id') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'Begin', 'event.beginAt') }}</th>
                 <th>Ende</th>
                 <th>Anz. Künstl.</th>
                 <th>Bestuhlt?</th>
@@ -58,4 +72,5 @@
     </table>
 
     <a class="btn btn-primary" href="{{ path('klo_ki_event_new') }}">Neues Event <span class="fas fa-edit"></span></a>
+    {{ encore_entry_script_tags('event-filter') }}
 {% endblock %}

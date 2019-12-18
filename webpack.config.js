@@ -26,6 +26,7 @@ Encore
     .addEntry('app', './assets/js/app.js')
     .addEntry('calendar', './assets/js/calendar.js')
     .addEntry('new-event-form', './assets/js/new-event-form.js')
+    .addEntry('event-filter', './assets/js/event_index.js')
     //.addEntry('page1', './assets/js/page1.js')
     //.addEntry('page2', './assets/js/page2.js')
 

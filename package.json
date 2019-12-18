@@ -24,6 +24,7 @@
         "@fullcalendar/timegrid": "^4.3.0",
         "autocomplete.js": "^0.37.0",
         "bootstrap": "^4.4.1",
+        "bootstrap-select": "^1.13.12",
         "jquery": "^3.4.1",
         "jquery-contextmenu": "^2.9.0",
         "jquery-datetimepicker": "^2.5.21",

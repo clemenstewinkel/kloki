@@ -9,6 +9,8 @@
 import '../css/app.css';
 import $ from 'jquery';
 import 'bootstrap';
+import 'popper.js';
+import 'bootstrap-select';
 import '@fortawesome/fontawesome-free';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 

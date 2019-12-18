@@ -18,6 +18,7 @@ class AddresseType extends AbstractType
             ->add('plz')
             ->add('ort')
             ->add('telefon', null, ['required' => true])
+            ->add('email')
         ;
     }
 

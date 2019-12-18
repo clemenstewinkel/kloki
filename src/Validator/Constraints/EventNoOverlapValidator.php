@@ -4,20 +4,27 @@ namespace App\Validator\Constraints;
 
 use App\Entity\KloKiEvent;
 use App\Repository\KloKiEventRepository;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
 class EventNoOverlapValidator extends ConstraintValidator
 {
     private $eventRepo;
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
 
-    public function __construct(KloKiEventRepository $eventRepo)
+    public function __construct(LoggerInterface $logger,  KloKiEventRepository $eventRepo)
     {
         $this->eventRepo = $eventRepo;
+        $this->logger = $logger;
     }
 
     public function validate($event, Constraint $constraint)
     {
+        $this->logger->debug('KLOKI: EventNoOverlapValidator called!');
         /** @var KloKiEvent $event */
 
         if((!$event->getBeginAt()) || (!$event->getEndAt())) return;

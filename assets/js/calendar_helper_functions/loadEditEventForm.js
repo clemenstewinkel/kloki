@@ -1,8 +1,7 @@
 import setSpinner from "./setSpinner";
 import $ from "jquery";
-import prepare_event_form from "../prepare_event_form";
-import handleEditFormSubmit from "./handleEditEventForm";
 import {$calendarDetail} from "../calendar";
+import reTargetLinks from "./reTargetLinks";
 
 export default function loadEditEventForm(event_id)
 {
@@ -14,10 +13,7 @@ export default function loadEditEventForm(event_id)
         method: 'GET',
         success: function(data) {
             $calendarDetail.html(data);
-            prepare_event_form();
-            const $eventForm = $('form[name="klo_ki_event"]');
-            $eventForm.attr('action', url);
-            $eventForm.on('submit', handleEditFormSubmit);
+            reTargetLinks();
         },
         error: function(data) {
             console.dir(data);

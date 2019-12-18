@@ -1,4 +1,6 @@
-{{ addresse.vorname }} {{ addresse.nachname }}<br/>
+{{ addresse.vorname ?: '' }} {{ addresse.nachname }}<br/>
 {{ addresse.strasse }}<br/>
 {{ addresse.plz }} {{ addresse.ort }}<br/>
-{{ addresse.telefon }}
+{{ addresse.telefon }}<br/>
+{% if addresse.email %}<a href="mailto:{{ addresse.email }}">{{ addresse.email }}</a> {% endif %}
+

@@ -1,5 +1,4 @@
 import $ from "jquery";
-import setErrorNotAllowed from "./calendar_helper_functions/setErrorNotAllowed";
 
 export default function modal_address_dialog()
 {
@@ -16,7 +15,7 @@ export default function modal_address_dialog()
         error: function(data) {
             if (data.status === 403)
             {
-                setErrorNotAllowed();
+                $modalBody.html("Funktion nicht erlaubt!");
             }
         }
     });

@@ -61,6 +61,12 @@ class Addresse
     private $kloKiEvents;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Email()
+     */
+    private $email;
+
+    /**
      * @Groups({"address:autocomplete"})
      */
     public function getForAutoComplete()
@@ -184,6 +190,18 @@ class Addresse
                 $kloKiEvent->setKontakt(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(?string $email): self
+    {
+        $this->email = $email;
 
         return $this;
     }

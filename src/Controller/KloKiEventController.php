@@ -7,7 +7,9 @@ use App\Form\AddresseType;
 use App\Form\KloKiEventEditType;
 use App\Form\KloKiEventType;
 use App\Repository\KloKiEventRepository;
+use App\Repository\RoomRepository;
 use Knp\Component\Pager\PaginatorInterface;
+use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -27,10 +29,21 @@ class KloKiEventController extends AbstractController
     /**
      * @Route("/", name="klo_ki_event_index", methods={"GET"})
      */
-    public function index(KloKiEventRepository $kloKiEventRepository, PaginatorInterface $paginator, Request $request): Response
+    public function index(KloKiEventRepository $kloKiEventRepository, PaginatorInterface $paginator, RoomRepository $roomRepo, Request $request): Response
     {
-        $query = $kloKiEventRepository->createQueryBuilder('event')->getQuery();
+        $querybuilder = $kloKiEventRepository->createQueryBuilder('event')->innerJoin('event.room', 'room');
+        if($request->query->get('room_id'))
+            $querybuilder->andWhere('room.id IN (:roomIds)')->setParameter('roomIds', $request->query->get('room_id'));
 
+        if($beginAtAfter = $request->query->get('beginAtAfter'))
+            $querybuilder->andWhere('event.beginAt > :beginAtAfter')->setParameter('beginAtAfter', $beginAtAfter);
+
+        if($beginAtBefore = $request->query->get('beginAtBefore'))
+            $querybuilder->andWhere('event.beginAt < :beginAtBefore')->setParameter('beginAtBefore', $beginAtBefore . ' 23:59:59');
+
+        $query = $querybuilder->getQuery();
+
+        dump($request->query->get('room_id'));
         $pagination = $paginator->paginate(
             $query,
             $request->query->getInt('page', 1),
@@ -38,6 +51,7 @@ class KloKiEventController extends AbstractController
         );
         return $this->render('klo_ki_event/index.html.twig', [
             'pagination' => $pagination,
+            'rooms'      => $roomRepo->findAll()
         ]);
     }
 
@@ -89,8 +103,9 @@ class KloKiEventController extends AbstractController
      * @Route("/new", name="klo_ki_event_new", methods={"GET","POST"})
      * @IsGranted({"ROLE_ADMIN", "ROLE_FOOD"})
      */
-    public function new(Request $request): Response
+    public function new(LoggerInterface $logger, Request $request): Response
     {
+        $logger->debug('KLOKI: new called in EventController');
         $kloKiEvent = new KloKiEvent();
         $form = $this->createForm(KloKiEventType::class, $kloKiEvent);
 
