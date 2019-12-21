@@ -31,10 +31,17 @@ class KloKiEventType extends AbstractType
                 ->orderBy('u.email', 'ASC');
         };
 
+        $techniker_query = function (UserRepository $repo) {
+            return $repo->createQueryBuilder('u')
+                ->where('u.roles LIKE :roles')
+                ->setParameter('roles', '%"ROLE_TECH"%')
+                ->orderBy('u.email', 'ASC');
+        };
+
         $builder
             ->add('name')
 
-            ->add('isFullDay', null, ['label' => 'Ganzer Tag'])
+            ->add('allDay', null, ['label' => 'Ganzer Tag'])
             ->add('startDate', DateType::class, ['html5' => false, 'widget' => 'single_text', 'label' => 'Von'])
             ->add('endDate',   DateType::class, ['html5' => false, 'widget' => 'single_text', 'label' => 'Bis'])
             ->add('startTime', TimeType::class, ['html5' => false, 'widget' => 'single_text', 'label' => false])
@@ -44,6 +51,26 @@ class KloKiEventType extends AbstractType
             ->add('isBestBenoetigt', null, ['label' => "Bestuhlung erforderlich"])
             ->add('isLichtBenoetigt', null, ['label' => "Licht erforderlich"])
             ->add('isTonBenoetigt', null, ['label' => "Ton erforderlich"])
+
+
+
+            ->add('LichtTechniker', EntityType::class, [
+                'class' => User::class,
+                'required' => false,
+                'query_builder' => $techniker_query,
+                'label' => "Licht Techniker"
+            ])
+            ->add('TonTechniker', EntityType::class, [
+                'class' => User::class,
+                'required' => false,
+                'query_builder' => $techniker_query,
+                'label' => "Ton Techniker"
+            ])
+
+
+
+
+
             ->add('helperRequired', null, ['label' => "Helfer werden benötigt"])
             ->add('helperEinlassEins', EntityType::class, [
                     'class' => User::class,

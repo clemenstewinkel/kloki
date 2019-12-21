@@ -1,5 +1,7 @@
 import $ from 'jquery';
 import loadShowEvent from "./loadShowEvent";
+import setErrorInternalServer from "./setErrorInternalServer";
+import setErrorNotAllowed from "./setErrorNotAllowed";
 
 /**
  * Wird aufgerufen, wenn ein Event verschoben wurde
@@ -9,27 +11,12 @@ export default function eventDropped(e)
 {
     let formData = {};
 
-    console.dir(e);
     formData['id'] = e.event._def.publicId;
     formData['startdate'] = e.event.start;
-    //formData['resourceId'] =
-    let endTime = null;
-    if(!e.event.allDay)
-    {
-        if (e.event.end === null)
-        {
-            endTime = e.event.start;
-            endTime.setHours(e.event.start.getHours() + 1)
-        }
-        else
-        {
-            endTime = e.event.end;
-        }
-    }
-    formData['enddate'] = endTime;
+    formData['allDay'] = e.event.allDay;
+    formData['enddate'] = e.event.end;
+    if(e.newResource !== null) formData['newResource'] = e.newResource.id;
 
-
-    console.dir(formData);
     $.ajax({
         url: '/event/replace',
         method: 'POST',
@@ -37,6 +24,17 @@ export default function eventDropped(e)
         success: function(){
             console.log('Event Drop AJAX Call: success!');
             loadShowEvent(formData['id']);
+        },
+        error: function(data) {
+            e.revert();
+            if (data.status === 403)
+            {
+                setErrorNotAllowed();
+            }
+            else if(data.status / 100 === 5)
+            {
+                setErrorInternalServer();
+            }
         }
     });
 }

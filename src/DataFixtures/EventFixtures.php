@@ -66,6 +66,7 @@ class EventFixtures extends Fixture
             {
                 $fullday = true;
                 $unix_ts_start = $unix_ts_tag_beginn;
+                $unix_ts_end   = $unix_ts_tag_beginn + (24 * 3600);
             }
             else // kein ganzer Tag!
             {
@@ -93,9 +94,9 @@ class EventFixtures extends Fixture
                 {
                     dump('Zeit: ' . date('Y-m-d H:i', $unix_ts_start) . ' bis ' . date('H:i', $unix_ts_end) );
                 }
-                $e->setBeginAt(new \DateTime(date('Y-m-d H:i', $unix_ts_start)));
-                if(!$fullday) $e->setEndAt(new \DateTime(date('Y-m-d H:i', $unix_ts_end)));
-                $e->setIsFullDay($fullday);
+                $e->setStart(new \DateTime(date('Y-m-d H:i', $unix_ts_start)));
+                $e->setEnd(new \DateTime(date('Y-m-d H:i', $unix_ts_end)));
+                $e->setAllDay($fullday);
                 $e->setName(trim($a[2]));
                 $e->setIsFixed(true); // TODO
                 $e->setHelperEinlassEins( $this->userRepo->findOneBy(['name' => trim($a[7])]));

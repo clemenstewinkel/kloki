@@ -27,22 +27,22 @@ class EventNoOverlapValidator extends ConstraintValidator
         $this->logger->debug('KLOKI: EventNoOverlapValidator called!');
         /** @var KloKiEvent $event */
 
-        if((!$event->getBeginAt()) || (!$event->getEndAt())) return;
+        if((!$event->getStart()) || (!$event->getEnd())) return;
 
         // Wir suchen nach anderen Events mit dem gleichen Raum,
         // die im gewünschten Zeitraum liegen, die also
         // -- beginAt zwischen beginAt und endAt unseres Events ODER
         // -- endAt zwischen beginAt und endAt unseres Events ODER
         // -- beginAt vor unserem beginAt und endAt nach unserem endAt
-        $myBeginAt = $event->getBeginAt()->format('Y-m-d H:i');
-        $myEndAt   = $event->getEndAt()->format('Y-m-d H:i');
+        $myBeginAt = $event->getStart()->format('Y-m-d H:i');
+        $myEndAt   = $event->getEnd()->format('Y-m-d H:i');
         $queryBuilder = $this->eventRepo->createQueryBuilder('event')
             ->innerJoin('event.room', 'room')
             ->andWhere('room.id = ' . $event->getRoom()->getId())
             ->andWhere("
-                (event.beginAt > '$myBeginAt' AND event.beginAt < '$myEndAt') OR
-                (event.endAt > '$myBeginAt' AND event.endAt < '$myEndAt') OR
-                (event.beginAt < '$myBeginAt' AND event.endAt > '$myEndAt')
+                (event.start > '$myBeginAt' AND event.start < '$myEndAt') OR
+                (event.end > '$myBeginAt' AND event.end < '$myEndAt') OR
+                (event.start < '$myBeginAt' AND event.end > '$myEndAt')
             ")
             ->setMaxResults(1)
         ;

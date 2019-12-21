@@ -19,6 +19,7 @@ import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid';
 
 import $ from 'jquery';
 import 'bootstrap'
+import eventDataTransform from "./calendar_helper_functions/eventDataTransform";
 
 let calendarEl;
 let $calendarDetail;
@@ -73,19 +74,13 @@ $(document).ready(function() {
                 list:     'Liste'
             },
             schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
+            forceEventDuration: true,
+            defaultTimedEventDuration: '04:00',
             eventSources: [
                 {
                     url: "/event/eventRange",
                     method: "GET",
-                    eventDataTransform: function(eventData){
-                        eventData.title = eventData.name;
-                        eventData.start = eventData.beginAt;
-                        eventData.end = eventData.endAt;
-                        eventData.allDay = (! eventData.endAt);
-                        eventData.editable = userRoles.includes('ROLE_ADMIN') ||
-                            (userRoles.includes('ROLE_FOOD') && (!eventData.isFixed));
-                        return eventData;
-                    },
+                    eventDataTransform: eventDataTransform,
                     extraParams: {
                         filters: JSON.stringify({})
                     },

@@ -2,6 +2,18 @@
 
     <table class="table">
         <tbody>
+        {% if klo_ki_event.getProblemDetails %}
+            <tr>
+                <th>Warnungen</th>
+                <td>
+                    <ul style="color: red;">
+                        {% for problem in klo_ki_event.getProblemDetails %}
+                           <li> {{ problem }} </li>
+                        {% endfor %}
+                    </ul>
+                </td>
+            </tr>
+        {%  endif %}
         {% if is_granted('ROLE_ADMIN') %}
             <tr>
                 <th>Status</th>
@@ -9,12 +21,12 @@
             </tr>
         {% endif %}
             <tr>
-                <th>Begin</th>
-                <td>{{ klo_ki_event.beginAt ? klo_ki_event.beginAt|localizeddate('full', 'short') : '' }}</td>
+                <th>Beginn und Dauer</th>
+                <td>{{ include('klo_ki_event/_time_range.html.twig', {'event': klo_ki_event}) }}</td>
             </tr>
             <tr>
-                <th>Ende</th>
-                <td>{{ klo_ki_event.endAt ? klo_ki_event.endAt|localizeddate('full', 'short') : 'ganzer Tag' }}</td>
+                <th>Art:</th>
+                <td>{{ klo_ki_event.art }} / {{ klo_ki_event.kategorie }}</td>
             </tr>
             <tr>
                 <th>Anzahl der Künstler</th>
@@ -50,9 +62,50 @@
                     <td><a href="{{ path('klo_ki_event_show', {'id': klo_ki_event.parentEvent.id } ) }}">{{ klo_ki_event.parentEvent }}</a></td>
                 </tr>
             {% endif %}
+        <tr>
+            <th>Angelegt von</th>
+            <td>{{ klo_ki_event.createdBy }}</td>
+        </tr>
+
+        <tr>
+            <th>Lichttechniker</th>
+            <td>{{ klo_ki_event.lichtTechniker }}</td>
+        </tr>
+        <tr>
+            <th>Tontechniker</th>
+            <td>{{ klo_ki_event.tonTechniker }}</td>
+        </tr>
+        <tr>
+            <th>Zuletzt bearbeitet von</th>
+            <td>{{ klo_ki_event.updatedBy }}</td>
+        </tr>
+        <tr>
+            <th>Angelegt am</th>
+            <td>{{ klo_ki_event.createdAt | localizeddate('full', 'short') }}</td>
+        </tr>
+        <tr>
+            <th>Zuletzt bearbeitet</th>
+            <td>{{ klo_ki_event.updatedAt | localizeddate('full', 'short') }}</td>
+        </tr>
+
 
         </tbody>
     </table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     {% if klo_ki_event.kontakt %}
         <h2>Kontakt:</h2>
@@ -127,11 +180,11 @@
 
 
 
-    {% if klo_ki_event.beginAt %}
+    {% if klo_ki_event.start %}
     <script>
         if(fullcalendar)
         {
-            fullcalendar.gotoDate('{{ klo_ki_event.beginAt | date('Y-m-d') }}');
+            fullcalendar.gotoDate('{{ klo_ki_event.start | date('Y-m-d') }}');
         }
     </script>
     {% endif%}

@@ -5,6 +5,11 @@ import {userRoles} from "../calendar";
 
 export default function eventRenderFunction(info)
 {
+    if (info.event._def.extendedProps.art.name === "Vermietung") // Vermietungen bekommen ein eigenes Muster
+    {
+        $(info.el).addClass('vermietungsevent');
+    }
+
     if(userRoles.includes('ROLE_FOOD') || userRoles.includes('ROLE_ADMIN') || userRoles.includes('ROLE_LANDLORD') ) {
         if (info.event._def.extendedProps.isFixed) // Wenn das Event fest ist, bekommt es ein Schloss-Symbol
         {

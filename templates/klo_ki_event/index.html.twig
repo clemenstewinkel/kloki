@@ -36,8 +36,7 @@
             <tr>
                 <th>{{ knp_pagination_sortable(pagination, 'Name', 'event.name') }}</th>
                 <th>{{ knp_pagination_sortable(pagination, 'Ort', 'room.id') }}</th>
-                <th>{{ knp_pagination_sortable(pagination, 'Begin', 'event.beginAt') }}</th>
-                <th>Ende</th>
+                <th>{{ knp_pagination_sortable(pagination, 'Begin und Dauer', 'event.beginAt') }}</th>
                 <th>Anz. Künstl.</th>
                 <th>Bestuhlt?</th>
                 <th>Licht?</th>
@@ -51,8 +50,7 @@
             <tr>
                 <td>{{ klo_ki_event.name }}</td>
                 <td>{{ klo_ki_event.room }}</td>
-                <td>{{ klo_ki_event.beginAt ? klo_ki_event.beginAt|localizeddate('full', 'short') : '' }}</td>
-                <td>{{ klo_ki_event.endAt ? klo_ki_event.endAt|localizeddate('full', 'short') : 'ganzer Tag' }}</td>
+                <td>{{ include('klo_ki_event/_time_range.html.twig', {'event': klo_ki_event}) }}</td>
                 <td>{{ klo_ki_event.anzahlArtists }}</td>
                 <td>{{ klo_ki_event.isBestBenoetigt ? 'Ja' : 'Nein' }}</td>
                 <td>{{ klo_ki_event.isLichtBenoetigt ? 'Ja' : 'Nein' }}</td>

@@ -41,6 +41,10 @@ class KloKiEventController extends AbstractController
         if($beginAtBefore = $request->query->get('beginAtBefore'))
             $querybuilder->andWhere('event.beginAt < :beginAtBefore')->setParameter('beginAtBefore', $beginAtBefore . ' 23:59:59');
 
+        if($nameContains = $request->query->get('name_contains'))
+            $querybuilder->andWhere('event.name LIKE :nameContains')->setParameter('nameContains', '%' . $nameContains . '%');
+
+
         $query = $querybuilder->getQuery();
 
         dump($request->query->get('room_id'));
@@ -74,7 +78,7 @@ class KloKiEventController extends AbstractController
         $event = $eventRepo->findOneBy(['id' => $data['id']]);
         if($event)
         {
-            $event->setEndAt(new \DateTime($data['enddate']));
+            $event->set_FC_end(new \DateTime($data['enddate']));
             $this->getDoctrine()->getManager()->flush();
             return new Response('OK');
         }
@@ -84,14 +88,20 @@ class KloKiEventController extends AbstractController
     /**
      * @Route("/replace", name="klo_ki_event_replace", methods={"POST"})
      */
-    public function replace(Request $request, KloKiEventRepository $eventRepo)
+    public function replace(Request $request, KloKiEventRepository $eventRepo, RoomRepository $roomRepo)
     {
         $data = json_decode($request->getContent(), true);
         $event = $eventRepo->findOneBy(['id' => $data['id']]);
         if($event)
         {
-            $event->setBeginAt(new \DateTime($data['startdate']));
-            $event->setEndAt($data['enddate'] ? new \DateTime($data['enddate']) : null);
+            $event->setAllDay($data['allDay']);
+            $event->setStart(new \DateTime($data['startdate']));
+            $event->set_FC_End(new \DateTime($data['enddate']));
+            if(isset($data['newResource']))
+            {
+                $newRoom = $roomRepo->findOneBy(['id' => $data['newResource']]);
+                if($newRoom) $event->setRoom($newRoom);
+            }
             $this->getDoctrine()->getManager()->flush();
             return new Response('OK');
         }
@@ -204,12 +214,12 @@ class KloKiEventController extends AbstractController
         $start = $request->query->get('start');
         $end   = $request->query->get('end');
 
-        $start = date('Y-m-d H:i:s', strtotime($start));
-        $end = date('Y-m-d H:i:s', strtotime($end));
+        $start = date('Y-m-d H:i:s', strtotime($start) - (30*24*60*60));
+        $end = date('Y-m-d H:i:s', strtotime($end) + (30*24*60*60));
 
         $events = $repo->createQueryBuilder('event')
-            ->andWhere('event.beginAt >= :start OR event.endAt > :start')
-            ->andWhere('event.beginAt <= :end')
+            ->andWhere('event.start >= :start OR event.end > :start')
+            ->andWhere('event.start <= :end')
             ->setParameter(':start', $start)
             ->setParameter(':end', $end)
             ->getQuery()->getResult();

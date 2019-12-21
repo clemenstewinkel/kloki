@@ -30,7 +30,7 @@ export default function prepare_event_form()
         return;
     }
 
-    const $fullDaySwitch = $('#klo_ki_event_isFullDay');
+    const $fullDaySwitch = $('#klo_ki_event_allDay');
     const $helperSwitch = $('#klo_ki_event_helperRequired');
     const $endDate   = $('#klo_ki_event_endDate');
     const $startDate = $('#klo_ki_event_startDate');

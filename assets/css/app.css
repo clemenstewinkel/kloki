@@ -14,3 +14,9 @@ nav.bg-kloki {
     background-position-y: 5px;
     padding-left: 64px;
 }
+
+a.vermietungsevent {
+    background-image: url("../images/V.png");
+    background-repeat: repeat;
+    background-blend-mode: normal;
+}

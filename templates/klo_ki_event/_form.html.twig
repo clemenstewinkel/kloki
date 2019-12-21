@@ -35,7 +35,7 @@
 </div>
 
 
-{{ form_row(form.isFullDay) }}
+{{ form_row(form.allDay) }}
 
 <div class="form-group row {% if form.startDate.vars.errors|length %} is-invalid {% endif %}">
     {{ form_label(form.startDate) }}
@@ -78,6 +78,9 @@
     <div class="col-sm-2">
     </div>
 </div>
+
+{{ form_row(form.LichtTechniker) }}
+{{ form_row(form.TonTechniker) }}
 
 
 

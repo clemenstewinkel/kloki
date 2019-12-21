@@ -5,6 +5,7 @@ namespace App\Entity;
 use Gedmo\Blameable\Traits\BlameableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 
 use Gedmo\Mapping\Annotation as Gedmo;
 
@@ -56,14 +57,13 @@ class KloKiEvent
      * @Assert\DateTime()
      * @Groups({"events:read"})
      */
-    private $beginAt;
+    private $start;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      * @Assert\DateTime()
-     * @Groups({"events:read"})
      */
-    private $endAt;
+    private $end;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
@@ -214,14 +214,20 @@ class KloKiEvent
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
+     * @Groups({"events:read"})
      */
-    private $isFullDay;
+    private $allDay;
 
-    // Fields without ORM
-    private $startDate;
-    private $endDate;
-    private $startTime;
-    private $endTime;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="eventsLicht")
+     */
+    private $LichtTechniker;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="eventsTon")
+     */
+    private $TonTechniker;
 
 
     /**
@@ -232,7 +238,71 @@ class KloKiEvent
         return $this->getRoom()->getId();
     }
 
+    /**
+     * @Groups({"events:read"})
+     * @SerializedName("end")
+     */
+    public function getCorrectedEnd() : ?\DateTimeInterface
+    {
+        // Bei allDay-Events erwartet FullCalendar als Ende-Datum das Datum des
+        // ersten Tages NACH dem Event. Wir haben aber das letzte Datum des Events in der Datenbank stehen!
+        //
+        if($this->allDay && $this->end)
+            return $this->end->add(new \DateInterval('P1D'));
+        else
+            return $this->end;
+    }
 
+    public function set_FC_end($end) : self
+    {
+        // Bei allDay-Events liefert FullCalendar als Ende-Datum das Datum des
+        // ersten Tages NACH dem Event. Wir haben aber das letzte Datum des Events in der Datenbank stehen!
+        if($this->allDay)
+            $this->end = $end->sub(new \DateInterval('P1D'));
+        else
+            $this->end = $end;
+        return $this;
+    }
+
+    public function getProblemDetails() : array
+    {
+        $problems = array();
+        if($this->isTonBenoetigt && ($this->TonTechniker === null))
+        {
+            $problems[] = "Es ist noch kein Ton-Techniker eingetragen, obwohl Ton benötigt wird.";
+        }
+        if($this->isLichtBenoetigt && ($this->LichtTechniker === null))
+        {
+            $problems[] = "Es ist noch kein Licht-Techniker eingetragen, obwohl Licht benötigt wird.";
+        }
+        if($this->helperRequired)
+        {
+            $unassignedFunction = [];
+            if(!$this->helperEinlassEins)  $unassignedFunction[] = 'Einlass 1';
+            if(!$this->helperEinlassZwei)  $unassignedFunction[] = 'Einlass 2';
+            if(!$this->helperKasse)        $unassignedFunction[] = 'Kasse';
+            if(!$this->helperSpringerEins) $unassignedFunction[] = 'Springer 1';
+            if(!$this->helperSpringerZwei) $unassignedFunction[] = 'Springer 2';
+            if($unassignedFunction) $problems[] = "Fehlende Helfer für: " . implode(", ", $unassignedFunction);
+
+            if($this->helperEinlassEins && (!$this->availableHelpers->contains($this->helperEinlassEins)))
+                $problems[] = $this->helperEinlassEins . " ist für Einlass 1 eingetragen, hat aber keine Hilfe zugesagt.";
+            if($this->helperEinlassZwei && (!$this->availableHelpers->contains($this->helperEinlassZwei)))
+                $problems[] = $this->helperEinlassZwei . " ist für Einlass 2 eingetragen, hat aber keine Hilfe zugesagt.";
+            if($this->helperKasse && (!$this->availableHelpers->contains($this->helperKasse)))
+                $problems[] = $this->helperKasse . " ist für Kasse eingetragen, hat aber keine Hilfe zugesagt.";
+            if($this->helperSpringerEins && (!$this->availableHelpers->contains($this->helperSpringerEins)))
+                $problems[] = $this->helperSpringerEins . " ist für Springer 1 eingetragen, hat aber keine Hilfe zugesagt.";
+            if($this->helperSpringerZwei && (!$this->availableHelpers->contains($this->helperSpringerZwei)))
+                $problems[] = $this->helperSpringerZwei . " ist für Springer 2 eingetragen, hat aber keine Hilfe zugesagt.";
+
+        }
+        if($this->isBestBenoetigt && (!$this->bestPlan))
+        {
+            $problems[] = "Bestuhlung nötig, aber kein Bestuhlungsplan ausgewählt.";
+        }
+        return $problems;
+    }
 
 
     public function __construct()
@@ -244,7 +314,7 @@ class KloKiEvent
 
     public function __toString()
     {
-        return $this->name . ', ' . $this->getRoom()->getName() . ', ' . $this->getBeginAt()->format('Y-m-d H:i') ;
+        return $this->name . ', ' . $this->getRoom()->getName() . ', ' . $this->getStart()->format('Y-m-d H:i') ;
     }
 
     public function getId(): ?int
@@ -403,26 +473,26 @@ class KloKiEvent
         return $this->updatedBy;
     }
 
-    public function getBeginAt(): ?\DateTimeInterface
+    public function getStart(): ?\DateTimeInterface
     {
-        return $this->beginAt;
+        return $this->start;
     }
 
-    public function setBeginAt($beginAt): self
+    public function setStart($start): self
     {
-        $this->beginAt = $beginAt;
+        $this->start = $start;
 
         return $this;
     }
 
-    public function getEndAt(): ?\DateTimeInterface
+    public function getEnd(): ?\DateTimeInterface
     {
-        return $this->endAt;
+        return $this->end;
     }
 
-    public function setEndAt($endAt): self
+    public function setEnd($end): self
     {
-        $this->endAt = $endAt;
+        $this->end = $end;
 
         return $this;
     }
@@ -607,14 +677,14 @@ class KloKiEvent
         return $this;
     }
 
-    public function getIsFullDay(): ?bool
+    public function getAllDay(): ?bool
     {
-        return $this->isFullDay;
+        return $this->allDay;
     }
 
-    public function setIsFullDay(?bool $isFullDay): self
+    public function setAllDay(?bool $allDay): self
     {
-        $this->isFullDay = $isFullDay;
+        $this->allDay = $allDay;
 
         return $this;
     }
@@ -625,7 +695,7 @@ class KloKiEvent
      */
     public function getStartDate()
     {
-        return $this->beginAt;
+        return $this->start;
     }
 
     /**
@@ -633,8 +703,10 @@ class KloKiEvent
      */
     public function setStartDate($startDate): void
     {
-        $this->startDate = $startDate;
-        $this->beginAt = $startDate;
+        if($this->start)
+            $this->start = new \DateTime($startDate->format('Y-m-d ') . $this->start->format('H:i'));
+        else
+            $this->start = $startDate;
     }
 
     /**
@@ -642,7 +714,7 @@ class KloKiEvent
      */
     public function getEndDate()
     {
-        return $this->endAt;
+        return $this->end;
     }
 
     /**
@@ -650,8 +722,10 @@ class KloKiEvent
      */
     public function setEndDate($endDate): void
     {
-        $this->endDate = $endDate;
-        $this->endAt = $endDate;
+        if($this->end)
+            $this->end = new \DateTime($endDate->format('Y-m-d ') . $this->end->format('H:i'));
+        else
+            $this->end = $endDate;
     }
 
     /**
@@ -659,7 +733,7 @@ class KloKiEvent
      */
     public function getStartTime()
     {
-        return $this->beginAt;
+        return $this->start;
     }
 
     /**
@@ -667,10 +741,9 @@ class KloKiEvent
      */
     public function setStartTime($startTime): void
     {
-        $this->startTime = $startTime;
-        if($this->startDate && (!$this->isFullDay) && $startTime)
+        if($this->start && $startTime)
         {
-            $this->beginAt = new \DateTime($this->startDate->format('Y-m-d ') . $startTime->format('H:i'));
+            $this->start = new \DateTime($this->start->format('Y-m-d ') . $startTime->format('H:i'));
         }
     }
 
@@ -679,7 +752,7 @@ class KloKiEvent
      */
     public function getEndTime()
     {
-        return $this->endAt;
+        return $this->end;
     }
 
     /**
@@ -687,11 +760,37 @@ class KloKiEvent
      */
     public function setEndTime($endTime): void
     {
-        $this->endTime = $endTime;
-        if($this->endDate && (!$this->isFullDay) && $endTime)
+        if($this->end)
         {
-            $this->endAt = new \DateTime($this->endDate->format('Y-m-d ') . $endTime->format('H:i'));
+            if($endTime)
+                $this->end = new \DateTime($this->end->format('Y-m-d ') . $endTime->format('H:i'));
+            else
+                $this->end = new \DateTime($this->end->format('Y-m-d ') . '23:30');
         }
+    }
+
+    public function getLichtTechniker(): ?User
+    {
+        return $this->LichtTechniker;
+    }
+
+    public function setLichtTechniker(?User $LichtTechniker): self
+    {
+        $this->LichtTechniker = $LichtTechniker;
+
+        return $this;
+    }
+
+    public function getTonTechniker(): ?User
+    {
+        return $this->TonTechniker;
+    }
+
+    public function setTonTechniker(?User $TonTechniker): self
+    {
+        $this->TonTechniker = $TonTechniker;
+
+        return $this;
     }
 
 }

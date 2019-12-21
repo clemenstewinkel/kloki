@@ -88,6 +88,16 @@ class User implements UserInterface
      */
     private $name;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\KloKiEvent", mappedBy="LichtTechniker")
+     */
+    private $eventsLicht;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\KloKiEvent", mappedBy="TonTechniker")
+     */
+    private $eventsTon;
+
     public function __construct()
     {
         $this->kloKiEvents = new ArrayCollection();
@@ -96,6 +106,8 @@ class User implements UserInterface
         $this->kasseAtEvents = new ArrayCollection();
         $this->springerEinsAtEvents = new ArrayCollection();
         $this->springerZweiAtEvents = new ArrayCollection();
+        $this->eventsLicht = new ArrayCollection();
+        $this->eventsTon = new ArrayCollection();
     }
 
     /**
@@ -390,6 +402,68 @@ class User implements UserInterface
     public function setName(?string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|KloKiEvent[]
+     */
+    public function getEventsLicht(): Collection
+    {
+        return $this->eventsLicht;
+    }
+
+    public function addEventsLicht(KloKiEvent $eventsLicht): self
+    {
+        if (!$this->eventsLicht->contains($eventsLicht)) {
+            $this->eventsLicht[] = $eventsLicht;
+            $eventsLicht->setLichtTechniker($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEventsLicht(KloKiEvent $eventsLicht): self
+    {
+        if ($this->eventsLicht->contains($eventsLicht)) {
+            $this->eventsLicht->removeElement($eventsLicht);
+            // set the owning side to null (unless already changed)
+            if ($eventsLicht->getLichtTechniker() === $this) {
+                $eventsLicht->setLichtTechniker(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|KloKiEvent[]
+     */
+    public function getEventsTon(): Collection
+    {
+        return $this->eventsTon;
+    }
+
+    public function addEventsTon(KloKiEvent $eventsTon): self
+    {
+        if (!$this->eventsTon->contains($eventsTon)) {
+            $this->eventsTon[] = $eventsTon;
+            $eventsTon->setTonTechniker($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEventsTon(KloKiEvent $eventsTon): self
+    {
+        if ($this->eventsTon->contains($eventsTon)) {
+            $this->eventsTon->removeElement($eventsTon);
+            // set the owning side to null (unless already changed)
+            if ($eventsTon->getTonTechniker() === $this) {
+                $eventsTon->setTonTechniker(null);
+            }
+        }
 
         return $this;
     }
