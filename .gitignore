@@ -22,8 +22,6 @@ yarn-error.log
 ###< symfony/webpack-encore-bundle ###
 /.idea/
 /dummy-daten/
-/uploaded_files/pdf/*
-/uploaded_files/png/*
 ###> symfony/web-server-bundle ###
 /.web-server-pid
 ###< symfony/web-server-bundle ###
