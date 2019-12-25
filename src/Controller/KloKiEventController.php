@@ -263,6 +263,7 @@ class KloKiEventController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="klo_ki_event_edit", methods={"GET","POST"})
+     * @IsGranted({"ROLE_ADMIN", "ROLE_FOOD"})
      */
     public function edit(Request $request, KloKiEvent $kloKiEvent): Response
     {

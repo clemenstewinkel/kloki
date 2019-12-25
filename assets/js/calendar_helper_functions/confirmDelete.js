@@ -1,6 +1,8 @@
 import Swal from "sweetalert2";
 import $ from "jquery";
 import {$calendarDetail} from "../calendar";
+import setErrorNotAllowed from "./setErrorNotAllowed";
+import setErrorInternalServer from "./setErrorInternalServer";
 
 export default function confirmDelete(event_id)
 {
@@ -18,8 +20,14 @@ export default function confirmDelete(event_id)
                 url: url,
                 method: 'DELETE',
                 error: function(data) {
-                    console.dir(data);
-                    Swal.fire('Das war nix!');
+                    if (data.status === 403)
+                    {
+                        setErrorNotAllowed();
+                    }
+                    else if(data.status / 100 === 5)
+                    {
+                        setErrorInternalServer();
+                    }
                 },
                 success: function(data) {
                     fullcalendar.refetchEvents();

@@ -5,32 +5,32 @@ import {userRoles} from "../calendar";
 
 export default function eventRenderFunction(info)
 {
-    if (info.event._def.extendedProps.art.name === "Vermietung") // Vermietungen bekommen ein eigenes Muster
+    if (info.event.extendedProps['art']['name'] === "Vermietung") // Vermietungen bekommen ein eigenes Muster
     {
         $(info.el).addClass('vermietungsevent');
     }
 
     if(userRoles.includes('ROLE_FOOD') || userRoles.includes('ROLE_ADMIN') || userRoles.includes('ROLE_LANDLORD') ) {
-        if (info.event._def.extendedProps.isFixed) // Wenn das Event fest ist, bekommt es ein Schloss-Symbol
+        if (info.event.extendedProps['isFixed']) // Wenn das Event fest ist, bekommt es ein Schloss-Symbol
         {
             $(info.el).find('div.fc-content').append(' <i class="fas fa-lock"></i>');
         }
-        if (info.event._def.extendedProps.isLichtBenoetigt) // Wenn das Event Licht benötigt, bekommt es ein Glühbirnen-Symbol
+        if (info.event.extendedProps['isLichtBenoetigt']) // Wenn das Event Licht benötigt, bekommt es ein Glühbirnen-Symbol
         {
             $(info.el).find('div.fc-content').append(' <i class="fas fa-lightbulb"></i>');
         }
-        if (info.event._def.extendedProps.isTonBenoetigt) // Wenn das Event Ton benötigt, bekommt es ein Noten-Symbol
+        if (info.event.extendedProps['isTonBenoetigt']) // Wenn das Event Ton benötigt, bekommt es ein Noten-Symbol
         {
             $(info.el).find('div.fc-content').append(' <i class="fas fa-music"></i>');
         }
-        if (info.event._def.extendedProps.isBestBenoetigt) // Wenn das Event Ton benötigt, bekommt es ein Noten-Symbol
+        if (info.event.extendedProps['isBestBenoetigt']) // Wenn das Event Ton benötigt, bekommt es ein Noten-Symbol
         {
             $(info.el).find('div.fc-content').append(' <i class="fas fa-chair"></i>');
         }
     }
     if(userRoles.includes('ROLE_HELPER'))
     {
-        if(!info.event._def.extendedProps.helperRequired)
+        if(!info.event.extendedProps['helperRequired'])
         {
             return false;
         }

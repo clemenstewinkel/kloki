@@ -42,11 +42,11 @@ class AppFixtures extends Fixture
 
         // Räume
         foreach([
-            'Minoritensaal' => '#ff0000',
+            'Minoritensaal' => '#ff9797',
             'Webersaal'     => '#00ff00',
-            'Färbersaal'    => '#0000ff',
+            'Färbersaal'    => '#a6a6fa',
             'Zwirnstube'    => '#ffff00',
-            'Foyer unten'   => '#ff00ff',
+            'Foyer unten'   => '#f2c197',
             'Foyer oben'    => '#00ffff',
             'Restaurant'    => '#888888',
             'Wintergarten'  => '#996611'

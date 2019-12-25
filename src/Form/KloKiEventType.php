@@ -2,22 +2,17 @@
 
 namespace App\Form;
 
-use App\Entity\Ausstattung;
 use App\Entity\KloKiEvent;
 use App\Entity\User;
+use App\Repository\KloKiEventRepository;
 use App\Repository\UserRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class KloKiEventType extends AbstractType
@@ -37,6 +32,12 @@ class KloKiEventType extends AbstractType
                 ->setParameter('roles', '%"ROLE_TECH"%')
                 ->orderBy('u.email', 'ASC');
         };
+
+        $event_query = function (KloKiEventRepository $repo) {
+            return $repo->createQueryBuilder('event')
+                ->orderBy('event.start', 'ASC');
+        };
+
 
         $builder
             ->add('name')
@@ -109,7 +110,16 @@ class KloKiEventType extends AbstractType
             ->add('kontakt', AddressSelectType::class, ['required' => true])
             ->add('bestPlan', null, ['label' => 'Bestuhlung'])
             ->add('stageOrder', null, ['label' => 'Bühnenanw.'])
-            ->add('ParentEvent', null, ['label' => 'Hauptevent'])
+
+
+            ->add('ParentEvent', EntityType::class, [
+                'class' => KloKiEvent::class,
+                'required' => false,
+                'query_builder' => $event_query,
+                'label' => "Hauptevent"
+            ])
+
+
             ->add('ausstattung', EntityType::class, ['class' => 'App:Ausstattung', 'multiple' => true, 'expanded' => false, 'attr' => ['title' => 'Ausstattung auswählen']])
             ->add('bemerkung', TextareaType::class)
             ->add('isFixed', ChoiceType::class, ['label' => 'Vertragsstatus', 'choices' => ['option' => 0, 'fest' => 1]])

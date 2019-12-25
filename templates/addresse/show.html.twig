@@ -38,6 +38,14 @@
         </tbody>
     </table>
 
+    {% if addresse.kloKiEvents | length > 0 %}
+    <h2>Events zu dieser Adresse</h2>
+    <ul>
+        {% for event in addresse.kloKiEvents %}
+            <li><a href="{{ path('klo_ki_event_show', {'id': event.id}) }}">{{ event }}</a></li>
+        {% endfor %}
+    </ul>
+    {% endif %}
     <a href="{{ path('addresse_index') }}">back to list</a>
 
     <a href="{{ path('addresse_edit', {'id': addresse.id}) }}">edit</a>

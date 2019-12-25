@@ -314,7 +314,7 @@ class KloKiEvent
 
     public function __toString()
     {
-        return $this->name . ', ' . $this->getRoom()->getName() . ', ' . $this->getStart()->format('Y-m-d H:i') ;
+        return $this->getStart()->format('Y-m-d') . ' ' . $this->name . ' (' . $this->getRoom()->getName() . ')';
     }
 
     public function getId(): ?int

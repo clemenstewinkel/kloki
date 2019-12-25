@@ -19,7 +19,7 @@
             <tr>
                 <td>{{ room.id }}</td>
                 <td>{{ room.name }}</td>
-                <td>{{ room.color }}</td>
+                <td><div style="background-color: {{ room.color }};">{{ room.color }}</div></td>
                 <td>
                     <a href="{{ path('room_show', {'id': room.id}) }}">show</a>
                     <a href="{{ path('room_edit', {'id': room.id}) }}">edit</a>

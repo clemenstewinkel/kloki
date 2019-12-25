@@ -1,0 +1,6 @@
+Validierung NoOverlap ist noch nicht sauber (ganze Tage)
+Bemerkungen für Helfer
+Farben bei Räumen anzeigen
+Löschen von Usern unterbinden, archiviert-Flag
+Edit-Seite für Ausstattung
+Tages-Dispo-Seite

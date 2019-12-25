@@ -57,6 +57,7 @@ class Addresse
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\KloKiEvent", mappedBy="kontakt")
+     * @ORM\OrderBy({"start" = "ASC"})
      */
     private $kloKiEvents;
 
