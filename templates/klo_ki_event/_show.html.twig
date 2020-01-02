@@ -48,7 +48,7 @@
                     <b>Einlass 2:  </b>{{ klo_ki_event.helperEinlassZwei ?:  'N/N'  }}<br/>
                     <b>Kasse:      </b>{{ klo_ki_event.helperKasse ?:        'N/N'  }}<br/>
                     <b>Springer 1: </b>{{ klo_ki_event.helperSpringerEins ?: 'N/N'  }}<br/>
-                    <b>Springer 2: </b>{{ klo_ki_event.helperSpringerEins ?: 'N/N'  }}<br/>
+                    <b>Springer 2: </b>{{ klo_ki_event.helperSpringerZwei ?: 'N/N'  }}<br/>
                         <hr/>
                         {% for helper in klo_ki_event.availableHelpers %}
                             {{ helper }}
