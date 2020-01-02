@@ -58,7 +58,7 @@ class AddresseController extends AbstractController
         if ($request->isXmlHttpRequest()) {
             return $this->render('addresse/_form.html.twig', [
                 'addresse' => $addresse,
-                'klo_ki_form_action' => '/addresse/new',
+                'klo_ki_form_action' => $this->generateUrl('addresse_new'),
                 'form' => $form->createView()
             ]);
         }
@@ -66,7 +66,7 @@ class AddresseController extends AbstractController
 
         return $this->render('addresse/new.html.twig', [
             'addresse' => $addresse,
-            'klo_ki_form_action' => '/addresse/new',
+            'klo_ki_form_action' => $this->generateUrl('addresse_new'),
             'form' => $form->createView(),
         ]);
     }

@@ -36,10 +36,10 @@ class KloKiEventController extends AbstractController
             $querybuilder->andWhere('room.id IN (:roomIds)')->setParameter('roomIds', $request->query->get('room_id'));
 
         if($beginAtAfter = $request->query->get('beginAtAfter'))
-            $querybuilder->andWhere('event.beginAt > :beginAtAfter')->setParameter('beginAtAfter', $beginAtAfter);
+            $querybuilder->andWhere('event.start > :beginAtAfter')->setParameter('beginAtAfter', $beginAtAfter);
 
         if($beginAtBefore = $request->query->get('beginAtBefore'))
-            $querybuilder->andWhere('event.beginAt < :beginAtBefore')->setParameter('beginAtBefore', $beginAtBefore . ' 23:59:59');
+            $querybuilder->andWhere('event.start < :beginAtBefore')->setParameter('beginAtBefore', $beginAtBefore . ' 23:59:59');
 
         if($nameContains = $request->query->get('name_contains'))
             $querybuilder->andWhere('event.name LIKE :nameContains')->setParameter('nameContains', '%' . $nameContains . '%');
@@ -146,14 +146,14 @@ class KloKiEventController extends AbstractController
         if ($request->isXmlHttpRequest()) {
             return $this->render('klo_ki_event/_form.html.twig', [
                 'klo_ki_event' => $kloKiEvent,
-                'klo_ki_form_action' => '/event/new',
+                'klo_ki_form_action' => $this->generateUrl('klo_ki_event_new'),
                 'form' => $form->createView()
             ]);
         }
 
         return $this->render('klo_ki_event/new.html.twig', [
             'klo_ki_event' => $kloKiEvent,
-            'klo_ki_form_action' => '/event/new',
+            'klo_ki_form_action' => $this->generateUrl('klo_ki_event_new'),
             'form' => $form->createView(),
         ]);
     }
@@ -287,14 +287,14 @@ class KloKiEventController extends AbstractController
          if ($request->isXmlHttpRequest()) {
             return $this->render('klo_ki_event/_form.html.twig', [
                 'klo_ki_event' => $kloKiEvent,
-                'klo_ki_form_action' => '/event/' . $kloKiEvent->getId() . '/edit',
+                'klo_ki_form_action' => $this->generateUrl('klo_ki_event_edit', ['id' => $kloKiEvent->getId()]),
                 'form' => $form->createView()
             ]);
         }
 
         return $this->render('klo_ki_event/edit.html.twig', [
             'klo_ki_event' => $kloKiEvent,
-            'klo_ki_form_action' => '/event/' . $kloKiEvent->getId() . '/edit',
+            'klo_ki_form_action' => $this->generateUrl('klo_ki_event_edit', ['id' => $kloKiEvent->getId()]),
             'form' => $form->createView(),
         ]);
     }

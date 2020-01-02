@@ -6,7 +6,7 @@ export default function modal_address_dialog()
     $('h4.modal-title').html('Neue Adresse');
 
     $.ajax({
-        url: '/addresse/new',
+        url: '../addresse/new',
         method: 'GET',
         success: function(data) {
             $modalBody.html(data);

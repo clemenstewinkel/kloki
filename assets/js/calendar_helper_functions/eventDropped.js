@@ -18,7 +18,7 @@ export default function eventDropped(e)
     if(e.newResource !== null) formData['newResource'] = e.newResource.id;
 
     $.ajax({
-        url: '/event/replace',
+        url: 'replace',
         method: 'POST',
         data: JSON.stringify(formData),
         success: function(){

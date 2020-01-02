@@ -6,7 +6,7 @@ import setErrorInternalServer from "./setErrorInternalServer";
 
 export default function confirmDelete(event_id)
 {
-    let url = '/event/'+event_id+'/delete';
+    let url = '' + event_id + '/delete';
     Swal.fire({
         title: 'Dieses Event wirklich löschen?',
         icon: 'warning',

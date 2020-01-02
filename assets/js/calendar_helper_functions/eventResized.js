@@ -13,7 +13,7 @@ export default function eventResized(e)
     formData['enddate'] = e.event.end;
     console.dir(formData);
     $.ajax({
-        url: '/event/resize',
+        url: 'resize',
         method: 'POST',
         data: JSON.stringify(formData),
         success: function(){

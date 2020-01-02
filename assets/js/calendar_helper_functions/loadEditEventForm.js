@@ -9,7 +9,7 @@ export default function loadEditEventForm(event_id)
 {
     console.log('loadEditEventForm');
     setSpinner();
-    let url = '/event/'+event_id+'/edit';
+    let url = '' + event_id + '/edit';
     $.ajax({
         url: url,
         method: 'GET',

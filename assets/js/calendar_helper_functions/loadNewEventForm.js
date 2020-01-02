@@ -8,7 +8,7 @@ export default function loadNewEventForm(info)
 {
     setSpinner();
     $.ajax({
-        url: '/event/new',
+        url: 'new',
         method: 'GET',
         success: function(data) {
             $calendarDetail.html(data);
