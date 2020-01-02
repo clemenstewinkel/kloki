@@ -97,7 +97,7 @@ class AddresseController extends AbstractController
 
         return $this->render('addresse/edit.html.twig', [
             'addresse' => $addresse,
-            'klo_ki_form_action' => '/addresse/' . $addresse->getId() . '/edit',
+            'klo_ki_form_action' => $this->generateUrl('addresse_edit', ['id' => $addresse->getId()]),
             'form' => $form->createView(),
         ]);
     }
