@@ -41,6 +41,7 @@ export default function prepare_event_form()
         inline: false,
         timepicker: false,
         format: 'Y-m-d',
+        scrollMonth : false,
         onShow: function( ct ) {
             console.dir(ct);
             this.setOptions({
@@ -60,6 +61,7 @@ export default function prepare_event_form()
         inline: false,
         timepicker: false,
         format: 'Y-m-d',
+        scrollMonth : false,
         onShow: function( ct ) {
             console.dir(ct);
             this.setOptions({

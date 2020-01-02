@@ -12,6 +12,7 @@ export default function prepare_event_filter()
         inline: false,
         timepicker: false,
         format: 'Y-m-d',
+        scrollMonth : false,
         onShow: function( ct ) {
             console.dir(ct);
             this.setOptions({
@@ -24,6 +25,7 @@ export default function prepare_event_filter()
         inline: false,
         timepicker: false,
         format: 'Y-m-d',
+        scrollMonth : false,
         onShow: function() {
             this.setOptions({
                 minDate: $startDate.val() ? $startDate.val() : false
