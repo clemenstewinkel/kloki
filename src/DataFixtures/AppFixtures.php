@@ -89,6 +89,10 @@ class AppFixtures extends Fixture
                 $fullPdfFileName = tempnam($this->params->get('pdf_file_directory'), 'stageOrder_');
                 $fullPngFileName = tempnam($this->params->get('png_file_directory'), 'stageOrder_');
 
+                dump("Saving pdf to " . $fullPdfFileName);
+                dump("Saving png to " . $fullPngFileName);
+
+
                 $pdfFileName = basename($fullPdfFileName);
                 $pngFileName = basename($fullPngFileName);
 
