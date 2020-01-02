@@ -21,7 +21,7 @@
                 <td>{{ bestuhlungsplan.name }}</td>
                 <td>{{ bestuhlungsplan.sitzplaetze }}</td>
                 <td>{{ bestuhlungsplan.stehplaetze }}</td>
-                <td><a href="/getPdf/{{ bestuhlungsplan.pdfFilePath }}"><img src="/getPng/{{ bestuhlungsplan.pngFilePath }}" /></a></td>
+                <td><a href="{{ path('getPdf', {'id': bestuhlungsplan.pdfFilePath}) }}"><img src="{{ path('getPng', {'id': bestuhlungsplan.pngFilePath}) }}" /></a></td>
                 <td>
                     <a href="{{ path('bestuhlungsplan_show', {'id': bestuhlungsplan.id}) }}">show</a>
                     <a href="{{ path('bestuhlungsplan_edit', {'id': bestuhlungsplan.id}) }}">edit</a>
