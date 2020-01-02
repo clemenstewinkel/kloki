@@ -56,7 +56,7 @@ $(document).ready(function() {
             timeZone: 'UTC',
             eventRender: eventRenderFunction,
             eventOverlap: false,
-            resources: '/room/getResources',
+            resources: '../room/getResources',
             dateClick: (userRoles.includes('ROLE_ADMIN') || userRoles.includes('ROLE_FOOD'))?loadNewEventForm:false,
             weekNumbers: true,
             eventResize: eventResized,
@@ -78,7 +78,7 @@ $(document).ready(function() {
             defaultTimedEventDuration: '04:00',
             eventSources: [
                 {
-                    url: "/event/eventRange",
+                    url: "eventRange",
                     method: "GET",
                     eventDataTransform: eventDataTransform,
                     extraParams: {
