@@ -23,6 +23,12 @@
                 <th>Password</th>
                 <td>{{ user.password }}</td>
             </tr>
+        {% if user.address %}
+            <tr>
+                <th>Adresse</th>
+                <td>{{ include('addresse/addresse_kompakt.html.twig', {'addresse': user.address}) }}</td>
+            </tr>
+        {% endif %}
         </tbody>
     </table>
 

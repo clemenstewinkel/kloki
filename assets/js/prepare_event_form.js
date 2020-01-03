@@ -1,9 +1,10 @@
 import $ from "jquery";
-import 'autocomplete.js/dist/autocomplete.jquery';
+//import 'autocomplete.js/dist/autocomplete.jquery';
 import 'jquery-datetimepicker';
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import '../css/algolia-autocomplete.css';
+//import '../css/algolia-autocomplete.css';
 import modal_address_dialog from "./modal_address_dialog";
+import prepare_address_autocomplete from "./helper_functions/prepare_address_autocomplete";
 import 'bootstrap';
 import 'bootstrap-select';
 
@@ -110,27 +111,7 @@ export default function prepare_event_form()
             //console.error( error );
         } );
 
-    console.dir(ClassicEditor.builtinPlugins.map( plugin => plugin.pluginName ));
-
-
-
-    $('.js-address-autocomplete').each(function() {
-        var autoCompleteUrl = $(this).data('autocomplete-url');
-        $(this).autocomplete({hint: false}, [
-            {
-                source: function(query, cb) {
-                    $.ajax({
-                        url: autoCompleteUrl+'?query='+query
-                    }).then(function(data){
-                        cb(data.addresses);
-                    })
-
-                },
-                displayKey: 'forAutoComplete',
-                debounce: 500
-            }
-        ]);
-    });
+    prepare_address_autocomplete();
 
     $('#js-new-address-button').on('click', function(){
        modal_address_dialog();

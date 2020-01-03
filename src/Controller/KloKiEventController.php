@@ -31,23 +31,7 @@ class KloKiEventController extends AbstractController
      */
     public function index(KloKiEventRepository $kloKiEventRepository, PaginatorInterface $paginator, RoomRepository $roomRepo, Request $request): Response
     {
-        $querybuilder = $kloKiEventRepository->createQueryBuilder('event')->innerJoin('event.room', 'room');
-        if($request->query->get('room_id'))
-            $querybuilder->andWhere('room.id IN (:roomIds)')->setParameter('roomIds', $request->query->get('room_id'));
-
-        if($beginAtAfter = $request->query->get('beginAtAfter'))
-            $querybuilder->andWhere('event.start > :beginAtAfter')->setParameter('beginAtAfter', $beginAtAfter);
-
-        if($beginAtBefore = $request->query->get('beginAtBefore'))
-            $querybuilder->andWhere('event.start < :beginAtBefore')->setParameter('beginAtBefore', $beginAtBefore . ' 23:59:59');
-
-        if($nameContains = $request->query->get('name_contains'))
-            $querybuilder->andWhere('event.name LIKE :nameContains')->setParameter('nameContains', '%' . $nameContains . '%');
-
-
-        $query = $querybuilder->getQuery();
-
-        dump($request->query->get('room_id'));
+        $query = $kloKiEventRepository->getQueryFromRequest($request);
         $pagination = $paginator->paginate(
             $query,
             $request->query->getInt('page', 1),
@@ -56,6 +40,22 @@ class KloKiEventController extends AbstractController
         return $this->render('klo_ki_event/index.html.twig', [
             'pagination' => $pagination,
             'rooms'      => $roomRepo->findAll()
+        ]);
+    }
+
+    /**
+     * @Route("/dispo", name="klo_ki_event_dispo", methods={"GET"})
+     */
+    public function dispo(KloKiEventRepository $eventRepo, Request $request): Response
+    {
+        $events = ($day = $request->query->get('dispoForDay'))?
+            $eventRepo->createQueryBuilder('event')
+            ->andWhere('event.start > :day')->setParameter('day', $day)
+            ->andWhere('event.start < :dayEnd')->setParameter('dayEnd', $day . ' 23:59:59')
+            ->getQuery()->getResult():null;
+
+        return $this->render('klo_ki_event/dispo.html.twig', [
+            'pagination' => $events,
         ]);
     }
 

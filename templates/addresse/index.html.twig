@@ -14,6 +14,7 @@
                 <th>Plz</th>
                 <th>Ort</th>
                 <th>Telefon</th>
+                <th>Email</th>
                 <th>Aktionen</th>
             </tr>
         </thead>
@@ -26,6 +27,7 @@
                 <td>{{ addresse.plz }}</td>
                 <td>{{ addresse.ort }}</td>
                 <td>{{ addresse.telefon }}</td>
+                <td>{% if addresse.email %}<a href="mailto:{{ addresse.email }}">{{ addresse.email }}</a>{% endif %}</td>
                 <td>
                     <a class="btn btn-primary" href="{{ path('addresse_show', {'id': addresse.id}) }}">Details</a>
                     <a class="btn btn-primary" href="{{ path('addresse_edit', {'id': addresse.id}) }}">Bearbeiten</a>

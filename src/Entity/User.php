@@ -98,6 +98,11 @@ class User implements UserInterface
      */
     private $eventsTon;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Addresse", cascade={"persist", "remove"})
+     */
+    private $address;
+
     public function __construct()
     {
         $this->kloKiEvents = new ArrayCollection();
@@ -464,6 +469,18 @@ class User implements UserInterface
                 $eventsTon->setTonTechniker(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAddress(): ?Addresse
+    {
+        return $this->address;
+    }
+
+    public function setAddress(?Addresse $address): self
+    {
+        $this->address = $address;
 
         return $this;
     }

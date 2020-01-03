@@ -269,11 +269,11 @@ class KloKiEvent
         $problems = array();
         if($this->isTonBenoetigt && ($this->TonTechniker === null))
         {
-            $problems[] = "Es ist noch kein Ton-Techniker eingetragen, obwohl Ton benötigt wird.";
+            $problems[] = "Ton-Techniker fehlt";
         }
         if($this->isLichtBenoetigt && ($this->LichtTechniker === null))
         {
-            $problems[] = "Es ist noch kein Licht-Techniker eingetragen, obwohl Licht benötigt wird.";
+            $problems[] = "Licht-Techniker fehlt";
         }
         if($this->helperRequired)
         {
@@ -283,23 +283,25 @@ class KloKiEvent
             if(!$this->helperKasse)        $unassignedFunction[] = 'Kasse';
             if(!$this->helperSpringerEins) $unassignedFunction[] = 'Springer 1';
             if(!$this->helperSpringerZwei) $unassignedFunction[] = 'Springer 2';
-            if($unassignedFunction) $problems[] = "Fehlende Helfer für: " . implode(", ", $unassignedFunction);
+            if($unassignedFunction) $problems[] = "Helfer fehlt: " . implode(", ", $unassignedFunction);
 
-            if($this->helperEinlassEins && (!$this->availableHelpers->contains($this->helperEinlassEins)))
-                $problems[] = $this->helperEinlassEins . " ist für Einlass 1 eingetragen, hat aber keine Hilfe zugesagt.";
-            if($this->helperEinlassZwei && (!$this->availableHelpers->contains($this->helperEinlassZwei)))
-                $problems[] = $this->helperEinlassZwei . " ist für Einlass 2 eingetragen, hat aber keine Hilfe zugesagt.";
-            if($this->helperKasse && (!$this->availableHelpers->contains($this->helperKasse)))
-                $problems[] = $this->helperKasse . " ist für Kasse eingetragen, hat aber keine Hilfe zugesagt.";
-            if($this->helperSpringerEins && (!$this->availableHelpers->contains($this->helperSpringerEins)))
-                $problems[] = $this->helperSpringerEins . " ist für Springer 1 eingetragen, hat aber keine Hilfe zugesagt.";
-            if($this->helperSpringerZwei && (!$this->availableHelpers->contains($this->helperSpringerZwei)))
-                $problems[] = $this->helperSpringerZwei . " ist für Springer 2 eingetragen, hat aber keine Hilfe zugesagt.";
+            $unconfirmedHelpers = [];
+            if($this->helperEinlassEins  && (!$this->availableHelpers->contains($this->helperEinlassEins))  && (!in_array($this->helperEinlassEins,  $unconfirmedHelpers)))
+                $unconfirmedHelpers[] = $this->helperEinlassEins;
+            if($this->helperEinlassZwei  && (!$this->availableHelpers->contains($this->helperEinlassZwei))  && (!in_array($this->helperEinlassZwei,  $unconfirmedHelpers)))
+                $unconfirmedHelpers[] = $this->helperEinlassZwei;
+            if($this->helperKasse        && (!$this->availableHelpers->contains($this->helperKasse))        && (!in_array($this->helperKasse,        $unconfirmedHelpers)))
+                $unconfirmedHelpers[] = $this->helperKasse;
+            if($this->helperSpringerEins && (!$this->availableHelpers->contains($this->helperSpringerEins)) && (!in_array($this->helperSpringerEins, $unconfirmedHelpers)))
+                $unconfirmedHelpers[] = $this->helperSpringerEins;
+            if($this->helperSpringerZwei && (!$this->availableHelpers->contains($this->helperSpringerZwei)) && (!in_array($this->helperSpringerZwei, $unconfirmedHelpers)))
+                $unconfirmedHelpers[] = $this->helperSpringerZwei;
+            if($unconfirmedHelpers) $problems[] = "Zusage fehlt: " .  implode(", ", $unconfirmedHelpers);
 
         }
         if($this->isBestBenoetigt && (!$this->bestPlan))
         {
-            $problems[] = "Bestuhlung nötig, aber kein Bestuhlungsplan ausgewählt.";
+            $problems[] = "Kein Bestuhlungsplan ausgewählt";
         }
         return $problems;
     }

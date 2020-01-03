@@ -19,11 +19,7 @@ export default function modal_address_dialog()
             }
         }
     });
-
     $('#klokiModal').modal();
-
-
-
 }
 
 function retargetModal()
@@ -37,11 +33,10 @@ function retargetModal()
             method: 'POST',
             data: $form.serialize(),
             success: function(data){
-                console.log(data.substr(0,3));
                 if(data.substr(0,3) === 'OK;')
                 {
-                    console.log(data.substr(3));
                     $('#klo_ki_event_kontakt').val(data.substr(3));
+                    $('#user_address').val(data.substr(3));
                     $('#klokiModal').modal('hide');
                 }
                 else

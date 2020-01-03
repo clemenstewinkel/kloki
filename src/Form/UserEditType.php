@@ -32,6 +32,7 @@ class UserEditType extends AbstractType
                     'label'    => 'Berechtigungen'
                 ]
             )
+            ->add('address', AddressSelectType::class, ['required' => false])
             ->add('plainPassword', HiddenType::class)
         ;
     }

@@ -9,6 +9,7 @@ import loadNewEventForm from "./calendar_helper_functions/loadNewEventForm";
 import eventRenderFunction from "./calendar_helper_functions/eventRenderFunction";
 import eventDropped from "./calendar_helper_functions/eventDropped";
 import eventResized from "./calendar_helper_functions/eventResized";
+import eventDataTransform from "./calendar_helper_functions/eventDataTransform";
 
 import {Calendar}             from '@fullcalendar/core';
 import dayGridPlugin          from '@fullcalendar/daygrid';
@@ -19,7 +20,6 @@ import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid';
 
 import $ from 'jquery';
 import 'bootstrap'
-import eventDataTransform from "./calendar_helper_functions/eventDataTransform";
 
 let calendarEl;
 let $calendarDetail;
@@ -27,7 +27,6 @@ let userIsAuthenticated;
 let userId;
 let userRoles;
 let fullcalendar;
-
 
 /**
  * Hauptprogramm
@@ -37,6 +36,7 @@ $(document).ready(function() {
 
     calendarEl = document.getElementById('calendar');
     $calendarDetail = $('#js-calendar-detail');
+
     $.datetimepicker.setLocale('de');
 
     userIsAuthenticated = $('body').data('isAuthenticated');
@@ -98,7 +98,3 @@ $(document).ready(function() {
 });
 
 export { userId, userRoles, $calendarDetail };
-
-
-
-

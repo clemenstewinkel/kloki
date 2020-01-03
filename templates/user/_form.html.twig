@@ -1,6 +1,25 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
+    {{ form_row(form.name) }}
+    {{ form_row(form.email) }}
+    {{ form_row(form.roles) }}
+
+    <div class="form-group row">
+        <label class="col-form-label col-sm-2">Kontakt</label>
+        <div class="col-sm-8">
+            {{ form_widget(form.address) }}
+            {{ form_errors(form.address) }}
+        </div>
+        <div class="col-sm-2">
+            <a id="js-new-address-button" class="js-no-retarget btn btn-primary">Neu...</a>
+        </div>
+    </div>
+
+    {{ form_row(form.plainPassword) }}
+
     <button class="btn btn-primary">{{ button_label|default('Speichern') }}</button>
     <a class="btn btn-info" href="{{ path('user_index') }}">Liste der Benutzer</a>
-
 {{ form_end(form) }}
+
+{{ include('common/_modal_dialog.html.twig') }}
+{{ encore_entry_link_tags('user-form') }}
+{{ encore_entry_script_tags('user-form') }}

@@ -99,7 +99,7 @@ class AddressFieldTransformer implements DataTransformerInterface
      */
     public function reverseTransform($value)
     {
-        if($value === '') return null;
+        if($value === '' || $value === null) return null;
 
         $rest = strrchr($value, '(');
         if (!$rest) {

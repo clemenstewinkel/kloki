@@ -1,16 +1,21 @@
     <h1>{{ klo_ki_event.name }} ({{ klo_ki_event.room }})</h1>
 
-    <table class="table">
+    <table class="table table-sm">
         <tbody>
         {% if klo_ki_event.getProblemDetails %}
             <tr>
                 <th>Warnungen</th>
                 <td>
+                    <a class="js-no-retarget" data-toggle="collapse" href="#event-problems-div" role="button" aria-expanded="false" aria-controls="collapseExample">
+                        Zeige Warnungen ({{ klo_ki_event.getProblemDetails | length }})
+                    </a>
+                    <div class="collapse" id="event-problems-div">
                     <ul style="color: red;">
                         {% for problem in klo_ki_event.getProblemDetails %}
                            <li> {{ problem }} </li>
                         {% endfor %}
                     </ul>
+                    </div>
                 </td>
             </tr>
         {%  endif %}
@@ -92,21 +97,6 @@
         </tbody>
     </table>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     {% if klo_ki_event.kontakt %}
         <h2>Kontakt:</h2>
         {{ include('addresse/addresse_kompakt.html.twig', {'addresse': klo_ki_event.kontakt}) }}
@@ -124,13 +114,17 @@
 
     {% if klo_ki_event.bestPlan %}
         <h2>Bestuhlung</h2>
-        <a class="js-no-retarget" href="/getPdf/{{ klo_ki_event.bestPlan.pdfFilePath }}"><img src="/getPng/{{ klo_ki_event.bestPlan.pngFilePath }}"/></a>
+        <a class="js-no-retarget" href="{{ path('getPdf', {'id': klo_ki_event.bestPlan.pdfFilePath}) }}">
+            <img alt="Bestuhlungsplan" src="{{ path('getPng', {'id': klo_ki_event.bestPlan.pngFilePath}) }}" />
+        </a>
         {{ klo_ki_event.bestPlan }}
     {% endif %}
 
     {% if klo_ki_event.stageOrder %}
         <h2>Bühnenanweisung</h2>
-        <a class="js-no-retarget" href="/getPdf/{{ klo_ki_event.stageOrder.pdfFileName }}"><img src="/getPng/{{ klo_ki_event.stageOrder.pngFileName }}"/></a>
+        <a class="js-no-retarget" href="{{ path('getPdf', {'id': klo_ki_event.stageOrder.pdfFileName}) }}">
+            <img alt="Bühnenanweisung" src="{{ path('getPng', {'id': klo_ki_event.stageOrder.pngFileName }) }}" />
+        </a>
         {{ klo_ki_event.stageOrder }}
     {% endif %}
 
@@ -175,9 +169,6 @@
             Bearbeiten
         </a>
     {% endif %}
-
-
-
 
 
     {% if klo_ki_event.start %}

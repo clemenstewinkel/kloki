@@ -15,6 +15,7 @@ class UserNewType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('name')
             ->add('email')
             ->add(
                 'roles', ChoiceType::class, [
@@ -30,6 +31,7 @@ class UserNewType extends AbstractType
                     'label'    => 'Berechtigungen'
                 ]
             )
+            ->add('address', AddressSelectType::class, ['required' => false])
             ->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'invalid_message' => 'The password fields must match.',

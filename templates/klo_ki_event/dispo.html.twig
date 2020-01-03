@@ -1,0 +1,109 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Events in der Klosterkirche{% endblock %}
+
+{% block body %}
+    {% if not app.request.query.get('dispoForDay') %}
+    <form action="{{ path('klo_ki_event_dispo') }}" method="GET">
+        <div class="row">
+            <div class="col">
+                <input type="text" id="event_filter_startDate" class="form-control" autocomplete="off" name="dispoForDay" value="{{ app.request.query.get('dispoForDay') }}" placeholder="Datum"/>
+            </div>
+            <div class="col">
+                <input type="submit" value="Dispo!" class="btn btn-primary" />
+            </div>
+        </div>
+    </form>
+    {% else %}
+    <h1>Dispo für {{ app.request.query.get('dispoForDay') | localizeddate('full', 'none') }}</h1>
+        {% for event in pagination %}
+            {# @var event App\Entity\KloKiEvent #}
+            <div style="page-break-inside: avoid;">
+
+            <br/><hr/><br/>
+            <h2><b>{{ event.room }}</b>, {{ event.name }}, {{ event.start | localizeddate('none', 'short')}} bis {{ event.end | localizeddate('none', 'short')}}</h2>
+
+            <table class="table table-sm table-bordered">
+                <tbody>
+                <tr>
+                    <th>Art:</th>
+                    <td>{{ event.art }} / {{ event.kategorie }}</td>
+                </tr>
+                <tr>
+                    <th>Anzahl der Künstler</th>
+                    <td>{{ event.anzahlArtists }}</td>
+                </tr>
+                <tr>
+                    <th>Bestuhlung nötig?</th>
+                    <td>{{ event.isBestBenoetigt ? 'Ja' : 'Nein' }}</td>
+                </tr>
+                <tr>
+                    <th>Licht nötig?</th>
+                    <td>{{ event.isLichtBenoetigt ? 'Ja' : 'Nein' }}</td>
+                </tr>
+                    {% if event.helperRequired %}
+                <tr>
+                    <th>Helfer</th>
+                    <td>
+                            <b>Einlass 1:  </b>{{ event.helperEinlassEins ?:  'N/N'  }},
+                            <b>Einlass 2:  </b>{{ event.helperEinlassZwei ?:  'N/N'  }},
+                            <b>Kasse:      </b>{{ event.helperKasse ?:        'N/N'  }},
+                            <b>Springer 1: </b>{{ event.helperSpringerEins ?: 'N/N'  }},
+                            <b>Springer 2: </b>{{ event.helperSpringerZwei ?: 'N/N'  }}
+                    </td>
+                </tr>
+                {% endif %}
+                <tr>
+                    <th>Lichttechniker</th>
+                    <td>{{ event.lichtTechniker }}</td>
+                </tr>
+                <tr>
+                    <th>Tontechniker</th>
+                    <td>{{ event.tonTechniker }}</td>
+                </tr>
+                </tbody>
+            </table>
+
+            {% if event.kontakt %}
+                <h2>Kontakt:</h2>
+                {{ include('addresse/addresse_kompakt.html.twig', {'addresse': event.kontakt}) }}
+            {% endif  %}
+
+            {% if event.ausstattung.count > 0 %}
+                <h2>Weitere Ausstattung</h2>
+                <ul>
+                    {%  for a in event.ausstattung  %}
+                        {# @var a App\Entity\Ausstattung #}
+                        <li>{{ a }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            {% if event.bestPlan %}
+                <h2>Bestuhlung</h2>
+                <a class="js-no-retarget" href="{{ path('getPdf', {'id': event.bestPlan.pdfFilePath}) }}">
+                    <img alt="Bestuhlungsplan" src="{{ path('getPng', {'id': event.bestPlan.pngFilePath}) }}" />
+                </a>
+                {{ event.bestPlan }}
+            {% endif %}
+
+            {% if event.stageOrder %}
+                <h2>Bühnenanweisung</h2>
+                <a class="js-no-retarget" href="{{ path('getPdf', {'id': event.stageOrder.pdfFileName}) }}">
+                    <img alt="Bühnenanweisung" src="{{ path('getPng', {'id': event.stageOrder.pngFileName }) }}" />
+                </a>
+                {{ event.stageOrder }}
+            {% endif %}
+
+
+            {% if event.bemerkung %}
+                <h2>Bemerkung:</h2>
+                {{ event.bemerkung | raw }}
+            {% endif %}
+
+            </div>
+
+        {% endfor %}
+    {% endif %}
+    {{ encore_entry_script_tags('event-filter') }}
+{% endblock %}
