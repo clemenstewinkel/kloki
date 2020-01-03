@@ -8,6 +8,7 @@ use App\Form\KloKiEventEditType;
 use App\Form\KloKiEventType;
 use App\Repository\KloKiEventRepository;
 use App\Repository\RoomRepository;
+use App\Service\WordCreatorService;
 use Knp\Component\Pager\PaginatorInterface;
 use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -15,6 +16,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\HttpFoundation\HeaderUtils;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -58,6 +60,7 @@ class KloKiEventController extends AbstractController
             'pagination' => $events,
         ]);
     }
+
 
     /**
      * @Route("/calendar", name="event_calendar", methods={"GET"})
@@ -258,6 +261,21 @@ class KloKiEventController extends AbstractController
             'klo_ki_event' => $kloKiEvent,
             'userInHelpers' => $this->isInAvailableHelpers($kloKiEvent)
         ]);
+    }
+
+    /**
+     * @Route("/createWord/{id}", name="klo_ki_event_create_word", methods={"GET"})
+     */
+    public function create_word(WordCreatorService $wService, KloKiEvent $kloKiEvent): Response
+    {
+        $response = new Response($wService->createWord());
+        $disposition = HeaderUtils::makeDisposition(
+            HeaderUtils::DISPOSITION_ATTACHMENT,
+            'MietVertrag.docx'
+        );
+        $response->headers->set('Content-Disposition', $disposition);
+        $response->headers->set('Content-Type', 'application/octet-stream');
+        return $response;
     }
 
 
