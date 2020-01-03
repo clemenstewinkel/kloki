@@ -26,15 +26,15 @@ export default function create_context_menus()
     }
 
 
-//    $.contextMenu({
-//        selector: '.fc-day',
-//        callback: function(key, options) {
-//            switch(key){
-//                case 'create': alert("Hallo"); break;
-//            }
-//        },
-//        items: {
-//            "create": {name: "Create", icon: "edit"},
-//        }
-//    });
+    $.contextMenu({
+        selector: '.fc-day',
+        callback: function(key, options) {
+            switch(key){
+                case 'dispo': window.open('dispo?dispoForDay=' + $(this).data('date'), '_blank'); break;
+            }
+        },
+        items: {
+            "dispo": {name: "Tages-Dispo", icon: "edit"},
+        }
+    });
 }
