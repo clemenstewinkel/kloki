@@ -1,0 +1,259 @@
+{# Kopfzeile Raum #}
+{# @var e \App\Entity\KloKiEvent #}
+<w:tr w:rsidR="00847596" w:rsidRPr="00847596" w14:paraId="5C66AAC0" w14:textId="77777777" w:rsidTr="00512D8F">
+    <w:tc>
+        <w:tcPr>
+            <w:tcW w:w="1980" w:type="dxa"/>
+        </w:tcPr>
+        <w:p w14:paraId="43738CE1" w14:textId="75293A86" w:rsidR="00847596" w:rsidRPr="00847596" w:rsidRDefault="00847596" w:rsidP="001E1A5D">
+            <w:pPr>
+                <w:rPr>
+                    <w:b/>
+                    <w:bCs/>
+                </w:rPr>
+            </w:pPr>
+            <w:r w:rsidRPr="00847596">
+                <w:rPr>
+                    <w:b/>
+                    <w:bCs/>
+                </w:rPr>
+                <w:t xml:space="preserve">Raum</w:t>
+            </w:r>
+        </w:p>
+    </w:tc>
+    <w:tc>
+        <w:tcPr>
+            <w:tcW w:w="5269" w:type="dxa"/>
+            <w:gridSpan w:val="3"/>
+        </w:tcPr>
+        <w:p w14:paraId="5D3C8AE5" w14:textId="6DFAA1DD" w:rsidR="00847596" w:rsidRPr="00847596" w:rsidRDefault="00847596" w:rsidP="001E1A5D">
+            <w:pPr>
+                <w:rPr>
+                    <w:b/>
+                    <w:bCs/>
+                </w:rPr>
+            </w:pPr>
+            <w:r w:rsidRPr="00847596">
+                <w:rPr>
+                    <w:b/>
+                    <w:bCs/>
+                </w:rPr>
+                <w:t>Zeitraum</w:t>
+            </w:r>
+        </w:p>
+    </w:tc>
+    <w:tc>
+        <w:tcPr>
+            <w:tcW w:w="1813" w:type="dxa"/>
+        </w:tcPr>
+        <w:p w14:paraId="76A96A79" w14:textId="4279798F" w:rsidR="00847596" w:rsidRPr="00847596" w:rsidRDefault="00847596" w:rsidP="001E1A5D">
+            <w:pPr>
+                <w:rPr>
+                    <w:b/>
+                    <w:bCs/>
+                </w:rPr>
+            </w:pPr>
+            <w:r w:rsidRPr="00847596">
+                <w:rPr>
+                    <w:b/>
+                    <w:bCs/>
+                </w:rPr>
+                <w:t>Bruttobetrag*</w:t>
+            </w:r>
+        </w:p>
+    </w:tc>
+</w:tr>
+
+{# Zeile für einen Raum #}
+<w:tr w:rsidR="00847596" w14:paraId="240FB0C0" w14:textId="77777777" w:rsidTr="00512D8F">
+<w:tc>
+    <w:tcPr>
+        <w:tcW w:w="1980" w:type="dxa"/>
+    </w:tcPr>
+    <w:p w14:paraId="69B17F42" w14:textId="1C8E2B10" w:rsidR="00847596" w:rsidRDefault="00512D8F"
+         w:rsidP="001E1A5D">
+        <w:proofErr w:type="spellStart"/>
+        <w:r>
+            <w:t>{{ e.room }}</w:t>
+        </w:r>
+        <w:proofErr w:type="spellEnd"/>
+    </w:p>
+</w:tc>
+<w:tc>
+    <w:tcPr>
+        <w:tcW w:w="5269" w:type="dxa"/>
+        <w:gridSpan w:val="3"/>
+    </w:tcPr>
+    <w:p w14:paraId="18632BD9" w14:textId="6C70F89E" w:rsidR="00847596" w:rsidRDefault="00512D8F"
+         w:rsidP="001E1A5D">
+        <w:r>
+            <w:t>{{ include('klo_ki_event/_time_range.html.twig', {'event': e}) }}</w:t>
+        </w:r>
+    </w:p>
+</w:tc>
+<w:tc>
+    <w:tcPr>
+        <w:tcW w:w="1813" w:type="dxa"/>
+    </w:tcPr>
+    <w:p w14:paraId="2F95E219" w14:textId="01512F31" w:rsidR="00847596" w:rsidRDefault="00512D8F"
+         w:rsidP="00374C8B">
+        <w:pPr>
+            <w:jc w:val="right"/>
+        </w:pPr>
+        <w:r>
+            <w:t>{{ (e.roomFee / 100) | number_format(2, ',', '.') }} €</w:t>
+        </w:r>
+    </w:p>
+</w:tc>
+</w:tr>
+
+
+{# Kopfzeile Ausstattung#}
+<w:tr w:rsidR="00847596" w:rsidRPr="00847596" w14:paraId="06033C8F" w14:textId="77777777"
+      w:rsidTr="00512D8F">
+<w:tc>
+    <w:tcPr>
+        <w:tcW w:w="4106" w:type="dxa"/>
+        <w:gridSpan w:val="2"/>
+    </w:tcPr>
+    <w:p w14:paraId="595A4557" w14:textId="1357702E" w:rsidR="00847596" w:rsidRPr="00847596"
+         w:rsidRDefault="00847596" w:rsidP="00847596">
+        <w:pPr>
+            <w:rPr>
+                <w:b/>
+                <w:bCs/>
+            </w:rPr>
+        </w:pPr>
+        <w:r w:rsidRPr="00847596">
+            <w:rPr>
+                <w:b/>
+                <w:bCs/>
+            </w:rPr>
+            <w:t>Ausstattung</w:t>
+        </w:r>
+    </w:p>
+</w:tc>
+<w:tc>
+    <w:tcPr>
+        <w:tcW w:w="1701" w:type="dxa"/>
+    </w:tcPr>
+    <w:p w14:paraId="77230454" w14:textId="00090410" w:rsidR="00847596" w:rsidRPr="00847596"
+         w:rsidRDefault="00847596" w:rsidP="00847596">
+        <w:pPr>
+            <w:rPr>
+                <w:b/>
+                <w:bCs/>
+            </w:rPr>
+        </w:pPr>
+        <w:r w:rsidRPr="00847596">
+            <w:rPr>
+                <w:b/>
+                <w:bCs/>
+            </w:rPr>
+            <w:t>Nettobetrag</w:t>
+        </w:r>
+    </w:p>
+</w:tc>
+<w:tc>
+    <w:tcPr>
+        <w:tcW w:w="1442" w:type="dxa"/>
+    </w:tcPr>
+    <w:p w14:paraId="1569EFAC" w14:textId="74ED88F1" w:rsidR="00847596" w:rsidRPr="00847596"
+         w:rsidRDefault="00847596" w:rsidP="00847596">
+        <w:pPr>
+            <w:rPr>
+                <w:b/>
+                <w:bCs/>
+            </w:rPr>
+        </w:pPr>
+        <w:r w:rsidRPr="00847596">
+            <w:rPr>
+                <w:b/>
+                <w:bCs/>
+            </w:rPr>
+            <w:t>MwSt. 19%</w:t>
+        </w:r>
+    </w:p>
+</w:tc>
+<w:tc>
+    <w:tcPr>
+        <w:tcW w:w="1813" w:type="dxa"/>
+    </w:tcPr>
+    <w:p w14:paraId="1C1C555B" w14:textId="57AB690E" w:rsidR="00847596" w:rsidRPr="00847596"
+         w:rsidRDefault="00847596" w:rsidP="00847596">
+        <w:pPr>
+            <w:rPr>
+                <w:b/>
+                <w:bCs/>
+            </w:rPr>
+        </w:pPr>
+        <w:r w:rsidRPr="00847596">
+            <w:rPr>
+                <w:b/>
+                <w:bCs/>
+            </w:rPr>
+            <w:t>Bruttobetrag</w:t>
+        </w:r>
+    </w:p>
+</w:tc>
+</w:tr>
+
+
+
+{% for a in e.ausstattung %}
+{# @var a \App\Entity\Ausstattung #}
+{# Zeile für eine Ausstattung #}
+<w:tr w:rsidR="00512D8F" w14:paraId="0A7C3081" w14:textId="77777777" w:rsidTr="002C162A">
+<w:tc>
+    <w:tcPr>
+        <w:tcW w:w="4106" w:type="dxa"/>
+        <w:gridSpan w:val="2"/>
+    </w:tcPr>
+    <w:p w14:paraId="34EBA910" w14:textId="77777777" w:rsidR="00512D8F" w:rsidRDefault="00512D8F" w:rsidP="002C162A">
+        <w:r>
+            <w:t>{{ a.description }}</w:t>
+        </w:r>
+    </w:p>
+</w:tc>
+<w:tc>
+    <w:tcPr>
+        <w:tcW w:w="1701" w:type="dxa"/>
+    </w:tcPr>
+    <w:p w14:paraId="4FC19AE9" w14:textId="77777777" w:rsidR="00512D8F" w:rsidRDefault="00512D8F" w:rsidP="002C162A">
+        <w:pPr>
+            <w:jc w:val="right"/>
+        </w:pPr>
+        <w:r>
+            <w:t>{{ (a.nettopreis / 100) | number_format(2, ',', '.') }} €</w:t>
+        </w:r>
+    </w:p>
+</w:tc>
+<w:tc>
+    <w:tcPr>
+        <w:tcW w:w="1442" w:type="dxa"/>
+    </w:tcPr>
+    <w:p w14:paraId="5160BD27" w14:textId="77777777" w:rsidR="00512D8F" w:rsidRDefault="00512D8F" w:rsidP="002C162A">
+        <w:pPr>
+            <w:jc w:val="right"/>
+        </w:pPr>
+        <w:r>
+            <w:t>{{ (a.mwSt / 100) | number_format(2, ',', '.') }} €</w:t>
+        </w:r>
+    </w:p>
+</w:tc>
+<w:tc>
+    <w:tcPr>
+        <w:tcW w:w="1813" w:type="dxa"/>
+    </w:tcPr>
+    <w:p w14:paraId="07455936" w14:textId="77777777" w:rsidR="00512D8F" w:rsidRDefault="00512D8F" w:rsidP="00374C8B">
+        <w:pPr>
+            <w:jc w:val="right"/>
+        </w:pPr>
+        <w:r>
+            <w:t>{{ (a.bruttoPreis / 100) | number_format(2, ',', '.') }} €</w:t>
+        </w:r>
+    </w:p>
+</w:tc>
+
+</w:tr>
+{% endfor %}

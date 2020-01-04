@@ -268,7 +268,7 @@ class KloKiEventController extends AbstractController
      */
     public function create_word(WordCreatorService $wService, KloKiEvent $kloKiEvent): Response
     {
-        $response = new Response($wService->createWord());
+        $response = new Response($wService->createWord($kloKiEvent));
         $disposition = HeaderUtils::makeDisposition(
             HeaderUtils::DISPOSITION_ATTACHMENT,
             'MietVertrag.docx'

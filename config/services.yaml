@@ -6,6 +6,7 @@
 parameters:
     pdf_file_directory: '%kernel.project_dir%/uploaded_files/pdf/'
     png_file_directory: '%kernel.project_dir%/uploaded_files/png/'
+    docx_directory: '%kernel.project_dir%/mietvertrag/'
 
 services:
     # default configuration for services in *this* file

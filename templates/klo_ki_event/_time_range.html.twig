@@ -3,10 +3,10 @@
     {% if (event.start | date('Y-m-d') ) == (event.end | date('Y-m-d') ) %}
         {{ event.start | localizeddate('full', 'none') }} (Ganzer Tag)
     {% else %}
-        {{ event.start | localizeddate('full', 'none') }} bis <br/>{{ event.end | localizeddate('full', 'none') }} (Ganze Tage)
+        {{ event.start | localizeddate('full', 'none') }} bis {{ event.end | localizeddate('full', 'none') }} (Ganze Tage)
     {% endif %}
 {% else %}
-    {% set difference = date(klo_ki_event.end).diff(date(klo_ki_event.start)) %}
+    {% set difference = date(event.end).diff(date(event.start)) %}
     {# wenn mehr als ein Tag dazwischen ist, geben wir alles komplett aus#}
     {% if difference.d > 0 %}
         {{ event.start | localizeddate('full', 'short') }} bis {{ event.end | localizeddate('full', 'short') }}

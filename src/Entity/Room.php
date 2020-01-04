@@ -39,6 +39,16 @@ class Room
     private $color;
 
     /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $fullDayPrice;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $halfDayPrice;
+
+    /**
     * @Groups({"room:read", "resource:read"})
     */
     public function getTitle()
@@ -123,6 +133,30 @@ class Room
     public function setColor(?string $color): self
     {
         $this->color = $color;
+
+        return $this;
+    }
+
+    public function getFullDayPrice(): ?int
+    {
+        return $this->fullDayPrice;
+    }
+
+    public function setFullDayPrice(?int $fullDayPrice): self
+    {
+        $this->fullDayPrice = $fullDayPrice;
+
+        return $this;
+    }
+
+    public function getHalfDayPrice(): ?int
+    {
+        return $this->halfDayPrice;
+    }
+
+    public function setHalfDayPrice(?int $halfDayPrice): self
+    {
+        $this->halfDayPrice = $halfDayPrice;
 
         return $this;
     }

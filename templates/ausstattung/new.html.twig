@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Ausstattung{% endblock %}
+
+{% block body %}
+    <h1>Create new Ausstattung</h1>
+
+    {{ include('ausstattung/_form.html.twig') }}
+
+    <a href="{{ path('ausstattung_index') }}">back to list</a>
+{% endblock %}

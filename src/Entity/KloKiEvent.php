@@ -229,6 +229,11 @@ class KloKiEvent
      */
     private $TonTechniker;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $is4HoursDeal;
+
 
     /**
      * @Groups({"events:read"})
@@ -251,6 +256,11 @@ class KloKiEvent
             return $this->end->add(new \DateInterval('P1D'));
         else
             return $this->end;
+    }
+
+    public function getRoomFee() : ?int
+    {
+        return $this->is4HoursDeal? $this->getRoom()->getHalfDayPrice() : $this->getRoom()->getFullDayPrice();
     }
 
     public function set_FC_end($end) : self
@@ -304,6 +314,34 @@ class KloKiEvent
             $problems[] = "Kein Bestuhlungsplan ausgewählt";
         }
         return $problems;
+    }
+
+    public function getBruttoPreis()
+    {
+        $preis = $this->getRoomFee();
+        foreach ($this->getAusstattung() as $a)
+        {
+            $preis += $a->getBruttoPreis();
+        }
+        foreach ($this->getChildEvents() as $e)
+        {
+            $preis += $e->getBruttoPreis();
+        }
+        return $preis;
+    }
+
+    public function getNettoPreis()
+    {
+        $preis = $this->getRoomFee();
+        foreach ($this->getAusstattung() as $a)
+        {
+            $preis += $a->getNettoPreis();
+        }
+        foreach ($this->getChildEvents() as $e)
+        {
+            $preis += $e->getNettoPreis();
+        }
+        return $preis;
     }
 
 
@@ -791,6 +829,18 @@ class KloKiEvent
     public function setTonTechniker(?User $TonTechniker): self
     {
         $this->TonTechniker = $TonTechniker;
+
+        return $this;
+    }
+
+    public function getIs4HoursDeal(): ?bool
+    {
+        return $this->is4HoursDeal;
+    }
+
+    public function setIs4HoursDeal(?bool $is4HoursDeal): self
+    {
+        $this->is4HoursDeal = $is4HoursDeal;
 
         return $this;
     }

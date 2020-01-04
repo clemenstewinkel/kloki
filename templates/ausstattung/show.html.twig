@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ausstattung{% endblock %}
+
+{% block body %}
+    <h1>Ausstattung</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ ausstattung.id }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ ausstattung.name }}</td>
+            </tr>
+            <tr>
+                <th>Nettopreis</th>
+                <td>{{ ausstattung.nettopreis }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('ausstattung_index') }}">back to list</a>
+
+    <a href="{{ path('ausstattung_edit', {'id': ausstattung.id}) }}">edit</a>
+
+    {{ include('ausstattung/_delete_form.html.twig') }}
+{% endblock %}

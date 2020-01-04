@@ -5,12 +5,15 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\AusstattungRepository")
  */
 class Ausstattung
 {
+    private $mwStSatz = 19;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -26,12 +29,17 @@ class Ausstattung
     /**
      * @ORM\Column(type="integer")
      */
-    private $nettopreis;
+    private $bruttopreis;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\KloKiEvent", mappedBy="Ausstattung")
      */
     private $kloKiEvents;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $description;
 
     public function __toString()
     {
@@ -60,14 +68,27 @@ class Ausstattung
         return $this;
     }
 
-    public function getNettopreis(): ?int
+    public function getDescription(): ?string
     {
-        return $this->nettopreis;
+        return $this->description;
     }
 
-    public function setNettopreis(int $nettopreis): self
+    public function setDescription(?string $description): self
     {
-        $this->nettopreis = $nettopreis;
+        $this->description = $description;
+
+        return $this;
+    }
+
+
+    public function getBruttoPreis(): ?int
+    {
+        return $this->bruttopreis;
+    }
+
+    public function setBruttopreis(int $bruttopreis): self
+    {
+        $this->bruttopreis = $bruttopreis;
 
         return $this;
     }
@@ -78,6 +99,16 @@ class Ausstattung
     public function getKloKiEvents(): Collection
     {
         return $this->kloKiEvents;
+    }
+
+    public function getNettopreis(): ?int
+    {
+        return $this->bruttopreis - $this->getMwSt();
+    }
+
+    public function getMwSt(): ?int
+    {
+        return round($this->bruttopreis / (100 + $this->mwStSatz ) * ($this->mwStSatz));
     }
 
     public function addKloKiEvent(KloKiEvent $kloKiEvent): self
@@ -99,4 +130,5 @@ class Ausstattung
 
         return $this;
     }
+
 }

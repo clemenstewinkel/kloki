@@ -16,11 +16,13 @@ export default function create_context_menus()
                 switch(key){
                     case 'edit': loadEditEventForm(event_id); break;
                     case 'delete': confirmDelete(event_id); break;
+                    case 'vertrag': window.open('createWord/' + event_id); break;
                 }
             },
             items: {
                 "edit": {name: "Edit", icon: "edit"},
                 "delete": {name: "Delete", icon: "delete"},
+                "vertrag": {name: "Mietvertrag", icon: "edit"}
             }
         });
     }
