@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\DBAL\Types\ContractStateType;
 use App\Entity\Addresse;
 use App\Entity\Ausstattung;
 use App\Entity\Bestuhlungsplan;
@@ -116,6 +117,7 @@ class EventFixtures extends Fixture
                 $e->setKategorie($this->katRepo->findOneBy(['name' => 'Konzert'])); // TODO
                 $e->setKontakt($this->addressRepo->findOneBy(['vorname' => 'Sonja'])); // TODO
                 $e->setHelperRequired(true); // TODO
+                $e->setContractState(ContractStateType::NONE);
                 $manager->persist($e);
 
             }
