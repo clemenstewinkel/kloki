@@ -116,10 +116,29 @@ class KloKiEventController extends AbstractController
      * @Route("/new", name="klo_ki_event_new", methods={"GET","POST"})
      * @IsGranted({"ROLE_ADMIN", "ROLE_FOOD"})
      */
-    public function new(LoggerInterface $logger, Request $request): Response
+    public function new(LoggerInterface $logger, Request $request, KloKiEventRepository $eventRepo): Response
     {
         $logger->debug('KLOKI: new called in EventController');
         $kloKiEvent = new KloKiEvent();
+
+        // Wenn wir in der URL den Paremeter parentIdForNewChild haben, übernehmen wir
+        // einige Werte aus dem Mutter-Element
+        if($parentId = $request->query->getInt('parentIdForNewChild'))
+        {
+            $parentEvent = $eventRepo->findOneBy(['id' => $parentId]);
+            if($parentEvent)
+            {
+                $kloKiEvent->setStart($parentEvent->getStart());
+                $kloKiEvent->setEnd($parentEvent->getEnd());
+                $kloKiEvent->setAllDay($parentEvent->getAllDay());
+                $kloKiEvent->setName($parentEvent->getName() . ' (zus.)');
+                $kloKiEvent->setParentEvent($parentEvent);
+                $kloKiEvent->setKontakt($parentEvent->getKontakt());
+                $kloKiEvent->setKategorie($parentEvent->getKategorie());
+                $kloKiEvent->setArt($parentEvent->getArt());
+            }
+        }
+
         $form = $this->createForm(KloKiEventType::class, $kloKiEvent);
 
         // Wenn wir keine Admin sind, dürfen wir nur optionale Events anlegen!

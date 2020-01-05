@@ -2,8 +2,8 @@ import $ from "jquery";
 import 'jquery-contextmenu';
 import loadEditEventForm from "./loadEditEventForm";
 import confirmDelete from "./confirmDelete";
-import loadNewEventForm from "./loadNewEventForm";
 import {userRoles} from "../calendar";
+import loadChildEventForm from "./loadChildEventForm";
 
 export default function create_context_menus()
 {
@@ -17,12 +17,14 @@ export default function create_context_menus()
                     case 'edit': loadEditEventForm(event_id); break;
                     case 'delete': confirmDelete(event_id); break;
                     case 'vertrag': window.open('createWord/' + event_id); break;
+                    case 'child': loadChildEventForm(event_id); break;
                 }
             },
             items: {
                 "edit": {name: "Edit", icon: "edit"},
                 "delete": {name: "Delete", icon: "delete"},
-                "vertrag": {name: "Mietvertrag", icon: "edit"}
+                "vertrag": {name: "Mietvertrag", icon: "edit"},
+                "child": {name: "zus. Event zu diesem Event anlegen", icon: "edit"}
             }
         });
     }

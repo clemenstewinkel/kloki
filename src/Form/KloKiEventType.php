@@ -48,12 +48,12 @@ class KloKiEventType extends AbstractType
             ->add('startTime', TimeType::class, ['html5' => false, 'widget' => 'single_text', 'label' => false])
             ->add('endTime',   TimeType::class, ['html5' => false, 'widget' => 'single_text', 'label' => false])
 
-            ->add('anzahlArtists', null, ['label' => 'Anzahl der Künstler'])
-            ->add('isBestBenoetigt', null, ['label' => "Bestuhlung erforderlich"])
-            ->add('isLichtBenoetigt', null, ['label' => "Licht erforderlich"])
-            ->add('isTonBenoetigt', null, ['label' => "Ton erforderlich"])
+            ->add('anzahlArtists',      null, ['label' => 'Anzahl der Künstler'])
+            ->add('isBestBenoetigt',    null, ['label' => "Bestuhlung erforderlich"])
+            ->add('isLichtBenoetigt',   null, ['label' => "Licht erforderlich"])
+            ->add('isTonBenoetigt',     null, ['label' => "Ton erforderlich"])
 
-
+            ->add('contractState',      null, ['label' => "Vertrags-Status"])
 
             ->add('LichtTechniker', EntityType::class, [
                 'class' => User::class,

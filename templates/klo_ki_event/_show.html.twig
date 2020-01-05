@@ -22,7 +22,7 @@
         {% if is_granted('ROLE_ADMIN') %}
             <tr>
                 <th>Status</th>
-                <td>{{ klo_ki_event.isFixed ? 'fest' : 'optioniert' }}</td>
+                <td>{{ klo_ki_event.isFixed ? 'fest' : 'optioniert' }} / {{ klo_ki_event.contractState | readable_enum('ContractStateType') }}</td>
             </tr>
         {% endif %}
             <tr>

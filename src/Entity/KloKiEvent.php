@@ -15,9 +15,14 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Validator\Constraints as MyAssert;
 
+use App\DBAL\Types\ContractStateType;
+use Fresh\DoctrineEnumBundle\Validator\Constraints as DoctrineAssert;
+
+
 /**
  * @ORM\Entity(repositoryClass="App\Repository\KloKiEventRepository")
  * @MyAssert\EventNoOverlap()
+ * @MyAssert\EventNoChildChild()
  */
 class KloKiEvent
 {
@@ -53,6 +58,31 @@ class KloKiEvent
     private $kategorie;
 
     /**
+     * Note, that type of a field should be same as you set in Doctrine config
+     * (in this case it is ContractStateType)
+     *
+     * @ORM\Column(name="contract_state", type="ContractStateType", nullable=false)
+     * @DoctrineAssert\Enum(entity="App\DBAL\Types\ContractStateType")
+     */
+    private $contractState;
+
+    /**
+     * @return mixed
+     */
+    public function getContractState() : ?string
+    {
+        return $this->contractState;
+    }
+
+    /**
+     * @param mixed $contractState
+     */
+    public function setContractState($contractState): void
+    {
+        $this->contractState = $contractState;
+    }
+
+    /**
      * @ORM\Column(type="datetime")
      * @Assert\DateTime()
      * @Groups({"events:read"})
@@ -76,6 +106,7 @@ class KloKiEvent
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Addresse", inversedBy="kloKiEvents")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotBlank()
      * @Assert\Type(type="App\Entity\Addresse")
      * @Assert\Valid
      * @Groups({"events:read"})

@@ -1,4 +1,4 @@
-{{ form_start(form, {'action': klo_ki_form_action, attr: {novalidate: 'novalidate'}}) }}
+{{ form_start(form, {'action': klo_ki_form_action, attr: {novalidate: 'novalidate'}}) }} {# TODO: novalidate raus! #}
 <style>
     .ck-editor__editable_inline {
         min-height: 200px;
@@ -8,7 +8,7 @@
 
 <div class="form-group row">
     <label class="col-form-label col-sm-2">Name</label>
-    <div class="col-sm-8">
+    <div class="col-sm-6">
         {{ form_widget(form.name) }}
         {{ form_errors(form.name) }}
     </div>
@@ -16,6 +16,11 @@
     {% if form.isFixed is defined %}
         {{ form_widget(form.isFixed) }}
     {% endif %}
+    </div>
+    <div class="col-sm-2">
+        {% if form.contractState is defined %}
+            {{ form_widget(form.contractState) }}
+        {% endif %}
     </div>
 </div>
 

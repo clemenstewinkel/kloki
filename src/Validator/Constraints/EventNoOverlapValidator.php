@@ -29,6 +29,7 @@ class EventNoOverlapValidator extends ConstraintValidator
 
         if((!$event->getStart()) || (!$event->getEnd())) return;
 
+
         // Wir suchen nach anderen Events mit dem gleichen Raum,
         // die im gewünschten Zeitraum liegen, die also
         // -- beginAt zwischen beginAt und endAt unseres Events ODER
@@ -36,12 +37,17 @@ class EventNoOverlapValidator extends ConstraintValidator
         // -- beginAt vor unserem beginAt und endAt nach unserem endAt
         $myBeginAt = $event->getStart()->format('Y-m-d H:i');
         $myEndAt   = $event->getEnd()->format('Y-m-d H:i');
+
+
+        $this->logger->debug('KLOKI: Searching for existing event between ' . $myBeginAt . ' and ' . $myEndAt);
+
+
         $queryBuilder = $this->eventRepo->createQueryBuilder('event')
             ->innerJoin('event.room', 'room')
             ->andWhere('room.id = ' . $event->getRoom()->getId())
             ->andWhere("
-                (event.start > '$myBeginAt' AND event.start < '$myEndAt') OR
-                (event.end > '$myBeginAt' AND event.end < '$myEndAt') OR
+                (event.start >= '$myBeginAt' AND event.start < '$myEndAt') OR
+                (event.end > '$myBeginAt' AND event.end <= '$myEndAt') OR
                 (event.start < '$myBeginAt' AND event.end > '$myEndAt')
             ")
             ->setMaxResults(1)
@@ -49,7 +55,9 @@ class EventNoOverlapValidator extends ConstraintValidator
         if($event->getId()) $queryBuilder->andWhere("event.id <> " . $event->getId());
         $collidingEvents = $queryBuilder->getQuery()->getResult();
 
+
         if ($collidingEvents) {
+            $this->logger->debug('KLOKI: Found colliding event(s)!!');
             $this->context->buildViolation("In diesem Zeitraum existieren schon ein oder mehrere Events in diesem Raum.")
                 //->setParameter('{{ room }}', count($collidingEvents))
                 ->atPath('endDate')
