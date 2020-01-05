@@ -43,13 +43,11 @@ class AppFixtures extends Fixture
         // Räume
         foreach([
             ['Minoritensaal' , '#ff9797', 20825 , 15000],
-            ['Foyer oben'    , '#00ffff', 5000  , 3000],
-            ['Webersaal'     , '#00ff00', 12500 , 8000],
             ['Färbersaal'    , '#a6a6fa', 7000  , 5000],
             ['Zwirnstube'    , '#ffff00', 5000  , 3000],
-            ['Foyer unten'   , '#f2c197', 5000  , 3000],
-            ['Restaurant'    , '#888888', 20000 , 15000],
-            ['Wintergarten'  , '#996611', 15000 , 12000]
+            ['Foyer oben'    , '#00ffff', 5000  , 3000],
+            ['Webersaal'     , '#00ff00', 12500 , 8000],
+            ['Foyer unten'   , '#f2c197', 5000  , 3000]
              ] as $room)
         {
             $x = new Room();
