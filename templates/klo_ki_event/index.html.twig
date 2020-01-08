@@ -17,6 +17,13 @@
                 </select>
             </div>
             <div class="col">
+                <select name="art[]" data-width="fit" class="selectpicker" title="Art auswählen..." multiple>
+                    <option value="rental" {% if "rental" in app.request.query.get('art') %} selected="selected" {% endif %}> {{ "rental" | readable_enum('EventArtType') }}</option>
+                    <option value="show"   {% if "show"   in app.request.query.get('art') %} selected="selected" {% endif %}> {{ "show"   | readable_enum('EventArtType') }}</option>
+                    <option value="fair"   {% if "fair"   in app.request.query.get('art') %} selected="selected" {% endif %}> {{ "fair"   | readable_enum('EventArtType') }}</option>
+                </select>
+            </div>
+            <div class="col">
                 <input type="text" id="event_filter_startDate" class="form-control" autocomplete="off" name="beginAtAfter" value="{{ app.request.query.get('beginAtAfter') }}" placeholder="Datum ab"/>
             </div>
             <div class="col">
@@ -41,6 +48,7 @@
                 <th>Bestuhlt?</th>
                 <th>Licht?</th>
                 <th>Ton?</th>
+                <th>Art</th>
                 <th>Kontakt</th>
                 <th>actions</th>
             </tr>
@@ -55,6 +63,7 @@
                 <td>{{ klo_ki_event.isBestBenoetigt ? 'Ja' : 'Nein' }}</td>
                 <td>{{ klo_ki_event.isLichtBenoetigt ? 'Ja' : 'Nein' }}</td>
                 <td>{{ klo_ki_event.isTonBenoetigt ? 'Ja' : 'Nein' }}</td>
+                <td>{{ klo_ki_event.art | readable_enum('EventArtType') }}</td>
                 <td>{{ klo_ki_event.kontakt }}</td>
                 <td>
                     <a href="{{ path('klo_ki_event_show', {'id': klo_ki_event.id}) }}"><span class="fas fa-eye"></span></a>

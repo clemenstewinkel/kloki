@@ -41,7 +41,6 @@ class KloKiEventType extends AbstractType
 
         $builder
             ->add('name')
-
             ->add('allDay', null, ['label' => 'Ganzer Tag'])
             ->add('startDate', DateType::class, ['html5' => false, 'widget' => 'single_text', 'label' => 'Von'])
             ->add('endDate',   DateType::class, ['html5' => false, 'widget' => 'single_text', 'label' => 'Bis'])
@@ -67,10 +66,6 @@ class KloKiEventType extends AbstractType
                 'query_builder' => $techniker_query,
                 'label' => "Ton Techniker"
             ])
-
-
-
-
 
             ->add('helperRequired', null, ['label' => "Helfer werden benötigt"])
             ->add('helperEinlassEins', EntityType::class, [
@@ -118,7 +113,6 @@ class KloKiEventType extends AbstractType
                 'query_builder' => $event_query,
                 'label' => "Hauptevent"
             ])
-
 
             ->add('ausstattung', EntityType::class, ['class' => 'App:Ausstattung', 'multiple' => true, 'expanded' => false, 'attr' => ['title' => 'Ausstattung auswählen']])
             ->add('bemerkung', TextareaType::class)

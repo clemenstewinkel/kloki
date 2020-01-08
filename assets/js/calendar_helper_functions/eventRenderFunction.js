@@ -5,7 +5,7 @@ import {userRoles} from "../calendar";
 
 export default function eventRenderFunction(info)
 {
-    if (info.event.extendedProps['art']['name'] === "Vermietung") // Vermietungen bekommen ein eigenes Muster
+    if (info.event.extendedProps['art'] === "rental") // Vermietungen bekommen ein eigenes Muster
     {
         $(info.el).addClass('vermietungsevent');
     }

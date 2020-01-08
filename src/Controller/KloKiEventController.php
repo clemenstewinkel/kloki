@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\DBAL\Types\EventArtType;
 use App\Entity\KloKiEvent;
 use App\Form\AddresseType;
 use App\Form\KloKiEventEditType;
+use App\Form\KloKiEventFoodType;
 use App\Form\KloKiEventType;
 use App\Repository\KloKiEventRepository;
 use App\Repository\RoomRepository;
@@ -118,7 +120,6 @@ class KloKiEventController extends AbstractController
      */
     public function new(LoggerInterface $logger, Request $request, KloKiEventRepository $eventRepo): Response
     {
-        $logger->debug('KLOKI: new called in EventController');
         $kloKiEvent = new KloKiEvent();
 
         // Wenn wir in der URL den Paremeter parentIdForNewChild haben, übernehmen wir
@@ -139,13 +140,20 @@ class KloKiEventController extends AbstractController
             }
         }
 
-        $form = $this->createForm(KloKiEventType::class, $kloKiEvent);
 
         // Wenn wir keine Admin sind, dürfen wir nur optionale Events anlegen!
-        if (!$this->isGranted("ROLE_ADMIN"))
+        if ($this->isGranted("ROLE_ADMIN"))
         {
-            $form->remove('isFixed');
+            $form = $this->createForm(KloKiEventType::class, $kloKiEvent);
+            $formTemplate = 'klo_ki_event/_form.html.twig';
+        }
+        else // Role: Food!
+        {
+            $form = $this->get('form.factory')->createNamed('klo_ki_event', KloKiEventFoodType::class, $kloKiEvent);
             $kloKiEvent->setIsFixed(false);
+            $kloKiEvent->setArt(EventArtType::RENTAL);
+            $formTemplate = 'klo_ki_event/_form_food.html.twig';
+
         }
 
         $form->handleRequest($request);
@@ -166,7 +174,7 @@ class KloKiEventController extends AbstractController
 
         // Wenn die Anfrage über AJAX kam, rendern wir nur das Formular!
         if ($request->isXmlHttpRequest()) {
-            return $this->render('klo_ki_event/_form.html.twig', [
+            return $this->render($formTemplate, [
                 'klo_ki_event' => $kloKiEvent,
                 'klo_ki_form_action' => $this->generateUrl('klo_ki_event_new'),
                 'form' => $form->createView()
@@ -175,6 +183,7 @@ class KloKiEventController extends AbstractController
 
         return $this->render('klo_ki_event/new.html.twig', [
             'klo_ki_event' => $kloKiEvent,
+            'form_template' => $formTemplate,
             'klo_ki_form_action' => $this->generateUrl('klo_ki_event_new'),
             'form' => $form->createView(),
         ]);
@@ -304,7 +313,18 @@ class KloKiEventController extends AbstractController
      */
     public function edit(Request $request, KloKiEvent $kloKiEvent): Response
     {
-        $form = $this->createForm(KloKiEventType::class, $kloKiEvent);
+        // Wenn wir keine Admin sind, dürfen wir nur optionale Events anlegen!
+        if ($this->isGranted("ROLE_ADMIN"))
+        {
+            $form = $this->createForm(KloKiEventType::class, $kloKiEvent);
+            $formTemplate = 'klo_ki_event/_form.html.twig';
+        }
+        else // Role: Food!
+        {
+            $form = $this->get('form.factory')->createNamed('klo_ki_event', KloKiEventFoodType::class, $kloKiEvent);
+            $formTemplate = 'klo_ki_event/_form_food.html.twig';
+        }
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -322,7 +342,7 @@ class KloKiEventController extends AbstractController
 
         // Wenn die Anfrage über AJAX kam, rendern wir nur das Formular!
          if ($request->isXmlHttpRequest()) {
-            return $this->render('klo_ki_event/_form.html.twig', [
+            return $this->render($formTemplate, [
                 'klo_ki_event' => $kloKiEvent,
                 'klo_ki_form_action' => $this->generateUrl('klo_ki_event_edit', ['id' => $kloKiEvent->getId()]),
                 'form' => $form->createView()
@@ -331,6 +351,7 @@ class KloKiEventController extends AbstractController
 
         return $this->render('klo_ki_event/edit.html.twig', [
             'klo_ki_event' => $kloKiEvent,
+            'form_template' => $formTemplate,
             'klo_ki_form_action' => $this->generateUrl('klo_ki_event_edit', ['id' => $kloKiEvent->getId()]),
             'form' => $form->createView(),
         ]);

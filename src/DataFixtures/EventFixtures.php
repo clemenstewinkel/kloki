@@ -3,17 +3,16 @@
 namespace App\DataFixtures;
 
 use App\DBAL\Types\ContractStateType;
+use App\DBAL\Types\EventArtType;
 use App\Entity\Addresse;
 use App\Entity\Ausstattung;
 use App\Entity\Bestuhlungsplan;
 use App\Entity\KloKiEvent;
 use App\Entity\KloKiEventKategorie;
-use App\Entity\KloKiEventType;
 use App\Entity\Room;
 use App\Entity\StageOrder;
 use App\Repository\AddresseRepository;
 use App\Repository\KloKiEventKategorieRepository;
-use App\Repository\KloKiEventTypeRepository;
 use App\Repository\RoomRepository;
 use App\Repository\UserRepository;
 use Cassandra\Date;
@@ -25,7 +24,6 @@ class EventFixtures extends Fixture
 {
     private $params;
     private $userRepo;
-    private $typeRepo;
     private $roomRepo;
     private $katRepo;
     private $addressRepo;
@@ -33,14 +31,12 @@ class EventFixtures extends Fixture
     public function __construct(
         ParameterBagInterface $params,
         UserRepository $userRepo,
-        KloKiEventTypeRepository $typeRepo,
         KloKiEventKategorieRepository $katRepo,
         AddresseRepository $addressRepo,
         RoomRepository $roomRepo)
     {
         $this->params = $params;
         $this->userRepo = $userRepo;
-        $this->typeRepo = $typeRepo;
         $this->roomRepo = $roomRepo;
         $this->katRepo = $katRepo;
         $this->addressRepo = $addressRepo;
@@ -48,7 +44,6 @@ class EventFixtures extends Fixture
 
     public function load(ObjectManager $manager)
     {
-        $eventKatIds = $this->katRepo->createQueryBuilder('a')->select('a.id')->getQuery()->getArrayResult();
         $roomIds = $this->roomRepo->createQueryBuilder('a')->select('a.id')->getQuery()->getArrayResult();
         /**
          * Events aus einer CSV-Datei lesen
@@ -106,7 +101,13 @@ class EventFixtures extends Fixture
                 $e->setHelperSpringerEins($this->userRepo->findOneBy(['name' => trim($a[10])]));
                 $e->setHelperSpringerZwei($this->userRepo->findOneBy(['name' => trim($a[11])]));
 
-                $e->setArt($this->typeRepo->findOneBy(['name' => trim($a[3])]));
+                if(strpos($a[3], 'Vermietung') !== false)
+                    $e->setArt(EventArtType::RENTAL);
+                elseif (strpos($a[3], 'Markt' ) !== false)
+                    $e->setArt(EventArtType::FAIR);
+                else
+                    $e->setArt(EventArtType::SHOW);
+
                 $roomId = array_rand($roomIds);
                 $e->setRoom($this->roomRepo->findOneBy(['id' => $roomIds[$roomId]['id']]));
 

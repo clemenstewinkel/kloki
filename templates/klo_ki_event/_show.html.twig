@@ -1,5 +1,8 @@
     <h1>{{ klo_ki_event.name }} ({{ klo_ki_event.room }})</h1>
-
+    <small>
+        angelegt: {{ klo_ki_event.createdAt | localizeddate('short', 'short') }}, {{ klo_ki_event.createdBy.name }} /
+        geändert: {{ klo_ki_event.updatedAt | localizeddate('short', 'short') }}, {{ klo_ki_event.updatedBy.name }}
+    </small>
     <table class="table table-sm">
         <tbody>
         {% if klo_ki_event.getProblemDetails %}
@@ -25,13 +28,19 @@
                 <td>{{ klo_ki_event.isFixed ? 'fest' : 'optioniert' }} / {{ klo_ki_event.contractState | readable_enum('ContractStateType') }}</td>
             </tr>
         {% endif %}
+        {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_FOOD') %}
+            <tr>
+                <th>Vertragsstatus</th>
+                <td>{{ klo_ki_event.contractState | readable_enum('ContractStateType') }}</td>
+            </tr>
+        {% endif %}
             <tr>
                 <th>Beginn und Dauer</th>
                 <td>{{ include('klo_ki_event/_time_range.html.twig', {'event': klo_ki_event}) }}</td>
             </tr>
             <tr>
                 <th>Art:</th>
-                <td>{{ klo_ki_event.art }} / {{ klo_ki_event.kategorie }}</td>
+                <td>{{ klo_ki_event.art | readable_enum('EventArtType') }} / {{ klo_ki_event.kategorie }}</td>
             </tr>
             <tr>
                 <th>Anzahl der Künstler</th>

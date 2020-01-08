@@ -12,15 +12,8 @@
         {{ form_widget(form.name) }}
         {{ form_errors(form.name) }}
     </div>
-    <div class="col-sm-2">
-    {% if form.isFixed is defined %}
-        {{ form_widget(form.isFixed) }}
-    {% endif %}
-    </div>
-    <div class="col-sm-2">
-        {% if form.contractState is defined %}
-            {{ form_widget(form.contractState) }}
-        {% endif %}
+    <div class="col-sm-4">
+        {{ form_widget(form.pleaseMakeContract, {'label': 'Bitte Vertrag anfertigen'}) }}
     </div>
 </div>
 

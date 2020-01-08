@@ -9,7 +9,7 @@
 {% block body %}
     <h1>Event bearbeiten</h1>
 
-    {{ include('klo_ki_event/_form.html.twig') }}
+    {{ include(form_template) }}
 
     <a href="{{ path('klo_ki_event_index') }}">Zurück zur Liste</a>
 

@@ -16,6 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use App\Validator\Constraints as MyAssert;
 
 use App\DBAL\Types\ContractStateType;
+use App\DBAL\Types\EventArtType;
 use Fresh\DoctrineEnumBundle\Validator\Constraints as DoctrineAssert;
 
 
@@ -44,8 +45,8 @@ class KloKiEvent
     private $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\KloKiEventType", inversedBy="kloKiEvents")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\Column(name="art", type="EventArtType", nullable=false)
+     * @DoctrineAssert\Enum(entity="App\DBAL\Types\EventArtType")
      * @Groups({"events:read"})
      */
     private $art;
@@ -289,6 +290,25 @@ class KloKiEvent
             return $this->end;
     }
 
+    public function getPleaseMakeContract():bool
+    {
+        if($this->getContractState() == null ) return false;
+        return $this->getContractState() != ContractStateType::NONE;
+    }
+
+    public function setPleaseMakeContract(bool $s)
+    {
+        if($s && ($this->getContractState() == ContractStateType::NONE || $this->getContractState() == null))
+        {
+            $this->setContractState(ContractStateType::REQUESTED);
+        }
+        if((!$s) && ($this->getContractState() == ContractStateType::REQUESTED))
+        {
+            $this->setContractState(ContractStateType::NONE);
+        }
+        return $this;
+    }
+
     public function getRoomFee() : ?int
     {
         return $this->is4HoursDeal? $this->getRoom()->getHalfDayPrice() : $this->getRoom()->getFullDayPrice();
@@ -405,12 +425,12 @@ class KloKiEvent
         return $this;
     }
 
-    public function getArt(): ?KloKiEventType
+    public function getArt()
     {
         return $this->art;
     }
 
-    public function setArt(?KloKiEventType $art): self
+    public function setArt($art): self
     {
         $this->art = $art;
 

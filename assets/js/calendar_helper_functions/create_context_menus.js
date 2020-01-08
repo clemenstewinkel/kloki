@@ -4,7 +4,7 @@ import loadEditEventForm from "./loadEditEventForm";
 import confirmDelete from "./confirmDelete";
 import {userRoles} from "../calendar";
 import loadChildEventForm from "./loadChildEventForm";
-
+import isEventCreatedByFoodRole from "./isEventCreatedByFoodRole";
 
 
 export default function create_context_menus()
@@ -25,19 +25,72 @@ export default function create_context_menus()
             items: {
                 edit: {name: "Edit", icon: "edit"},
                 delete: {name: "Delete", icon: "delete"},
-                vertrag: {name: "Mietvertrag", icon: "edit"},
+                vertrag: {
+                    name: "Mietvertrag",
+                    icon: "edit",
+                    visible: function(key, opt){
+                        let event_id = $(this).data('event-id');
+                        // Hide this item if our event has a parent itself
+                        return (fullcalendar.getEventById(event_id).extendedProps['ParentEvent'] === null);
+                    }
+                },
                 child: {
                     name: "zus. Event zu diesem Event anlegen",
                     icon: "edit",
                     visible: function(key, opt){
                         let event_id = $(this).data('event-id');
-                        // Hide this item if the menu was triggered on a div
-                        return (fullcalendar.getEventById(event_id).extendedProps.ParentEvent === null);
+                        // Hide this item if our event has a parent itself
+                        return (fullcalendar.getEventById(event_id).extendedProps['ParentEvent'] === null);
                     }
                 }
             }
         });
     }
+    else if (userRoles.includes('ROLE_FOOD'))
+    {
+        $.contextMenu({
+            selector: '.js-kloki-event',
+            callback: function(key) {
+                let event_id = $(this).data('event-id');
+                switch(key){
+                    case 'edit': loadEditEventForm(event_id); break;
+                    case 'delete': confirmDelete(event_id); break;
+                    case 'vertrag': window.open('createWord/' + event_id); break;
+                    case 'child': console.dir(fullcalendar.getEventById(event_id).extendedProps.ParentEvent); loadChildEventForm(event_id); break;
+                }
+            },
+            items: {
+                edit: {
+                    name: "Edit",
+                    icon: "edit",
+                    visible: function(key, opt) {
+                        let event_id = $(this).data('event-id');
+                        let eventData = fullcalendar.getEventById(event_id);
+                        return (isEventCreatedByFoodRole(eventData.extendedProps) && (!eventData.extendedProps.isFixed));
+                    }
+
+                },
+                delete: {
+                    name: "Delete",
+                    icon: "delete",
+                    visible: function(key, opt) {
+                        let event_id = $(this).data('event-id');
+                        let eventData = fullcalendar.getEventById(event_id);
+                        return (isEventCreatedByFoodRole(eventData.extendedProps) && (!eventData.extendedProps.isFixed));
+                    }
+                },
+                child: {
+                    name: "zus. Event zu diesem Event anlegen",
+                    icon: "edit",
+                    visible: function(key, opt){
+                        let event_id = $(this).data('event-id');
+                        return isEventCreatedByFoodRole(fullcalendar.getEventById(event_id).extendedProps);
+                    }
+                }
+            }
+        });
+    }
+
 
 
     $.contextMenu({
