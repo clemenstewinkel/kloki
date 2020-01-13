@@ -44,6 +44,20 @@
 </div>
 
 
+<div class="form-group row">
+    <label class="col-form-label col-sm-2">Mietpreis:</label>
+    <div class="col-sm-4">
+        {{ form_widget(form.isReducedPrice, {'label': '10% Rabatt'}) }}
+    </div>
+    <div class="col-sm-4">
+        {{ form_widget(form.is4hPrice, {'label': '4h-Preis'}) }}
+    </div>
+</div>
+
+
+
+
+<hr/>
 {{ form_row(form.allDay) }}
 
 <div class="form-group row {% if form.startDate.vars.errors|length %} is-invalid {% endif %}">
@@ -56,6 +70,7 @@
         {{ form_widget(form.startTime, {attr: {class: form.endDate.vars.errors|length ? 'is-invalid js-event-time-field' : 'js-event-time-field'}}) }}
     </div>
 </div>
+<hr/>
 
 
 <div class="form-group row {% if form.endDate.vars.errors|length %} is-invalid {% endif %}">

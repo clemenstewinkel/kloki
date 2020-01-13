@@ -23,6 +23,19 @@
                     <option value="fair"   {% if "fair"   in app.request.query.get('art') %} selected="selected" {% endif %}> {{ "fair"   | readable_enum('EventArtType') }}</option>
                 </select>
             </div>
+
+            <div class="col">
+                <select name="contractState[]" data-width="fit" class="selectpicker" title="Vertragsstatus..." multiple>
+                    <option value="none"      {% if "none"      in app.request.query.get('contractState') %} selected="selected" {% endif %}> {{ "none"      | readable_enum('ContractStateType') }}</option>
+                    <option value="requested" {% if "requested" in app.request.query.get('contractState') %} selected="selected" {% endif %}> {{ "requested" | readable_enum('ContractStateType') }}</option>
+                    <option value="sent"      {% if "sent"      in app.request.query.get('contractState') %} selected="selected" {% endif %}> {{ "sent"      | readable_enum('ContractStateType') }}</option>
+                    <option value="received"  {% if "received"  in app.request.query.get('contractState') %} selected="selected" {% endif %}> {{ "received"  | readable_enum('ContractStateType') }}</option>
+                </select>
+            </div>
+
+
+
+
             <div class="col">
                 <input type="text" id="event_filter_startDate" class="form-control" autocomplete="off" name="beginAtAfter" value="{{ app.request.query.get('beginAtAfter') }}" placeholder="Datum ab"/>
             </div>
@@ -43,7 +56,7 @@
             <tr>
                 <th>{{ knp_pagination_sortable(pagination, 'Name', 'event.name') }}</th>
                 <th>{{ knp_pagination_sortable(pagination, 'Ort', 'room.id') }}</th>
-                <th>{{ knp_pagination_sortable(pagination, 'Begin und Dauer', 'event.beginAt') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'Begin und Dauer', 'event.start') }}</th>
                 <th>Anz. Künstl.</th>
                 <th>Bestuhlt?</th>
                 <th>Licht?</th>
@@ -64,6 +77,7 @@
                 <td>{{ klo_ki_event.isLichtBenoetigt ? 'Ja' : 'Nein' }}</td>
                 <td>{{ klo_ki_event.isTonBenoetigt ? 'Ja' : 'Nein' }}</td>
                 <td>{{ klo_ki_event.art | readable_enum('EventArtType') }}</td>
+                <td>{{ klo_ki_event.contractState | readable_enum('ContractStateType') }}</td>
                 <td>{{ klo_ki_event.kontakt }}</td>
                 <td>
                     <a href="{{ path('klo_ki_event_show', {'id': klo_ki_event.id}) }}"><span class="fas fa-eye"></span></a>

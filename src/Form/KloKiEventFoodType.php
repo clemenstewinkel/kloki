@@ -36,6 +36,8 @@ class KloKiEventFoodType extends AbstractType
             ->add('isLichtBenoetigt',   null, ['label' => "Licht erforderlich"])
             ->add('isTonBenoetigt',     null, ['label' => "Ton erforderlich"])
             ->add('pleaseMakeContract', CheckboxType::class)
+            ->add('isReducedPrice', CheckboxType::class)
+            ->add('is4hPrice', CheckboxType::class)
             ->add('helperRequired', null, ['label' => "Helfer werden benötigt"])
             ->add('kategorie', null, ['label' => "Kategorie"])
             ->add('room', null, ['label' => 'Raum'])

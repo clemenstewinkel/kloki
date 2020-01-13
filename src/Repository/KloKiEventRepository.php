@@ -28,6 +28,11 @@ class KloKiEventRepository extends ServiceEntityRepository
         if($request->query->get('art'))
             $queryBuilder->andWhere('event.art IN (:art)')->setParameter('art', $request->query->get('art'));
 
+        if($request->query->get('contractState'))
+            $queryBuilder->andWhere('event.contractState IN (:contractState)')->setParameter('contractState', $request->query->get('contractState'));
+
+
+
         if($beginAtAfter = $request->query->get('beginAtAfter'))
             $queryBuilder->andWhere('event.start > :beginAtAfter')->setParameter('beginAtAfter', $beginAtAfter);
 

@@ -1,7 +1,7 @@
     <h1>{{ klo_ki_event.name }} ({{ klo_ki_event.room }})</h1>
     <small>
-        angelegt: {{ klo_ki_event.createdAt | localizeddate('short', 'short') }}, {{ klo_ki_event.createdBy.name }} /
-        geändert: {{ klo_ki_event.updatedAt | localizeddate('short', 'short') }}, {{ klo_ki_event.updatedBy.name }}
+        angelegt: {{ klo_ki_event.createdAt | localizeddate('short', 'short') }}, {{ klo_ki_event.createdBy ? klo_ki_event.createdBy.name : '' }} /
+        geändert: {{ klo_ki_event.updatedAt | localizeddate('short', 'short') }}, {{ klo_ki_event.updatedBy ? klo_ki_event.updatedBy.name : ''}}
     </small>
     <table class="table table-sm">
         <tbody>
@@ -42,6 +42,13 @@
                 <th>Art:</th>
                 <td>{{ klo_ki_event.art | readable_enum('EventArtType') }} / {{ klo_ki_event.kategorie }}</td>
             </tr>
+            {% if klo_ki_event.art == 'rental' %}
+                <tr>
+                    <th>Preis:</th>
+                    <td>{{ (klo_ki_event.bruttoPreis / 100) | number_format(2, ',', '.')}} € inkl. MwSt.{{ klo_ki_event.is4hPrice ? ', 4h' : '' }}{{ klo_ki_event.isReducedPrice ? ', 10% Rabatt' }}</td>
+                </tr>
+            {% endif %}
+
             <tr>
                 <th>Anzahl der Künstler</th>
                 <td>{{ klo_ki_event.anzahlArtists }}</td>
@@ -52,8 +59,26 @@
             </tr>
             <tr>
                 <th>Licht nötig?</th>
-                <td>{{ klo_ki_event.isLichtBenoetigt ? 'Ja' : 'Nein' }}</td>
+                <td>
+                    {%  if klo_ki_event.isLichtBenoetigt %}
+                        Ja: {{ klo_ki_event.lichtTechniker ?: 'N/A' }}
+                    {% else %}
+                        Nein
+                    {% endif %}
+                </td>
             </tr>
+            <tr>
+                <th>Ton nötig?</th>
+                <td>
+                    {% if klo_ki_event.isTonBenoetigt %}
+                        Ja: {{ klo_ki_event.tonTechniker ?: 'N/A'}}
+                    {% else %}
+                        Nein
+                    {% endif %}
+                </td>
+            </tr>
+
+
             <tr>
                 <th>Helfer nötig?</th>
                 <td>{% if klo_ki_event.helperRequired %}
@@ -76,31 +101,6 @@
                     <td><a href="{{ path('klo_ki_event_show', {'id': klo_ki_event.parentEvent.id } ) }}">{{ klo_ki_event.parentEvent }}</a></td>
                 </tr>
             {% endif %}
-        <tr>
-            <th>Angelegt von</th>
-            <td>{{ klo_ki_event.createdBy }}</td>
-        </tr>
-
-        <tr>
-            <th>Lichttechniker</th>
-            <td>{{ klo_ki_event.lichtTechniker }}</td>
-        </tr>
-        <tr>
-            <th>Tontechniker</th>
-            <td>{{ klo_ki_event.tonTechniker }}</td>
-        </tr>
-        <tr>
-            <th>Zuletzt bearbeitet von</th>
-            <td>{{ klo_ki_event.updatedBy }}</td>
-        </tr>
-        <tr>
-            <th>Angelegt am</th>
-            <td>{{ klo_ki_event.createdAt | localizeddate('full', 'short') }}</td>
-        </tr>
-        <tr>
-            <th>Zuletzt bearbeitet</th>
-            <td>{{ klo_ki_event.updatedAt | localizeddate('full', 'short') }}</td>
-        </tr>
 
 
         </tbody>
@@ -116,7 +116,7 @@
     <ul>
         {%  for a in klo_ki_event.ausstattung  %}
             {# @ var a App\Entity\Ausstattung #}
-        <li>{{ a }}</li>
+        <li>{{ a }} ({{ (a.bruttoPreis/100) | number_format(2, ',', '.') }} € inkl. MwSt.)</li>
         {% endfor %}
     </ul>
     {% endif %}
@@ -172,7 +172,7 @@
 
 
 
-    {% if is_granted('ROLE_ADMIN') %}
+    {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_FOOD') %}
         <hr/>
         <a class="btn btn-primary" href="{{ path('klo_ki_event_edit', {'id': klo_ki_event.id}) }}">
             Bearbeiten

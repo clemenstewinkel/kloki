@@ -266,6 +266,16 @@ class KloKiEvent
      */
     private $is4HoursDeal;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isReducedPrice;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $is4hPrice;
+
 
     /**
      * @Groups({"events:read"})
@@ -311,7 +321,8 @@ class KloKiEvent
 
     public function getRoomFee() : ?int
     {
-        return $this->is4HoursDeal? $this->getRoom()->getHalfDayPrice() : $this->getRoom()->getFullDayPrice();
+        $fullPrice = $this->is4hPrice ? $this->getRoom()->getHalfDayPrice() : $this->getRoom()->getFullDayPrice();
+        return $this->getIsReducedPrice() ? $fullPrice * 0.9 : $fullPrice;
     }
 
     public function set_FC_end($end) : self
@@ -370,10 +381,7 @@ class KloKiEvent
     public function getBruttoPreis()
     {
         $preis = $this->getRoomFee();
-        foreach ($this->getAusstattung() as $a)
-        {
-            $preis += $a->getBruttoPreis();
-        }
+        $preis += $this->getBruttoAusstattungPreis();
         foreach ($this->getChildEvents() as $e)
         {
             $preis += $e->getBruttoPreis();
@@ -395,6 +403,32 @@ class KloKiEvent
         return $preis;
     }
 
+    /**
+     * Auf die Raum-Miete fällt keine MwSt. an.
+     */
+    public function getAllRoomFees()
+    {
+        $preis = $this->getRoomFee();
+        foreach ($this->getChildEvents() as $e)
+        {
+            $preis += $e->getRoomFee();
+        }
+        return $preis;
+    }
+
+    /**
+     * Liefert den Brutto-Summenpreis aller Ausstattungen dieses Events.
+     * @return int
+     */
+    public function getBruttoAusstattungPreis()
+    {
+        $preis = 0;
+        foreach ($this->getAusstattung() as $a)
+        {
+            $preis += $a->getBruttoPreis();
+        }
+        return $preis;
+    }
 
     public function __construct()
     {
@@ -884,14 +918,26 @@ class KloKiEvent
         return $this;
     }
 
-    public function getIs4HoursDeal(): ?bool
+    public function getIsReducedPrice(): ?bool
     {
-        return $this->is4HoursDeal;
+        return $this->isReducedPrice;
     }
 
-    public function setIs4HoursDeal(?bool $is4HoursDeal): self
+    public function setIsReducedPrice(bool $isReducedPrice): self
     {
-        $this->is4HoursDeal = $is4HoursDeal;
+        $this->isReducedPrice = $isReducedPrice;
+
+        return $this;
+    }
+
+    public function getIs4hPrice(): ?bool
+    {
+        return $this->is4hPrice;
+    }
+
+    public function setIs4hPrice(bool $is4hPrice): self
+    {
+        $this->is4hPrice = $is4hPrice;
 
         return $this;
     }

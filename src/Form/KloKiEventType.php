@@ -8,6 +8,7 @@ use App\Repository\KloKiEventRepository;
 use App\Repository\UserRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -100,6 +101,8 @@ class KloKiEventType extends AbstractType
                 ])
 
             ->add('art', null, ['label' => "Art"])
+            ->add('isReducedPrice', CheckboxType::class)
+            ->add('is4hPrice', CheckboxType::class)
             ->add('kategorie', null, ['label' => "Kategorie"])
             ->add('room', null, ['label' => 'Raum'])
             ->add('kontakt', AddressSelectType::class, ['required' => true])
