@@ -30,6 +30,31 @@ class KloKiEventRepository extends ServiceEntityRepository
 
         if($request->query->get('contractState'))
             $queryBuilder->andWhere('event.contractState IN (:contractState)')->setParameter('contractState', $request->query->get('contractState'));
+        if($request->query->get('hotelState'))
+            $queryBuilder->andWhere('event.hotelState IN (:hotelState)')->setParameter('hotelState', $request->query->get('hotelState'));
+        if($request->query->get('pressMaterialState'))
+            $queryBuilder->andWhere('event.pressMaterialState IN (:pressMaterialState)')->setParameter('pressMaterialState', $request->query->get('pressMaterialState'));
+
+        if($request->query->get('state') == 'fixed')
+            $queryBuilder->andWhere('event.isFixed = 1');
+        if($request->query->get('state') == 'option')
+            $queryBuilder->andWhere('event.isFixed = 0');
+
+        if($request->query->get('tech') && in_array('sound', $request->query->get('tech')))
+        {
+            $queryBuilder->andWhere('event.isTonBenoetigt = 1');
+            $queryBuilder->andWhere('event.TonTechniker IS NULL');
+        }
+        if($request->query->get('tech') && in_array('light', $request->query->get('tech')))
+        {
+            $queryBuilder->andWhere('event.isLichtBenoetigt = 1');
+            $queryBuilder->andWhere('event.LichtTechniker IS NULL');
+        }
+
+        if($request->query->get('ba') == 'avail')
+            $queryBuilder->andWhere('event.stageOrder IS NOT NULL');
+        if($request->query->get('ba') == 'miss')
+            $queryBuilder->andWhere('event.stageOrder IS NULL');
 
 
 
@@ -41,6 +66,8 @@ class KloKiEventRepository extends ServiceEntityRepository
 
         if($nameContains = $request->query->get('name_contains'))
             $queryBuilder->andWhere('event.name LIKE :nameContains')->setParameter('nameContains', '%' . $nameContains . '%');
+
+        $queryBuilder->orderBy('event.start', 'ASC');
         return $queryBuilder;
     }
 }

@@ -9,14 +9,14 @@
 
 
 {% block body %}
-    <h1>Neues Event</h1>
-
-    <div class="col-md-4" >
-
-    {{ include(form_template) }}
+    <div class="container">
+        <h1>Neues Event</h1>
 
 
-    <a href="{{ path('klo_ki_event_index') }}">Zurück zur Liste</a>
+        {{ include(form_template) }}
+
+
+        <a href="{{ path('klo_ki_event_index') }}">Zurück zur Liste</a>
     </div>
 
     {{ encore_entry_script_tags('new-event-form') }}

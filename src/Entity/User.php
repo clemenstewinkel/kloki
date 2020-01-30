@@ -104,6 +104,11 @@ class User implements UserInterface
      */
     private $address;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\KloKiEvent", mappedBy="helperGarderobe")
+     */
+    private $garderobeAtEvents;
+
     public function __construct()
     {
         $this->kloKiEvents = new ArrayCollection();
@@ -114,6 +119,7 @@ class User implements UserInterface
         $this->springerZweiAtEvents = new ArrayCollection();
         $this->eventsLicht = new ArrayCollection();
         $this->eventsTon = new ArrayCollection();
+        $this->garderobeAtEvents = new ArrayCollection();
     }
 
     /**
@@ -482,6 +488,50 @@ class User implements UserInterface
     public function setAddress(?Addresse $address): self
     {
         $this->address = $address;
+
+        return $this;
+    }
+
+    public function isDeletable(): bool
+    {
+        return (
+            $this->getEinlassEinsAtEvents()->isEmpty() &&
+            $this->getEinlassZweiAtEvents()->isEmpty() &&
+            $this->getKasseAtEvents()->isEmpty() &&
+            $this->getSpringerEinsAtEvents()->isEmpty() &&
+            $this->getSpringerZweiAtEvents()->isEmpty() &&
+            $this->getEventsLicht()->isEmpty() &&
+            $this->getEventsTon()->isEmpty()
+        );
+    }
+
+    /**
+     * @return Collection|KloKiEvent[]
+     */
+    public function getGarderobeAtEvents(): Collection
+    {
+        return $this->garderobeAtEvents;
+    }
+
+    public function addGarderobeAtEvent(KloKiEvent $garderobeAtEvent): self
+    {
+        if (!$this->garderobeAtEvents->contains($garderobeAtEvent)) {
+            $this->garderobeAtEvents[] = $garderobeAtEvent;
+            $garderobeAtEvent->setHelperGarderobe($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGarderobeAtEvent(KloKiEvent $garderobeAtEvent): self
+    {
+        if ($this->garderobeAtEvents->contains($garderobeAtEvent)) {
+            $this->garderobeAtEvents->removeElement($garderobeAtEvent);
+            // set the owning side to null (unless already changed)
+            if ($garderobeAtEvent->getHelperGarderobe() === $this) {
+                $garderobeAtEvent->setHelperGarderobe(null);
+            }
+        }
 
         return $this;
     }

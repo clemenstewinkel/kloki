@@ -140,7 +140,6 @@ class KloKiEventController extends AbstractController
             }
         }
 
-
         // Wenn wir keine Admin sind, dürfen wir nur optionale Events anlegen!
         if ($this->isGranted("ROLE_ADMIN"))
         {
@@ -153,7 +152,6 @@ class KloKiEventController extends AbstractController
             $kloKiEvent->setIsFixed(false);
             $kloKiEvent->setArt(EventArtType::RENTAL);
             $formTemplate = 'klo_ki_event/_form_food.html.twig';
-
         }
 
         $form->handleRequest($request);

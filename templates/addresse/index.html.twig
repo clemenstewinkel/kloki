@@ -31,7 +31,9 @@
                 <td>
                     <a class="btn btn-primary" href="{{ path('addresse_show', {'id': addresse.id}) }}">Details</a>
                     <a class="btn btn-primary" href="{{ path('addresse_edit', {'id': addresse.id}) }}">Bearbeiten</a>
-                    {{ include('addresse/_delete_form.html.twig') }}
+                    {% if addresse.kloKiEvents.count == 0 %}
+                        {{ include('addresse/_delete_form.html.twig') }}
+                    {% endif %}
 
                 </td>
             </tr>

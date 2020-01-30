@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use App\DBAL\Types\HotelStateType;
+use App\DBAL\Types\PressMaterialStateType;
 use Gedmo\Blameable\Traits\BlameableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -67,21 +69,6 @@ class KloKiEvent
      */
     private $contractState;
 
-    /**
-     * @return mixed
-     */
-    public function getContractState() : ?string
-    {
-        return $this->contractState;
-    }
-
-    /**
-     * @param mixed $contractState
-     */
-    public function setContractState($contractState): void
-    {
-        $this->contractState = $contractState;
-    }
 
     /**
      * @ORM\Column(type="datetime")
@@ -120,6 +107,14 @@ class KloKiEvent
      * Ist ein Bestuhlungsplan nötig
      */
     private $isBestBenoetigt;
+
+    /**
+     * @ORM\Column(type="boolean")
+     * @Groups({"events:read"})
+     * Fest oder nur optioniert?
+     */
+    private $isFixed;
+
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Bestuhlungsplan", inversedBy="kloKiEvents")
@@ -187,14 +182,10 @@ class KloKiEvent
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\StageOrder", inversedBy="kloKiEvents")
+     * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $stageOrder;
 
-    /**
-     * @ORM\Column(type="boolean")
-     * @Groups({"events:read"})
-     */
-    private $isFixed;
 
     /**
      * @ORM\Column(type="boolean")
@@ -245,6 +236,11 @@ class KloKiEvent
     private $helperSpringerZwei;
 
     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="garderobeAtEvents")
+     */
+    private $helperGarderobe;
+
+    /**
      * @ORM\Column(type="boolean", nullable=true)
      * @Groups({"events:read"})
      */
@@ -276,6 +272,248 @@ class KloKiEvent
      */
     private $is4hPrice;
 
+    /**
+     * Note, that type of a field should be same as you set in Doctrine config
+     * (in this case it is HotelStateType)
+     *
+     * @ORM\Column(type="HotelStateType", nullable=false)
+     * @DoctrineAssert\Enum(entity="App\DBAL\Types\HotelStateType")
+     */
+    private $hotelState;
+
+    /**
+     * @ORM\Column(type="PressMaterialStateType")
+     */
+    private $pressMaterialState;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $overnightStays;
+
+
+    public function __construct()
+    {
+        $this->Ausstattung      = new ArrayCollection();
+        $this->childEvents      = new ArrayCollection();
+        $this->availableHelpers = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return $this->getStart()->format('Y-m-d') . ' ' . $this->name . ' (' . $this->getRoom()->getName() . ')';
+    }
+
+
+    ////////////////////////////////////////////
+    /// Setters
+    ////////////////////////////////////////////
+
+    public function setName($name):                                   self { $this->name = $name;                             return $this; }
+    public function setArt($art):                                     self { $this->art = $art;                               return $this; }
+    public function setKategorie(?KloKiEventKategorie $kategorie):    self { $this->kategorie = $kategorie;                   return $this; }
+    public function setRoom(?Room $room):                             self { $this->room = $room;                             return $this; }
+    public function setKontakt(?Addresse $kontakt):                   self { $this->kontakt = $kontakt;                       return $this; }
+    public function setBestPlan(?Bestuhlungsplan $bestPlan):          self { $this->bestPlan = $bestPlan;                     return $this; }
+    public function setStageOrder(?StageOrder $stageOrder):           self { $this->stageOrder = $stageOrder;                 return $this; }
+    public function setHelperKasse(?User $helperKasse):               self { $this->helperKasse = $helperKasse;               return $this; }
+    public function setHelperEinlassEins(?User $helperEinlassEins):   self { $this->helperEinlassEins = $helperEinlassEins;   return $this; }
+    public function setHelperEinlassZwei(?User $helperEinlassZwei):   self { $this->helperEinlassZwei = $helperEinlassZwei;   return $this; }
+    public function setHelperSpringerEins(?User $helperSpringerEins): self { $this->helperSpringerEins = $helperSpringerEins; return $this; }
+    public function setHelperSpringerZwei(?User $helperSpringerZwei): self { $this->helperSpringerZwei = $helperSpringerZwei; return $this; }
+    public function setStart($start):                                 self { $this->start = $start;                           return $this; }
+    public function setEnd($end):                                     self { $this->end = $end;                               return $this; }
+    public function setAnzahlArtists(?int $anzahlArtists):            self { $this->anzahlArtists = $anzahlArtists;           return $this; }
+    public function setIsBestBenoetigt(bool $isBestBenoetigt):        self { $this->isBestBenoetigt = $isBestBenoetigt;       return $this; }
+    public function setIsLichtBenoetigt(bool $isLichtBenoetigt):      self { $this->isLichtBenoetigt = $isLichtBenoetigt;     return $this; }
+    public function setLichtTechniker(?User $LichtTechniker):         self { $this->LichtTechniker = $LichtTechniker;         return $this; }
+    public function setTonTechniker(?User $TonTechniker):             self { $this->TonTechniker = $TonTechniker;             return $this; }
+    public function setIsReducedPrice(bool $isReducedPrice):          self { $this->isReducedPrice = $isReducedPrice;         return $this; }
+    public function setIs4hPrice(bool $is4hPrice):                    self { $this->is4hPrice = $is4hPrice;                   return $this; }
+    public function setHelperGarderobe(?User $helperGarderobe):       self { $this->helperGarderobe = $helperGarderobe;       return $this; }
+    public function setHotelState($hotelState):                       self { $this->hotelState = $hotelState;                 return $this; }
+    public function setPressMaterialState($pressMaterialState):       self { $this->pressMaterialState = $pressMaterialState; return $this; }
+    public function setOvernightStays(?int $overnightStays):          self { $this->overnightStays = $overnightStays;         return $this; }
+    public function setContractState($contractState):                 self { $this->contractState = $contractState;           return $this; }
+    public function setParentEvent(?self $ParentEvent):               self { $this->ParentEvent = $ParentEvent;               return $this; }
+    public function setBemerkung(?string $Bemerkung):                 self { $this->Bemerkung = $Bemerkung;                   return $this; }
+    public function setIsFixed(bool $isFixed):                        self { $this->isFixed = $isFixed;                       return $this; }
+    public function setIsTonBenoetigt(bool $isTonBenoetigt):          self { $this->isTonBenoetigt = $isTonBenoetigt;         return $this; }
+    public function setHelperRequired(bool $helperRequired):          self { $this->helperRequired = $helperRequired;         return $this; }
+    public function setAllDay(?bool $allDay):                         self { $this->allDay = $allDay;                         return $this; }
+
+    public function set_FC_end($end) : self
+    {
+        // Bei allDay-Events liefert FullCalendar als Ende-Datum das Datum des
+        // ersten Tages NACH dem Event. Wir haben aber das letzte Datum des Events in der Datenbank stehen!
+        if($this->allDay)
+            $this->end = $end->sub(new \DateInterval('P1D'));
+        else
+            $this->end = $end;
+        return $this;
+    }
+    public function setPleaseMakeContract(bool $s)
+    {
+        if($s && ($this->getContractState() == ContractStateType::NONE || $this->getContractState() == null))
+        {
+            $this->setContractState(ContractStateType::REQUESTED);
+        }
+        if((!$s) && ($this->getContractState() == ContractStateType::REQUESTED))
+        {
+            $this->setContractState(ContractStateType::NONE);
+        }
+        return $this;
+    }
+
+
+
+
+
+    /**
+     * @param mixed $startDate
+     */
+    public function setStartDate($startDate): self
+    {
+        if($this->start)
+            $this->start = new \DateTime($startDate->format('Y-m-d ') . $this->start->format('H:i'));
+        else
+            $this->start = $startDate;
+        return $this;
+    }
+
+
+    /**
+     * @param mixed $endDate
+     */
+    public function setEndDate($endDate): self
+    {
+        if($this->end)
+            $this->end = new \DateTime($endDate->format('Y-m-d ') . $this->end->format('H:i'));
+        else
+            $this->end = $endDate;
+        return $this;
+    }
+
+
+    /**
+     * @param mixed $startTime
+     */
+    public function setStartTime($startTime): self
+    {
+        if($this->start && $startTime)
+        {
+            $this->start = new \DateTime($this->start->format('Y-m-d ') . $startTime->format('H:i'));
+        }
+        return $this;
+    }
+
+    /**
+     * @param mixed $endTime
+     */
+    public function setEndTime($endTime): self
+    {
+        if($this->end)
+        {
+            if($endTime)
+                $this->end = new \DateTime($this->end->format('Y-m-d ') . $endTime->format('H:i'));
+            else
+                $this->end = new \DateTime($this->end->format('Y-m-d ') . '23:30');
+        }
+        return $this;
+    }
+
+
+    //////////////////////////////////
+    // Getter
+    //////////////////////////////////
+
+    // Boolean-Getters
+    public function getIsReducedPrice():        ?bool   { return $this->isReducedPrice;     }
+    public function getIs4hPrice():             ?bool   { return $this->is4hPrice;          }
+    public function getAllDay():                ?bool   { return $this->allDay;             }
+    public function getIsTonBenoetigt():        ?bool   { return $this->isTonBenoetigt;     }
+    public function getHelperRequired():        ?bool   { return $this->helperRequired;     }
+    public function getIsBestBenoetigt():       ?bool   { return $this->isBestBenoetigt;    }
+    public function getIsLichtBenoetigt():      ?bool   { return $this->isLichtBenoetigt;   }
+    public function getIsFixed():               ?bool   { return $this->isFixed;            }
+
+    // Integer-Getters
+    public function getId():                    ?int    { return $this->id;                 }
+    public function getAnzahlArtists():         ?int    { return $this->anzahlArtists;      }
+    public function getOvernightStays():        ?int    { return $this->overnightStays;     }
+
+    // User-Getters
+    public function getHelperGarderobe():       ?User   { return $this->helperGarderobe;    }
+    public function getTonTechniker():          ?User   { return $this->TonTechniker;       }
+    public function getLichtTechniker():        ?User   { return $this->LichtTechniker;     }
+    public function getHelperEinlassEins():     ?User   { return $this->helperEinlassEins;  }
+    public function getHelperEinlassZwei():     ?User   { return $this->helperEinlassZwei;  }
+    public function getHelperKasse():           ?User   { return $this->helperKasse;        }
+    public function getHelperSpringerEins():    ?User   { return $this->helperSpringerEins; }
+    public function getHelperSpringerZwei():    ?User   { return $this->helperSpringerZwei; }
+    public function getCreatedBy():             ?User   { return $this->createdBy;          }
+    public function getUpdatedBy():             ?User   { return $this->updatedBy;          }
+
+    // Enum-Getters
+    public function getPressMaterialState()             { return $this->pressMaterialState; }
+    public function getHotelState()                     { return $this->hotelState;         }
+    public function getContractState():         ?string { return $this->contractState;      }
+    public function getArt()                            { return $this->art;                }
+
+    // String-Getters
+    public function getName():                  ?string { return $this->name;               }
+    public function getBemerkung():             ?string { return $this->Bemerkung;          }
+
+    // Entity-Getters
+    public function getKategorie():   ?KloKiEventKategorie  { return $this->kategorie;    }
+    public function getRoom():        ?Room                 { return $this->room;         }
+    public function getKontakt():     ?Addresse             { return $this->kontakt;      }
+    public function getBestPlan():    ?Bestuhlungsplan      { return $this->bestPlan;     }
+    public function getStageOrder():  ?StageOrder           { return $this->stageOrder;   }
+    public function getParentEvent(): ?self                 { return $this->ParentEvent;  }
+
+    // Time-Getters
+    public function getStart(): ?\DateTimeInterface         { return $this->start;        }
+    public function getEnd():   ?\DateTimeInterface         { return $this->end;          }
+
+    // Collections
+    public function getChildEvents():      Collection    { return $this->childEvents;      }
+    public function getAusstattung():      Collection    { return $this->Ausstattung;      }
+    public function getAvailableHelpers(): Collection    { return $this->availableHelpers; }
+
+    /**
+     * @return mixed
+     * @Assert\NotBlank()
+     */
+    public function getStartDate()
+    {
+        return $this->start;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStartTime()
+    {
+        return $this->start;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEndTime()
+    {
+        return $this->end;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEndDate()
+    {
+        return $this->end;
+    }
+
 
     /**
      * @Groups({"events:read"})
@@ -283,6 +521,179 @@ class KloKiEvent
     public function getResourceId()
     {
         return $this->getRoom()->getId();
+    }
+
+
+    /****************************
+     * Price-Functions
+     *****************************/
+
+    /**
+     * Gibt die Raummiete dieses Events zurück.
+     * Dabei wird berücksichtigt, ob es ein 4h-Event ist und ob der
+     * Kunde einen 10%-Rabatt bekommt.
+     * Keine MwSt für Raummiete, also Brutto=Netto
+     * @return int|null
+     */
+    public function getRoomFee() : ?int
+    {
+        $fullPrice = $this->is4hPrice ? $this->getRoom()->getHalfDayPrice() : $this->getRoom()->getFullDayPrice();
+        return $this->getIsReducedPrice() ? $fullPrice * 0.9 : $fullPrice;
+    }
+
+    /**
+     * Gibt die Summe der Raummiete dieses Events und aller Unter-Events zurück
+     * @return int|null
+     */
+    public function getAllRoomFees() : ? int
+    {
+        $preis = $this->getRoomFee();
+        foreach ($this->getChildEvents() as $e)
+        {
+            $preis += $e->getRoomFee();
+        }
+        return $preis;
+    }
+
+    /**
+     * Liefert die Summe der Netto-Preise der Ausstattungen dieses Events
+     * @return int
+     */
+    public function getAusstattungNetPreis() : int
+    {
+        $sum = 0;
+        foreach($this->getAusstattung() as $a)
+            $sum += $a->getNettopreis();
+        return $sum;
+    }
+
+    /**
+     * Liefert die Summe der Brutto-Preise der Ausstattung dieses Events
+     * @return int
+     */
+    public function getAusstattungBruttoPreis() : int
+    {
+        $sum = 0;
+        foreach($this->getAusstattung() as $a)
+            $sum += $a->getBruttoPreis();
+        return $sum;
+    }
+
+    /**
+     * Liefert die Summe der Netto-Preise der Ausstattung dieses Events und aller Unterevents
+     * @return int
+     */
+    public function getAllAusstattungNettoPreis() : int
+    {
+        $sum = $this->getAusstattungNetPreis();
+        foreach ($this->getChildEvents() as $e)
+            $sum += $e->getAusstattungNetPreis();
+        return $sum;
+    }
+
+    /**
+     * Liefert die Summe der Brutto-Preise der Ausstattung dieses Events und aller Unterevents
+     * @return int
+     */
+    public function getAllAusstattungBruttoPreis() : int
+    {
+        $sum = $this->getAusstattungBruttoPreis();
+        foreach ($this->getChildEvents() as $e)
+            $sum += $e->getAusstattungBruttoPreis();
+        return $sum;
+    }
+
+    /**
+     * Liefert die anfallende MwSt. für dieses Event
+     * (MwSt. fällt nur auf Ausstattung an, nicht auf Raummiete)
+     * @return int|null
+     */
+    public function getMwst() : ? int
+    {
+        $mwst = 0;
+        foreach ($this->getAusstattung() as $a)
+        {
+            $mwst += $a->getMwSt();
+        }
+        return $mwst;
+    }
+
+
+    /**
+     * Liefert die anfallende MwSt. für dieses Event und alle Unterevents
+     * (MwSt. fällt nur auf Ausstattung an, nicht auf Raummiete)
+     * @return int|null
+     */
+    public function getAllMwSt() : int
+    {
+        $sum = $this->getMwst();
+        foreach($this->getChildEvents() as $e)
+            $sum += $e->getMwst();
+        return $sum;
+    }
+
+    /**
+     * Liefert die Summe der Raummiete und
+     * der Brutto-Preise aller Ausstattungen
+     * dieses Events
+     * @return int|null
+     */
+    public function getBruttoPreis() : ? int
+    {
+        $preis = $this->getRoomFee();
+        $preis += $this->getAusstattungBruttoPreis();
+        return $preis;
+    }
+
+    /**
+     * Liefert die Summe der Raummiete und
+     * der Brutto-Preise aller Ausstattungen
+     * dieses Events und aller Unterevents
+     * @return int|null
+     */
+    public function getAllBruttoPreis() : ? int
+    {
+        $preis = $this->getRoomFee();
+        $preis += $this->getAusstattungBruttoPreis();
+        foreach ($this->getChildEvents() as $e)
+        {
+            $preis += $e->getBruttoPreis();
+        }
+        return $preis;
+    }
+
+    /**
+     * Liefert die Summe der Netto-Preise dieses Events
+     * und aller Unter-Events zurück
+     * @return int|null
+     */
+    public function getNettoPreis() : ? int
+    {
+        $preis = $this->getRoomFee();
+        foreach ($this->getAusstattung() as $a)
+        {
+            $preis += $a->getNettoPreis();
+        }
+        return $preis;
+    }
+
+    /**
+     * Liefert die Summe der Netto-Preise dieses Events
+     * und aller Unter-Events zurück
+     * @return int|null
+     */
+    public function getAllNettoPreis() : ? int
+    {
+        $preis = $this->getRoomFee();
+        foreach ($this->getAusstattung() as $a)
+        {
+            $preis += $a->getNettoPreis();
+        }
+        foreach ($this->getChildEvents() as $e)
+        {
+            $preis += $e->getNettoPreis();
+        }
+        return $preis;
     }
 
     /**
@@ -306,35 +717,6 @@ class KloKiEvent
         return $this->getContractState() != ContractStateType::NONE;
     }
 
-    public function setPleaseMakeContract(bool $s)
-    {
-        if($s && ($this->getContractState() == ContractStateType::NONE || $this->getContractState() == null))
-        {
-            $this->setContractState(ContractStateType::REQUESTED);
-        }
-        if((!$s) && ($this->getContractState() == ContractStateType::REQUESTED))
-        {
-            $this->setContractState(ContractStateType::NONE);
-        }
-        return $this;
-    }
-
-    public function getRoomFee() : ?int
-    {
-        $fullPrice = $this->is4hPrice ? $this->getRoom()->getHalfDayPrice() : $this->getRoom()->getFullDayPrice();
-        return $this->getIsReducedPrice() ? $fullPrice * 0.9 : $fullPrice;
-    }
-
-    public function set_FC_end($end) : self
-    {
-        // Bei allDay-Events liefert FullCalendar als Ende-Datum das Datum des
-        // ersten Tages NACH dem Event. Wir haben aber das letzte Datum des Events in der Datenbank stehen!
-        if($this->allDay)
-            $this->end = $end->sub(new \DateInterval('P1D'));
-        else
-            $this->end = $end;
-        return $this;
-    }
 
     public function getProblemDetails() : array
     {
@@ -355,6 +737,7 @@ class KloKiEvent
             if(!$this->helperKasse)        $unassignedFunction[] = 'Kasse';
             if(!$this->helperSpringerEins) $unassignedFunction[] = 'Springer 1';
             if(!$this->helperSpringerZwei) $unassignedFunction[] = 'Springer 2';
+            if(!$this->helperGarderobe)    $unassignedFunction[] = 'Garderobe';
             if($unassignedFunction) $problems[] = "Helfer fehlt: " . implode(", ", $unassignedFunction);
 
             $unconfirmedHelpers = [];
@@ -368,6 +751,8 @@ class KloKiEvent
                 $unconfirmedHelpers[] = $this->helperSpringerEins;
             if($this->helperSpringerZwei && (!$this->availableHelpers->contains($this->helperSpringerZwei)) && (!in_array($this->helperSpringerZwei, $unconfirmedHelpers)))
                 $unconfirmedHelpers[] = $this->helperSpringerZwei;
+            if($this->helperGarderobe && (!$this->availableHelpers->contains($this->helperGarderobe)) && (!in_array($this->helperGarderobe, $unconfirmedHelpers)))
+                $unconfirmedHelpers[] = $this->helperGarderobe;
             if($unconfirmedHelpers) $problems[] = "Zusage fehlt: " .  implode(", ", $unconfirmedHelpers);
 
         }
@@ -375,333 +760,29 @@ class KloKiEvent
         {
             $problems[] = "Kein Bestuhlungsplan ausgewählt";
         }
+
+        if($this->hotelState == HotelStateType::NEEDED)
+        {
+            $problems[] = "Hotel muss noch gebucht werden!";
+        }
+
+        if($this->pressMaterialState == PressMaterialStateType::NEEDED)
+        {
+            $problems[] = "Pressematerial muss noch besorgt werden!";
+        }
         return $problems;
     }
 
-    public function getBruttoPreis()
-    {
-        $preis = $this->getRoomFee();
-        $preis += $this->getBruttoAusstattungPreis();
-        foreach ($this->getChildEvents() as $e)
-        {
-            $preis += $e->getBruttoPreis();
-        }
-        return $preis;
-    }
-
-    public function getNettoPreis()
-    {
-        $preis = $this->getRoomFee();
-        foreach ($this->getAusstattung() as $a)
-        {
-            $preis += $a->getNettoPreis();
-        }
-        foreach ($this->getChildEvents() as $e)
-        {
-            $preis += $e->getNettoPreis();
-        }
-        return $preis;
-    }
-
-    /**
-     * Auf die Raum-Miete fällt keine MwSt. an.
-     */
-    public function getAllRoomFees()
-    {
-        $preis = $this->getRoomFee();
-        foreach ($this->getChildEvents() as $e)
-        {
-            $preis += $e->getRoomFee();
-        }
-        return $preis;
-    }
-
-    /**
-     * Liefert den Brutto-Summenpreis aller Ausstattungen dieses Events.
-     * @return int
-     */
-    public function getBruttoAusstattungPreis()
-    {
-        $preis = 0;
-        foreach ($this->getAusstattung() as $a)
-        {
-            $preis += $a->getBruttoPreis();
-        }
-        return $preis;
-    }
-
-    public function __construct()
-    {
-        $this->Ausstattung = new ArrayCollection();
-        $this->childEvents = new ArrayCollection();
-        $this->availableHelpers = new ArrayCollection();
-    }
-
-    public function __toString()
-    {
-        return $this->getStart()->format('Y-m-d') . ' ' . $this->name . ' (' . $this->getRoom()->getName() . ')';
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function setName($name): self
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    public function getArt()
-    {
-        return $this->art;
-    }
-
-    public function setArt($art): self
-    {
-        $this->art = $art;
-
-        return $this;
-    }
-
-    public function getKategorie(): ?KloKiEventKategorie
-    {
-        return $this->kategorie;
-    }
-
-    public function setKategorie(?KloKiEventKategorie $kategorie): self
-    {
-        $this->kategorie = $kategorie;
-
-        return $this;
-    }
-    public function getRoom(): ?Room
-    {
-        return $this->room;
-    }
-
-    public function setRoom(?Room $room): self
-    {
-        $this->room = $room;
-
-        return $this;
-    }
-
-    public function getKontakt(): ?Addresse
-    {
-        return $this->kontakt;
-    }
-
-    public function setKontakt(?Addresse $kontakt): self
-    {
-        $this->kontakt = $kontakt;
-
-        return $this;
-    }
-    public function getBestPlan(): ?Bestuhlungsplan
-    {
-        return $this->bestPlan;
-    }
-
-    public function setBestPlan(?Bestuhlungsplan $bestPlan): self
-    {
-        $this->bestPlan = $bestPlan;
-
-        return $this;
-    }
-
-    public function getStageOrder(): ?StageOrder
-    {
-        return $this->stageOrder;
-    }
-
-    public function setStageOrder(?StageOrder $stageOrder): self
-    {
-        $this->stageOrder = $stageOrder;
-
-        return $this;
-    }
-
-    public function getHelperEinlassEins(): ?User
-    {
-        return $this->helperEinlassEins;
-    }
-
-    public function setHelperEinlassEins(?User $helperEinlassEins): self
-    {
-        $this->helperEinlassEins = $helperEinlassEins;
-
-        return $this;
-    }
-
-    public function getHelperEinlassZwei(): ?User
-    {
-        return $this->helperEinlassZwei;
-    }
-
-    public function setHelperEinlassZwei(?User $helperEinlassZwei): self
-    {
-        $this->helperEinlassZwei = $helperEinlassZwei;
-
-        return $this;
-    }
-
-    public function getHelperKasse(): ?User
-    {
-        return $this->helperKasse;
-    }
-
-    public function setHelperKasse(?User $helperKasse): self
-    {
-        $this->helperKasse = $helperKasse;
-
-        return $this;
-    }
-
-    public function getHelperSpringerEins(): ?User
-    {
-        return $this->helperSpringerEins;
-    }
-
-    public function setHelperSpringerEins(?User $helperSpringerEins): self
-    {
-        $this->helperSpringerEins = $helperSpringerEins;
-
-        return $this;
-    }
-
-    public function getHelperSpringerZwei(): ?User
-    {
-        return $this->helperSpringerZwei;
-    }
-
-    public function setHelperSpringerZwei(?User $helperSpringerZwei): self
-    {
-        $this->helperSpringerZwei = $helperSpringerZwei;
-
-        return $this;
-    }
-    public function getCreatedBy()
-    {
-        return $this->createdBy;
-    }
-
-    public function getUpdatedBy()
-    {
-        return $this->updatedBy;
-    }
-
-    public function getStart(): ?\DateTimeInterface
-    {
-        return $this->start;
-    }
-
-    public function setStart($start): self
-    {
-        $this->start = $start;
-
-        return $this;
-    }
-
-    public function getEnd(): ?\DateTimeInterface
-    {
-        return $this->end;
-    }
-
-    public function setEnd($end): self
-    {
-        $this->end = $end;
-
-        return $this;
-    }
-
-    public function getAnzahlArtists(): ?int
-    {
-        return $this->anzahlArtists;
-    }
-
-    public function setAnzahlArtists(?int $anzahlArtists): self
-    {
-        $this->anzahlArtists = $anzahlArtists;
-
-        return $this;
-    }
-
-    public function getIsBestBenoetigt(): ?bool
-    {
-        return $this->isBestBenoetigt;
-    }
-
-    public function setIsBestBenoetigt(bool $isBestBenoetigt): self
-    {
-        $this->isBestBenoetigt = $isBestBenoetigt;
-
-        return $this;
-    }
-
-    public function getIsLichtBenoetigt(): ?bool
-    {
-        return $this->isLichtBenoetigt;
-    }
-
-    public function setIsLichtBenoetigt(bool $isLichtBenoetigt): self
-    {
-        $this->isLichtBenoetigt = $isLichtBenoetigt;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Ausstattung[]
-     */
-    public function getAusstattung(): Collection
-    {
-        return $this->Ausstattung;
-    }
+    //////////////////////////////////
+    /// Adders
+    //////////////////////////////////
 
     public function addAusstattung(Ausstattung $ausstattung): self
     {
         if (!$this->Ausstattung->contains($ausstattung)) {
             $this->Ausstattung[] = $ausstattung;
         }
-
         return $this;
-    }
-
-    public function removeAusstattung(Ausstattung $ausstattung): self
-    {
-        if ($this->Ausstattung->contains($ausstattung)) {
-            $this->Ausstattung->removeElement($ausstattung);
-        }
-
-        return $this;
-    }
-
-    public function getParentEvent(): ?self
-    {
-        return $this->ParentEvent;
-    }
-
-    public function setParentEvent(?self $ParentEvent): self
-    {
-        $this->ParentEvent = $ParentEvent;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|self[]
-     */
-    public function getChildEvents(): Collection
-    {
-        return $this->childEvents;
     }
 
     public function addChildEvent(self $childEvent): self
@@ -710,7 +791,25 @@ class KloKiEvent
             $this->childEvents[] = $childEvent;
             $childEvent->setParentEvent($this);
         }
+        return $this;
+    }
 
+    public function addAvailableHelper(User $availableHelper): self
+    {
+        if (!$this->availableHelpers->contains($availableHelper)) {
+            $this->availableHelpers[] = $availableHelper;
+        }
+        return $this;
+    }
+
+    //////////////////////////////////
+    /// Removers
+    //////////////////////////////////
+    public function removeAusstattung(Ausstattung $ausstattung): self
+    {
+        if ($this->Ausstattung->contains($ausstattung)) {
+            $this->Ausstattung->removeElement($ausstattung);
+        }
         return $this;
     }
 
@@ -723,61 +822,6 @@ class KloKiEvent
                 $childEvent->setParentEvent(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getBemerkung(): ?string
-    {
-        return $this->Bemerkung;
-    }
-
-    public function setBemerkung(?string $Bemerkung): self
-    {
-        $this->Bemerkung = $Bemerkung;
-
-        return $this;
-    }
-
-
-    public function getIsFixed(): ?bool
-    {
-        return $this->isFixed;
-    }
-
-    public function setIsFixed(bool $isFixed): self
-    {
-        $this->isFixed = $isFixed;
-
-        return $this;
-    }
-
-    public function getIsTonBenoetigt(): ?bool
-    {
-        return $this->isTonBenoetigt;
-    }
-
-    public function setIsTonBenoetigt(bool $isTonBenoetigt): self
-    {
-        $this->isTonBenoetigt = $isTonBenoetigt;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|User[]
-     */
-    public function getAvailableHelpers(): Collection
-    {
-        return $this->availableHelpers;
-    }
-
-    public function addAvailableHelper(User $availableHelper): self
-    {
-        if (!$this->availableHelpers->contains($availableHelper)) {
-            $this->availableHelpers[] = $availableHelper;
-        }
-
         return $this;
     }
 
@@ -786,160 +830,9 @@ class KloKiEvent
         if ($this->availableHelpers->contains($availableHelper)) {
             $this->availableHelpers->removeElement($availableHelper);
         }
-
         return $this;
     }
 
-    public function getHelperRequired(): ?bool
-    {
-        return $this->helperRequired;
-    }
 
-    public function setHelperRequired(bool $helperRequired): self
-    {
-        $this->helperRequired = $helperRequired;
-
-        return $this;
-    }
-
-    public function getAllDay(): ?bool
-    {
-        return $this->allDay;
-    }
-
-    public function setAllDay(?bool $allDay): self
-    {
-        $this->allDay = $allDay;
-
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     * @Assert\NotBlank()
-     */
-    public function getStartDate()
-    {
-        return $this->start;
-    }
-
-    /**
-     * @param mixed $startDate
-     */
-    public function setStartDate($startDate): void
-    {
-        if($this->start)
-            $this->start = new \DateTime($startDate->format('Y-m-d ') . $this->start->format('H:i'));
-        else
-            $this->start = $startDate;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getEndDate()
-    {
-        return $this->end;
-    }
-
-    /**
-     * @param mixed $endDate
-     */
-    public function setEndDate($endDate): void
-    {
-        if($this->end)
-            $this->end = new \DateTime($endDate->format('Y-m-d ') . $this->end->format('H:i'));
-        else
-            $this->end = $endDate;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getStartTime()
-    {
-        return $this->start;
-    }
-
-    /**
-     * @param mixed $startTime
-     */
-    public function setStartTime($startTime): void
-    {
-        if($this->start && $startTime)
-        {
-            $this->start = new \DateTime($this->start->format('Y-m-d ') . $startTime->format('H:i'));
-        }
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getEndTime()
-    {
-        return $this->end;
-    }
-
-    /**
-     * @param mixed $endTime
-     */
-    public function setEndTime($endTime): void
-    {
-        if($this->end)
-        {
-            if($endTime)
-                $this->end = new \DateTime($this->end->format('Y-m-d ') . $endTime->format('H:i'));
-            else
-                $this->end = new \DateTime($this->end->format('Y-m-d ') . '23:30');
-        }
-    }
-
-    public function getLichtTechniker(): ?User
-    {
-        return $this->LichtTechniker;
-    }
-
-    public function setLichtTechniker(?User $LichtTechniker): self
-    {
-        $this->LichtTechniker = $LichtTechniker;
-
-        return $this;
-    }
-
-    public function getTonTechniker(): ?User
-    {
-        return $this->TonTechniker;
-    }
-
-    public function setTonTechniker(?User $TonTechniker): self
-    {
-        $this->TonTechniker = $TonTechniker;
-
-        return $this;
-    }
-
-    public function getIsReducedPrice(): ?bool
-    {
-        return $this->isReducedPrice;
-    }
-
-    public function setIsReducedPrice(bool $isReducedPrice): self
-    {
-        $this->isReducedPrice = $isReducedPrice;
-
-        return $this;
-    }
-
-    public function getIs4hPrice(): ?bool
-    {
-        return $this->is4hPrice;
-    }
-
-    public function setIs4hPrice(bool $is4hPrice): self
-    {
-        $this->is4hPrice = $is4hPrice;
-
-        return $this;
-    }
 
 }

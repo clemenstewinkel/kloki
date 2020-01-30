@@ -4,6 +4,8 @@ namespace App\DataFixtures;
 
 use App\DBAL\Types\ContractStateType;
 use App\DBAL\Types\EventArtType;
+use App\DBAL\Types\HotelStateType;
+use App\DBAL\Types\PressMaterialStateType;
 use App\Entity\Addresse;
 use App\Entity\Ausstattung;
 use App\Entity\Bestuhlungsplan;
@@ -119,6 +121,10 @@ class EventFixtures extends Fixture
                 $e->setKontakt($this->addressRepo->findOneBy(['vorname' => 'Sonja'])); // TODO
                 $e->setHelperRequired(true); // TODO
                 $e->setContractState(ContractStateType::NONE);
+                $e->setIsReducedPrice(false);
+                $e->setIs4hPrice(false);
+                $e->setHotelState(HotelStateType::NONE);
+                $e->setPressMaterialState(PressMaterialStateType::NONE);
                 $manager->persist($e);
 
             }

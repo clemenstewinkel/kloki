@@ -1,0 +1,19 @@
+{# @var e \App\Entity\KloKiEvent #}
+<tr>
+    <th></th>
+    <th>Miete {{ e.room }}{{ e.is4hPrice ? ', 4h' : '' }}{{ e.isReducedPrice ? ', 10% Rabatt' }}</th>
+    <td class="text-right">{{ (e.roomFee / 100) | number_format(2, ',', '.')}} €</td>
+    <td class="text-right">0,00 €</td>
+</tr>
+<tr>
+    <th></th>
+    <th>Miete Ausstattung</th>
+    <td class="text-right">{{ (e.ausstattungBruttoPreis / 100) | number_format(2, ',', '.')}} €</td>
+    <td class="text-right">{{ (e.mwst / 100) | number_format(2, ',', '.')}} €</td>
+</tr>
+<tr>
+    <th></th>
+    <th>Summe für dieses Event</th>
+    <td class="text-right">{{ (e.bruttoPreis / 100) | number_format(2, ',', '.')}} €</td>
+    <td class="text-right">{{ (e.mwst / 100) | number_format(2, ',', '.')}} €</td>
+</tr>

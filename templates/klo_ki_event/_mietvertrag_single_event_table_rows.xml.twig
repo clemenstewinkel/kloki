@@ -103,7 +103,8 @@
 </w:tr>
 
 
-{# Kopfzeile Ausstattung#}
+{# Kopfzeile Ausstattung, nur wenn wir auch Ausstattung haben...#}
+{% if e.ausstattung.count > 0 %}
 <w:tr>
 <w:tc>
     <w:tcPr>
@@ -187,7 +188,7 @@
     </w:p>
 </w:tc>
 </w:tr>
-
+{% endif %}
 
 
 {% for a in e.ausstattung %}

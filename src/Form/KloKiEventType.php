@@ -54,6 +54,9 @@ class KloKiEventType extends AbstractType
             ->add('isTonBenoetigt',     null, ['label' => "Ton erforderlich"])
 
             ->add('contractState',      null, ['label' => "Vertrags-Status"])
+            ->add('hotelState',         null, ['label' => "Hotel-Status"])
+            ->add('overnightStays',     null, ['label' => "Anzahl Übernachtungen"])
+            ->add('pressMaterialState', null, ['label' => "Presse-Material"])
 
             ->add('LichtTechniker', EntityType::class, [
                 'class' => User::class,
@@ -70,36 +73,41 @@ class KloKiEventType extends AbstractType
 
             ->add('helperRequired', null, ['label' => "Helfer werden benötigt"])
             ->add('helperEinlassEins', EntityType::class, [
-                    'class' => User::class,
-                    'required' => false,
-                    'query_builder' => $helper_query,
-                    'label' => "Einlass 1"
+                'class' => User::class,
+                'required' => false,
+                'query_builder' => $helper_query,
+                'label' => "Einlass 1"
             ])
             ->add('helperEinlassZwei', EntityType::class, [
-                    'class' => User::class,
-                    'required' => false,
-                    'query_builder' => $helper_query,
-                    'label' => "Einlass 2"
-                ])
+                'class' => User::class,
+                'required' => false,
+                'query_builder' => $helper_query,
+                'label' => "Einlass 2"
+            ])
             ->add('helperKasse', EntityType::class, [
-                    'class' => User::class,
-                    'required' => false,
-                    'query_builder' => $helper_query,
-                    'label' => "Kasse"
-                ])
+                'class' => User::class,
+                'required' => false,
+                'query_builder' => $helper_query,
+                'label' => "Kasse"
+            ])
             ->add('helperSpringerEins', EntityType::class, [
-                    'class' => User::class,
-                    'required' => false,
-                    'query_builder' => $helper_query,
-                    'label' => "Springer 1"
-                ])
+                'class' => User::class,
+                'required' => false,
+                'query_builder' => $helper_query,
+                'label' => "Springer 1"
+            ])
             ->add('helperSpringerZwei', EntityType::class, [
-                    'class' => User::class,
-                    'required' => false,
-                    'query_builder' => $helper_query,
-                    'label' => "Springer 2"
-                ])
-
+                'class' => User::class,
+                'required' => false,
+                'query_builder' => $helper_query,
+                'label' => "Springer 2"
+            ])
+            ->add('helperGarderobe', EntityType::class, [
+                'class' => User::class,
+                'required' => false,
+                'query_builder' => $helper_query,
+                'label' => "Garderobe"
+            ])
             ->add('art', null, ['label' => "Art"])
             ->add('isReducedPrice', CheckboxType::class)
             ->add('is4hPrice', CheckboxType::class)

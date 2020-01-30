@@ -6,21 +6,41 @@
         <meta name="description" content="">
         <meta name="author" content="Clemens Tewinkel">
         <title>Klosterkirche</title>
+
         {% block styles %}
             {{ encore_entry_link_tags('app') }}
         {% endblock %}
+
         {% block javascript %}
-        {{ encore_entry_script_tags('app') }}
+            {{ encore_entry_script_tags('app') }}
         {% endblock %}
+
     </head>
     <body
         data-is-authenticated="{{ app.user ? 'true' : 'false' }}"
         data-user-id="{{ app.user ? app.user.id : 'false' }}"
         data-user-roles='{{ app.user ? app.user.roles|json_encode|e('html_attr') : 'false' }}'
     >
-        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-kloki">
-            {{ include('_menu.html.twig') }}
-        </nav>
+        {{ include('_menu.html.twig') }}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         <main role="main" class="container-fluid">
             {% for message in app.flashes('success') %}
                 <div class="alert alert-success alert-dismissible fade show">
