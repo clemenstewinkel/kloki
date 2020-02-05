@@ -5,157 +5,201 @@
     }
 </style>
 
-
-<div class="form-group row">
-    <label class="col-form-label col-sm-2">Name / Status</label>
-    <div class="col-sm-6">
-        {{ form_widget(form.name) }}
-        {{ form_errors(form.name) }}
-    </div>
-    <div class="col-sm-2">
-    {% if form.isFixed is defined %}
-        {{ form_widget(form.isFixed) }}
-    {% endif %}
-    </div>
-    <div class="col-sm-2">
-        {% if form.contractState is defined %}
-            {{ form_widget(form.contractState) }}
-        {% endif %}
-    </div>
-</div>
-
-<div class="form-group row">
-    <label class="col-form-label col-sm-2">Hotel / Presse</label>
-    <div class="col-sm-4">
-        {{ form_widget(form.hotelState) }}
-    </div>
-    <div class="col-sm-2">
-        {{ form_widget(form.overnightStays) }}
-    </div>
-    <div class="col-sm-4">
-        {{ form_widget(form.pressMaterialState) }}
-    </div>
-</div>
-
-<div class="form-group row">
-    <label class="col-form-label col-sm-2">Art / Ort</label>
-    <div class="col-sm-3">
-        {% if form.art is defined %}
-           {{ form_widget(form.art) }}
-        {% else %}
-            {{ 'rental' | readable_enum('EventArtType') }}
-        {% endif %}
-    </div>
-    <div class="col-sm-3">
-        {{ form_widget(form.kategorie) }}
-    </div>
-    <div class="col-sm-4">
-        {{ form_widget(form.room) }}
-        {{ form_errors(form.room) }}
-    </div>
-</div>
-
-
-<div class="form-group row">
-    <label class="col-form-label col-sm-2">Mietpreis:</label>
-    <div class="col-sm-4">
-        {{ form_widget(form.isReducedPrice, {'label': '10% Rabatt'}) }}
-    </div>
-    <div class="col-sm-4">
-        {{ form_widget(form.is4hPrice, {'label': '4h-Preis'}) }}
-    </div>
-</div>
-
-
-
-
-<hr/>
-{{ form_row(form.allDay) }}
-
-<div class="form-group row {% if form.startDate.vars.errors|length %} is-invalid {% endif %}">
-    {{ form_label(form.startDate) }}
-    <div class="col-sm-8">
-        {{ form_widget(form.startDate) }}
-        {{ form_errors(form.startDate) }}
-    </div>
-    <div class="col-sm-2">
-        {{ form_widget(form.startTime, {attr: {class: form.endDate.vars.errors|length ? 'is-invalid js-event-time-field' : 'js-event-time-field'}}) }}
-    </div>
-</div>
-
-
-<div class="form-group row {% if form.endDate.vars.errors|length %} is-invalid {% endif %}">
-    {{ form_label(form.endDate) }}
-    <div class="col-sm-8">
-        {{ form_widget(form.endDate) }}
-        {{ form_errors(form.endDate) }}
-    </div>
-    <div class="col-sm-2">
-        {{ form_widget(form.endTime, {attr: {class: form.endDate.vars.errors|length ? 'is-invalid js-event-time-field' : 'js-event-time-field'}}) }}
-    </div>
-</div>
-
-<hr/>
-
-<div class="form-group row">
-    <label class="col-form-label col-sm-2">Benötigt:</label>
-    <div class="col-sm-2">
-        {{ form_widget(form.isBestBenoetigt, {'label': 'Bestuhlung'}) }}
-    </div>
-    <div class="col-sm-2">
-        {{ form_widget(form.isLichtBenoetigt, {'label': 'Licht'}) }}
-    </div>
-    <div class="col-sm-2">
-        {{ form_widget(form.isTonBenoetigt, {'label': 'Ton'}) }}
-    </div>
-    <div class="col-sm-2">
-        {{ form_widget(form.helperRequired, {'label': 'Helfer'}) }}
-    </div>
-    <div class="col-sm-2">
-    </div>
-</div>
-
-{% if form.LichtTechniker is defined %}
-{{ form_row(form.LichtTechniker) }}
-{% endif %}
-{% if form.TonTechniker is defined %}
-{{ form_row(form.TonTechniker) }}
-{% endif %}
-
-{{ form.anzahlArtists is defined ? form_row(form.anzahlArtists) : '' }}
-
-{% if form.helperEinlassEins is defined %}
-<div id="js-event-helper-section">
-    <div class="form-group row ">
-        <label class="col-form-label col-sm-2">Helfer</label>
-        <div class="col-sm-10">
-            {{ form_row(form.helperEinlassEins) }}
-            {{ form_row(form.helperEinlassZwei) }}
-            {{ form_row(form.helperSpringerEins) }}
-            {{ form_row(form.helperSpringerZwei) }}
-            {{ form_row(form.helperKasse) }}
-            {{ form_row(form.helperGarderobe) }}
-            Verfügbar:
-            {% for helper in klo_ki_event.availableHelpers %}
-                {{ helper }}
-            {% endfor %}
+<div class="container" style="background-color: #c2d87e;">
+    <hr/>
+    <h4>Datum</h4>
+    <div class="form-group row {% if form.startDate.vars.errors|length %} is-invalid {% endif %}">
+        {{ form_label(form.startDate) }}
+        <div class="col-sm-4">
+            {{ form_widget(form.startDate) }}
+            {{ form_errors(form.startDate) }}
+        </div>
+        <div class="col-sm-2">
+            {{ form_widget(form.startTime, {attr: {class: form.endDate.vars.errors|length ? 'is-invalid js-event-time-field' : 'js-event-time-field'}}) }}
         </div>
     </div>
-</div>
-{% endif %}
-
-<div class="form-group row">
-    <label class="col-form-label col-sm-2">Kontakt</label>
-    <div class="col-sm-8">
-        {{ form_widget(form.kontakt) }}
-        {{ form_errors(form.kontakt) }}
+    <div class="form-group row {% if form.endDate.vars.errors|length %} is-invalid {% endif %}">
+        {{ form_label(form.endDate) }}
+        <div class="col-sm-4">
+            {{ form_widget(form.endDate) }}
+            {{ form_errors(form.endDate) }}
+        </div>
+        <div class="col-sm-2">
+            {{ form_widget(form.endTime, {attr: {class: form.endDate.vars.errors|length ? 'is-invalid js-event-time-field' : 'js-event-time-field'}}) }}
+        </div>
     </div>
-    <div class="col-sm-2">
-        <a id="js-new-address-button" class="js-no-retarget btn btn-primary">Neu...</a>
-    </div>
+    {{ form_row(form.allDay) }}
+    <hr/>
 </div>
 
-{{ form_widget(form) }}
+<div class="container" style="background-color: #BBCDD8;">
+    <hr/>
+    <h4>Veranstaltung</h4>
+    <div class="form-group row">
+        <label class="col-form-label col-sm-2">Name / Status</label>
+        <div class="col-sm-6">
+            {{ form_widget(form.name) }}
+            {{ form_errors(form.name) }}
+        </div>
+        <div class="col-sm-2">
+            {% if form.isFixed is defined %}
+                {{ form_widget(form.isFixed) }}
+            {% endif %}
+        </div>
+        <div class="col-sm-2">
+            {% if form.contractState is defined %}
+                {{ form_widget(form.contractState) }}
+            {% endif %}
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-form-label col-sm-2">Kontakt</label>
+        <div class="col-sm-8">
+            {{ form_widget(form.kontakt) }}
+            {{ form_errors(form.kontakt) }}
+        </div>
+        <div class="col-sm-2">
+            <a id="js-new-address-button" class="js-no-retarget btn btn-primary">Neu...</a>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-form-label col-sm-2">Raum</label>
+        <div class="col-sm-4">
+            {{ form_widget(form.room) }}
+            {{ form_errors(form.room) }}
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-form-label col-sm-2">Art</label>
+        <div class="col-sm-2">
+            {% if form.art is defined %}
+                {{ form_widget(form.art) }}
+            {% else %}
+                {{ 'rental' | readable_enum('EventArtType') }}
+            {% endif %}
+        </div>
+        <div class="col-sm-2">
+            {{ form_widget(form.kategorie) }}
+        </div>
+        <label class="col-form-label col-sm-2">Hauptevent</label>
+        <div class="col-sm-4">
+            {{ form_widget(form.ParentEvent) }}
+        </div>
+    </div>
+
+
+    <div class="form-group row js-event-mietpreis-form">
+        <label class="col-form-label col-sm-2">Mietpreis:</label>
+        <div class="col-sm-4">
+            {{ form_widget(form.isReducedPrice, {'label': '10% Rabatt'}) }}
+        </div>
+        <div class="col-sm-4">
+            {{ form_widget(form.is4hPrice, {'label': '4h-Preis'}) }}
+        </div>
+    </div>
+
+    {{ form_row(form.ausstattung) }}
+    <hr/>
+</div>
+
+<div class="container" style="background-color: #d8cb9b;">
+    <hr/>
+    <h4>Dispo</h4>
+    <div class="form-group row">
+        <label class="col-form-label col-sm-2">Benötigt:</label>
+        <div class="col-sm-1">
+            {{ form_widget(form.isBestBenoetigt, {'label': 'Stühle'}) }}
+        </div>
+        <div class="col-sm-1">
+            {{ form_widget(form.isLichtBenoetigt, {'label': 'Licht'}) }}
+        </div>
+        <div class="col-sm-1">
+            {{ form_widget(form.isTonBenoetigt, {'label': 'Ton'}) }}
+        </div>
+        <div class="col-sm-1">
+            {{ form_widget(form.helperRequired, {'label': 'Helfer'}) }}
+        </div>
+        <div class="col-sm-6">
+            {{ form_widget(form.pressMaterialState) }}
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-form-label col-sm-2">Bestuhlung</label>
+        <div class="col-sm-4">
+            {{ form_widget(form.bestPlan) }}
+        </div>
+        <label class="col-form-label col-sm-2">Bühnenanweisung</label>
+        <div class="col-sm-4">
+            {{ form_widget(form.stageOrder) }}
+        </div>
+    </div>
+
+
+    {% if form.LichtTechniker is defined %}
+    <div class="form-group row">
+        <label class="col-form-label col-sm-2">Licht-Techniker</label>
+        <div class="col-sm-4">
+            {{ form_widget(form.LichtTechniker) }}
+        </div>
+        <label class="col-form-label col-sm-2">Ton-Techniker</label>
+        <div class="col-sm-4">
+            {{ form_widget(form.TonTechniker) }}
+        </div>
+    </div>
+    {% endif %}
+
+
+    <div class="form-group row">
+        <label class="col-form-label col-sm-2">Künstler</label>
+        <div class="col-sm-4">
+            {{ form_widget(form.hotelState) }}
+        </div>
+        <label class="col-form-label col-sm-1">Nächte</label>
+        <div class="col-sm-2">
+            {{ form_widget(form.overnightStays) }}
+        </div>
+
+        <label class="col-form-label col-sm-1">Bewirt.</label>
+        <div class="col-sm-2">
+        {{ form.anzahlArtists is defined ? form_widget(form.anzahlArtists) : '' }}
+        </div>
+
+
+    </div>
+
+
+    {% if form.helperEinlassEins is defined %}
+    <div id="js-event-helper-section">
+        <div class="form-group row ">
+            <label class="col-form-label col-sm-2">Helfer</label>
+            <div class="col-sm-10">
+                <div class="form-group row">
+                    <label class="col-form-label col-sm-2">Einlass 1</label><div class="col-sm-4">{{ form_widget(form.helperEinlassEins) }}</div>
+                    <label class="col-form-label col-sm-2">Einlass 2</label><div class="col-sm-4">{{ form_widget(form.helperEinlassZwei) }}</div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-form-label col-sm-2">Springer 1</label><div class="col-sm-4">{{ form_widget(form.helperSpringerEins) }}</div>
+                    <label class="col-form-label col-sm-2">Springer 2</label><div class="col-sm-4">{{ form_widget(form.helperSpringerZwei) }}</div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-form-label col-sm-2">Kasse</label><div class="col-sm-4">{{ form_widget(form.helperKasse) }}</div>
+                    <label class="col-form-label col-sm-2">Garderobe</label><div class="col-sm-4">{{ form_widget(form.helperGarderobe) }}</div>
+                </div>
+                Verfügbar:
+                {% for helper in klo_ki_event.availableHelpers %}
+                    {{ helper }}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    {{ form_widget(form) }}
+    <hr/>
+</div>
 <button class="btn btn-primary">{{ button_label|default('Speichern') }}</button>
 
 {{ form_end(form) }}

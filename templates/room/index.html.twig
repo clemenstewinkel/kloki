@@ -3,7 +3,7 @@
 {% block title %}Room index{% endblock %}
 
 {% block body %}
-    <h1>Room index</h1>
+    <h1>Räume</h1>
 
     <table class="table">
         <thead>
@@ -38,5 +38,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('room_new') }}">Create new</a>
+    <a class="btn btn-primary" href="{{ path('room_new') }}">Neuen Raum anlegen</a>
 {% endblock %}

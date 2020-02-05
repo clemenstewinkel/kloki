@@ -3,10 +3,11 @@
 {% block title %}Ausstattung{% endblock %}
 
 {% block body %}
-    <h1>Ausstattung</h1>
+    <div class="container">
+        <h1>Ausstattung</h1>
 
-    <table class="table">
-        <tbody>
+        <table class="table">
+            <tbody>
             <tr>
                 <th>Id</th>
                 <td>{{ ausstattung.id }}</td>
@@ -16,15 +17,24 @@
                 <td>{{ ausstattung.name }}</td>
             </tr>
             <tr>
-                <th>Nettopreis</th>
-                <td>{{ ausstattung.nettopreis }}</td>
+                <th>Bruttopreis</th>
+                <td>{{ (ausstattung.bruttoPreis/100) | number_format(2, ',','.') }} €</td>
             </tr>
-        </tbody>
-    </table>
+            </tbody>
+        </table>
 
-    <a href="{{ path('ausstattung_index') }}">back to list</a>
+        <a class="btn btn-primary" href="{{ path('ausstattung_index') }}">Liste der Ausstattungen</a>
 
-    <a href="{{ path('ausstattung_edit', {'id': ausstattung.id}) }}">edit</a>
+        <a class="btn btn-primary" href="{{ path('ausstattung_edit', {'id': ausstattung.id}) }}">Bearbeiten</a>
 
-    {{ include('ausstattung/_delete_form.html.twig') }}
+        {% if ausstattung.kloKiEvents.count == 0 %}
+            {{ include('ausstattung/_delete_form.html.twig') }}
+
+            {% else %}
+               <h2>Verwendet in diesen Events (kann daher nicht gelöscht werden):</h2>
+               {% for e in ausstattung.kloKiEvents %}
+                   <a href="{{ path('klo_ki_event_show', {'id': e.id}) }}">{{ e }}</a><br/>
+               {% endfor %}
+            {% endif %}
+    </div>
 {% endblock %}

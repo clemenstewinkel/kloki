@@ -3,10 +3,11 @@
 {% block title %}Ausstattung{% endblock %}
 
 {% block body %}
-    <h1>Ausstattung</h1>
+    <div class="container-fluid">
+        <h1>Ausstattung</h1>
 
-    <table class="table">
-        <thead>
+        <table class="table table-striped">
+            <thead>
             <tr>
                 <th>Name</th>
                 <th>Langer Name (für Vertrag)</th>
@@ -15,27 +16,28 @@
                 <th>Bruttopreis</th>
                 <th></th>
             </tr>
-        </thead>
-        <tbody>
-        {% for ausstattung in ausstattungs %}
-            <tr>
-                <td>{{ ausstattung.name }}</td>
-                <td>{{ ausstattung.description }}</td>
-                <td>{{ (ausstattung.nettopreis  / 100) | number_format(2, ',', '.') }} €</td>
-                <td>{{ (ausstattung.mwSt        / 100) | number_format(2, ',', '.') }} €</td>
-                <td>{{ (ausstattung.bruttoPreis / 100) | number_format(2, ',', '.') }} €</td>
-                <td>
-                    <a href="{{ path('ausstattung_show', {'id': ausstattung.id}) }}"><span class="fas fa-eye"></span></a>
-                    <a href="{{ path('ausstattung_edit', {'id': ausstattung.id}) }}"><span class="fas fa-edit"></span></a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="4">keine Einträge</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            {% for ausstattung in ausstattungs %}
+                <tr>
+                    <td>{{ ausstattung.name }}</td>
+                    <td>{{ ausstattung.description }}</td>
+                    <td>{{ (ausstattung.nettopreis  / 100) | number_format(2, ',', '.') }} €</td>
+                    <td>{{ (ausstattung.mwSt        / 100) | number_format(2, ',', '.') }} €</td>
+                    <td>{{ (ausstattung.bruttoPreis / 100) | number_format(2, ',', '.') }} €</td>
+                    <td>
+                        <a href="{{ path('ausstattung_show', {'id': ausstattung.id}) }}"><span class="fas fa-eye"></span></a>
+                        <a href="{{ path('ausstattung_edit', {'id': ausstattung.id}) }}"><span class="fas fa-edit"></span></a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4">keine Einträge</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
 
-    <a href="{{ path('ausstattung_new') }}">Neu</a>
+        <a class="btn btn-primary" href="{{ path('ausstattung_new') }}">Neu</a>
+    </div>
 {% endblock %}

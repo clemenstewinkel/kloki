@@ -37,6 +37,9 @@ export default function prepare_event_form()
     const $startDate = $('#klo_ki_event_startDate');
     const $endTime   = $('#klo_ki_event_endTime');
     const $startTime = $('#klo_ki_event_startTime');
+    const $eventArtSelect = $('#klo_ki_event_art');
+
+    check_mietpreis_show();
 
     $startDate.datetimepicker({
         inline: false,
@@ -100,6 +103,10 @@ export default function prepare_event_form()
     $helperSwitch.on('change', function() {
         $('#js-event-helper-section').toggle(this.checked);
     });
+    $eventArtSelect.on('change', function() {
+        check_mietpreis_show();
+    });
+
 
     $helperSwitch.trigger('change');
     $fullDaySwitch.trigger('change');
@@ -121,3 +128,9 @@ export default function prepare_event_form()
     $('#klo_ki_event_ausstattung').selectpicker();
 }
 
+function check_mietpreis_show()
+{
+    const $eventArtSelect = $('#klo_ki_event_art');
+    if($eventArtSelect.val() === 'rental') $('.js-event-mietpreis-form').show();
+    else $('.js-event-mietpreis-form').hide();
+}
