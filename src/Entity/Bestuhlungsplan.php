@@ -48,6 +48,11 @@ class Bestuhlungsplan
      */
     private $kloKiEvents;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $sitzplaetzeOben;
+
     public function __construct()
     {
         $this->kloKiEvents = new ArrayCollection();
@@ -151,6 +156,18 @@ class Bestuhlungsplan
                 $kloKiEvent->setBestPlan(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSitzplaetzeOben(): ?int
+    {
+        return $this->sitzplaetzeOben;
+    }
+
+    public function setSitzplaetzeOben(int $sitzplaetzeOben): self
+    {
+        $this->sitzplaetzeOben = $sitzplaetzeOben;
 
         return $this;
     }

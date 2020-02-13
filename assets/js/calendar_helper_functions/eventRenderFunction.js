@@ -5,6 +5,12 @@ import {userRoles} from "../calendar";
 
 export default function eventRenderFunction(info)
 {
+    let $timeSpan = $(info.el).find('span.fc-time').detach();
+    if($timeSpan.length > 0 )
+    {
+        $(info.el).find('div.fc-content').append('<br/>');
+        $(info.el).find('div.fc-content').append($timeSpan);
+    }
     if (info.event.extendedProps['art'] === "rental") // Vermietungen bekommen ein eigenes Muster
     {
         $(info.el).addClass('vermietungsevent');
@@ -27,6 +33,11 @@ export default function eventRenderFunction(info)
         {
             $(info.el).find('div.fc-content').append(' <i class="fas fa-chair"></i>');
         }
+        if(info.event.extendedProps['helperRequired'])
+        {
+            $(info.el).find('div.fc-content').append(' <i class="fas fa-user"></i>');
+        }
+        $(info.el).find('div.fc-content').append('<span style="float: right; font-weight: bold;">' + info.event.extendedProps.room.name[0] + '</span>');
     }
     if(userRoles.includes('ROLE_HELPER'))
     {

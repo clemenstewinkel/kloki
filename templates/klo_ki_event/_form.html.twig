@@ -69,6 +69,10 @@
             {{ form_widget(form.room) }}
             {{ form_errors(form.room) }}
         </div>
+        <label class="col-form-label col-sm-2">Hauptevent</label>
+        <div class="col-sm-4">
+            {{ form_widget(form.ParentEvent) }}
+        </div>
     </div>
 
     <div class="form-group row">
@@ -83,19 +87,10 @@
         <div class="col-sm-2">
             {{ form_widget(form.kategorie) }}
         </div>
-        <label class="col-form-label col-sm-2">Hauptevent</label>
-        <div class="col-sm-4">
-            {{ form_widget(form.ParentEvent) }}
+        <div class="col-sm-2">
+            {{ form_widget(form.isReducedPrice, {'label': '10%'}) }}
         </div>
-    </div>
-
-
-    <div class="form-group row js-event-mietpreis-form">
-        <label class="col-form-label col-sm-2">Mietpreis:</label>
-        <div class="col-sm-4">
-            {{ form_widget(form.isReducedPrice, {'label': '10% Rabatt'}) }}
-        </div>
-        <div class="col-sm-4">
+        <div class="col-sm-2">
             {{ form_widget(form.is4hPrice, {'label': '4h-Preis'}) }}
         </div>
     </div>
@@ -109,20 +104,29 @@
     <h4>Dispo</h4>
     <div class="form-group row">
         <label class="col-form-label col-sm-2">Benötigt:</label>
-        <div class="col-sm-1">
-            {{ form_widget(form.isBestBenoetigt, {'label': 'Stühle'}) }}
-        </div>
-        <div class="col-sm-1">
+        <div class="col-sm-2">
             {{ form_widget(form.isLichtBenoetigt, {'label': 'Licht'}) }}
         </div>
-        <div class="col-sm-1">
+        <div class="col-sm-2">
+            {{ form_widget(form.isBestBenoetigt, {'label': 'Stühle'}) }}
+        </div>
+        <div class="col-sm-2">
             {{ form_widget(form.isTonBenoetigt, {'label': 'Ton'}) }}
         </div>
-        <div class="col-sm-1">
+        <div class="col-sm-2">
             {{ form_widget(form.helperRequired, {'label': 'Helfer'}) }}
         </div>
-        <div class="col-sm-6">
+    </div>
+
+
+    <div class="form-group row">
+        <label class="col-form-label col-sm-2">Presse-Mat.</label>
+        <div class="col-sm-4">
             {{ form_widget(form.pressMaterialState) }}
+        </div>
+        <label class="col-form-label col-sm-2">Gema-Liste</label>
+        <div class="col-sm-4">
+            {{ form_widget(form.gemaListState) }}
         </div>
     </div>
 
@@ -131,7 +135,7 @@
         <div class="col-sm-4">
             {{ form_widget(form.bestPlan) }}
         </div>
-        <label class="col-form-label col-sm-2">Bühnenanweisung</label>
+        <label class="col-form-label col-sm-2">Bühnenanw.</label>
         <div class="col-sm-4">
             {{ form_widget(form.stageOrder) }}
         </div>
@@ -140,11 +144,11 @@
 
     {% if form.LichtTechniker is defined %}
     <div class="form-group row">
-        <label class="col-form-label col-sm-2">Licht-Techniker</label>
+        <label class="col-form-label col-sm-2">Licht-Te.</label>
         <div class="col-sm-4">
             {{ form_widget(form.LichtTechniker) }}
         </div>
-        <label class="col-form-label col-sm-2">Ton-Techniker</label>
+        <label class="col-form-label col-sm-2">Ton-Te.</label>
         <div class="col-sm-4">
             {{ form_widget(form.TonTechniker) }}
         </div>
@@ -157,7 +161,7 @@
         <div class="col-sm-4">
             {{ form_widget(form.hotelState) }}
         </div>
-        <label class="col-form-label col-sm-1">Nächte</label>
+        <label class="col-form-label col-sm-1">Zimmer</label>
         <div class="col-sm-2">
             {{ form_widget(form.overnightStays) }}
         </div>
@@ -166,10 +170,7 @@
         <div class="col-sm-2">
         {{ form.anzahlArtists is defined ? form_widget(form.anzahlArtists) : '' }}
         </div>
-
-
     </div>
-
 
     {% if form.helperEinlassEins is defined %}
     <div id="js-event-helper-section">
@@ -197,9 +198,14 @@
     </div>
     {% endif %}
 
-    {{ form_widget(form) }}
     <hr/>
 </div>
+<div class="container" style="background-color: #b6d893;">
+    <br/>
+    {{ form_widget(form) }}
+    <br/>
+</div>
+<br/>
 <button class="btn btn-primary">{{ button_label|default('Speichern') }}</button>
 
 {{ form_end(form) }}

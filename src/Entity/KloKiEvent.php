@@ -287,6 +287,11 @@ class KloKiEvent
     private $pressMaterialState;
 
     /**
+     * @ORM\Column(type="PressMaterialStateType")
+     */
+    private $gemaListState;
+
+    /**
      * @ORM\Column(type="integer", nullable=true)
      */
     private $overnightStays;
@@ -333,6 +338,7 @@ class KloKiEvent
     public function setHelperGarderobe(?User $helperGarderobe):       self { $this->helperGarderobe = $helperGarderobe;       return $this; }
     public function setHotelState($hotelState):                       self { $this->hotelState = $hotelState;                 return $this; }
     public function setPressMaterialState($pressMaterialState):       self { $this->pressMaterialState = $pressMaterialState; return $this; }
+    public function setGemaListState($gemaListState):                 self { $this->gemaListState = $gemaListState;           return $this; }
     public function setOvernightStays(?int $overnightStays):          self { $this->overnightStays = $overnightStays;         return $this; }
     public function setContractState($contractState):                 self { $this->contractState = $contractState;           return $this; }
     public function setParentEvent(?self $ParentEvent):               self { $this->ParentEvent = $ParentEvent;               return $this; }
@@ -456,6 +462,7 @@ class KloKiEvent
 
     // Enum-Getters
     public function getPressMaterialState()             { return $this->pressMaterialState; }
+    public function getGemaListState()                  { return $this->gemaListState; }
     public function getHotelState()                     { return $this->hotelState;         }
     public function getContractState():         ?string { return $this->contractState;      }
     public function getArt()                            { return $this->art;                }

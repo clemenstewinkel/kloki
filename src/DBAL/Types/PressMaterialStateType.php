@@ -13,8 +13,8 @@ class PressMaterialStateType extends AbstractEnumType
     public const AVAILABLE  = 'available';
 
     protected static $choices = [
-        self::NONE       => 'Kein Pressematerial nötig',
-        self::NEEDED     => 'Pressematerial muss noch besorgt werden',
-        self::AVAILABLE  => 'Pressematerial liegt vor'
+        self::NONE       => 'Nein',
+        self::NEEDED     => 'Ja',
+        self::AVAILABLE  => 'liegt vor'
     ];
 }

@@ -49,6 +49,16 @@
             </div>
 
             <div class="col">
+                <select name="gemaListState[]" data-width="fit" class="selectpicker" title="Gema-Liste" multiple>
+                    <option value="none"      {% if "none"      in app.request.query.get('gemaListState') %} selected="selected" {% endif %}> {{ "none"      | readable_enum('PressMaterialStateType') }}</option>
+                    <option value="needed"    {% if "needed"    in app.request.query.get('gemaListState') %} selected="selected" {% endif %}> {{ "needed"    | readable_enum('PressMaterialStateType') }}</option>
+                    <option value="available" {% if "available" in app.request.query.get('gemaListState') %} selected="selected" {% endif %}> {{ "available" | readable_enum('PressMaterialStateType') }}</option>
+                </select>
+            </div>
+
+
+
+            <div class="col">
                 <select name="tech[]" data-width="fit" class="selectpicker" title="Techniker..." multiple>
                     <option value="sound" {% if "sound" in app.request.query.get('tech') %} selected="selected" {% endif %}>Tontechniker fehlt</option>
                     <option value="light" {% if "light" in app.request.query.get('tech') %} selected="selected" {% endif %}>Lichttechniker fehlt</option>
@@ -96,14 +106,14 @@
                 <th>{{ knp_pagination_sortable(pagination, 'Name', 'event.name') }}</th>
                 <th>{{ knp_pagination_sortable(pagination, 'Ort', 'room.id') }}</th>
                 <th>{{ knp_pagination_sortable(pagination, 'Begin und Dauer', 'event.start') }}</th>
-                <th>Bestuhlt?</th>
-                <th>Licht?</th>
-                <th>Ton?</th>
+                <th>Bestuhlt</th>
+                <th>Licht</th>
+                <th>Ton</th>
                 <th>Art</th>
-                <th>Status</th>
                 <th>Vertrag</th>
                 <th>Hotel</th>
                 <th>PresseMat.</th>
+                <th>Gema</th>
                 <th></th>
             </tr>
         </thead>
@@ -111,17 +121,33 @@
         {% for e in pagination %}
             {# @var e \App\Entity\KloKiEvent #}
             <tr>
-                <td>{{ e.name }}</td>
+                <td><i class="fas {{ e.isFixed ? 'fa-lock' : 'fa-lock-open' }}"> </i> {{ e.name }}</td>
                 <td>{{ e.room }}</td>
                 <td>{{ include('klo_ki_event/_time_range.html.twig', {'event': e}) }}</td>
                 <td>{{ e.isBestBenoetigt ? 'Ja' : 'Nein' }}</td>
-                <td>{{ e.isLichtBenoetigt ? ('Ja, ' ~ (e.lichtTechniker ?: 'N/N') ) : 'Nein' }}</td>
-                <td>{{ e.isTonBenoetigt ? ('Ja, ' ~ (e.tonTechniker ?: 'N/N')) : 'Nein' }}</td>
+                <td>
+                    {{ e.isLichtBenoetigt ? ('Ja, ' ~ (e.lichtTechniker ?: 'N/N') ) : 'Nein' }}
+                    {% if e.lichtTechniker %}
+                        <br/>{{ e.lichtTechniker.name }}
+                    {% endif %}
+                </td>
+                <td>
+                    {{ e.isTonBenoetigt ? ('Ja, ' ~ (e.tonTechniker ?: 'N/N')) : 'Nein' }}
+                    {% if e.tonTechniker %}
+                        <br/>{{ e.tonTechniker.name }}
+                    {% endif %}
+                </td>
                 <td>{{ e.art | readable_enum('EventArtType') }}</td>
-                <td>{{ e.isFixed ? 'fest' : 'option' }}</td>
                 <td>{{ e.contractState | readable_enum('ContractStateType') }}</td>
-                <td>{{ e.hotelState | readable_enum('HotelStateType') }}</td>
+                <td>
+                    {{ e.hotelState | readable_enum('HotelStateType') }}
+                    {% if e.hotelState == "needed" or e.hotelState == "booked" %}
+                    <br/>
+                    EZ: {{ e.overnightStays }}
+                    {% endif %}
+                </td>
                 <td>{{ e.pressMaterialState | readable_enum('PressMaterialStateType')}}</td>
+                <td>{{ e.gemaListState | readable_enum('PressMaterialStateType')}}</td>
                 <td>
                     <a href="{{ path('klo_ki_event_show', {'id': e.id}) }}"><span class="fas fa-eye"></span></a>
                     <a href="{{ path('klo_ki_event_edit', {'id': e.id}) }}"><span class="fas fa-edit"></span></a>

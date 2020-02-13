@@ -67,7 +67,7 @@ class StageOrderController extends AbstractController
         $stageOrder = new StageOrder();
         $form = $this->createForm(StageOrderType::class, $stageOrder)
             ->add('pdfFilePath', FileType::class, [
-                'label' => 'Bestuhlungsplan (PDF file)',
+                'label' => 'Bühnenanweisung (PDF file)',
                 'mapped' => false,
                 'required' => true,
                 'constraints' => [

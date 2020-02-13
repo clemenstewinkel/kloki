@@ -57,6 +57,7 @@ class KloKiEventType extends AbstractType
             ->add('hotelState',         null, ['label' => "Hotel-Status"])
             ->add('overnightStays',     null, ['label' => "Anzahl Übernachtungen"])
             ->add('pressMaterialState', null, ['label' => "Presse-Material"])
+            ->add('gemaListState')
 
             ->add('LichtTechniker', EntityType::class, [
                 'class' => User::class,

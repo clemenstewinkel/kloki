@@ -34,6 +34,9 @@ class KloKiEventRepository extends ServiceEntityRepository
             $queryBuilder->andWhere('event.hotelState IN (:hotelState)')->setParameter('hotelState', $request->query->get('hotelState'));
         if($request->query->get('pressMaterialState'))
             $queryBuilder->andWhere('event.pressMaterialState IN (:pressMaterialState)')->setParameter('pressMaterialState', $request->query->get('pressMaterialState'));
+        if($request->query->get('gemaListState'))
+            $queryBuilder->andWhere('event.gemaListState IN (:gemaListState)')->setParameter('gemaListState', $request->query->get('gemaListState'));
+
 
         if($request->query->get('state') == 'fixed')
             $queryBuilder->andWhere('event.isFixed = 1');

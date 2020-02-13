@@ -15,8 +15,9 @@ class BestuhlungsplanType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('sitzplaetze')
-            ->add('stehplaetze')
+            ->add('sitzplaetze', null, ['label' => 'Sitzplätze unten'])
+            ->add('sitzplaetzeOben', null, ['label' => 'Sitzplätze Empore'])
+            ->add('stehplaetze', null, ['label' => 'Stehplätze'])
         ;
     }
 
