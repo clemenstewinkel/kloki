@@ -11,10 +11,6 @@ export default function eventRenderFunction(info)
         $(info.el).find('div.fc-content').append('<br/>');
         $(info.el).find('div.fc-content').append($timeSpan);
     }
-    if (info.event.extendedProps['art'] === "rental") // Vermietungen bekommen ein eigenes Muster
-    {
-        $(info.el).addClass('vermietungsevent');
-    }
 
     if(userRoles.includes('ROLE_FOOD') || userRoles.includes('ROLE_ADMIN') || userRoles.includes('ROLE_LANDLORD') ) {
         if (info.event.extendedProps['isFixed']) // Wenn das Event fest ist, bekommt es ein Schloss-Symbol

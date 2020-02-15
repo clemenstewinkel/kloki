@@ -11,9 +11,13 @@ import $ from 'jquery';
 import 'bootstrap';
 import 'popper.js';
 import 'bootstrap-select';
+import bsCustomFileInput from 'bs-custom-file-input';
 import '@fortawesome/fontawesome-free';
 import '@fortawesome/fontawesome-free/css/all.min.css';
+import 'autocomplete.js';
 
-// Need jQuery? Install it with "yarn add jquery", then uncomment to require it.
-var autocomplete = require('autocomplete.js');
+//require('autocomplete.js');
+$(document).ready(function () {
+    bsCustomFileInput.init();
+});
 global.$ = $;

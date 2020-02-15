@@ -129,6 +129,7 @@ class KloKiEventType extends AbstractType
             ->add('ausstattung', EntityType::class, ['class' => 'App:Ausstattung', 'multiple' => true, 'expanded' => false, 'attr' => ['title' => 'Ausstattung auswählen']])
             ->add('bemerkung', TextareaType::class)
             ->add('isFixed', ChoiceType::class, ['label' => 'Vertragsstatus', 'choices' => ['option' => 0, 'fest' => 1]])
+            ->add('contractNumber')
         ;
     }
 

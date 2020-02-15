@@ -348,7 +348,7 @@
                     <w:sz w:val="28"/>
                     <w:szCs w:val="28"/>
                 </w:rPr>
-                <w:t>Rechnungs- und Vertragsnummer: 1234567890</w:t>
+                <w:t>Rechnungs- und Vertragsnummer: {{ e.contractNumber }}</w:t>
             </w:r>
         </w:p>
         <w:p w14:paraId="6A8D0DF7" w14:textId="77777777" w:rsidR="000C47FF" w:rsidRPr="00976B77"
@@ -820,7 +820,236 @@
                 {{ include('klo_ki_event/_mietvertrag_empty_table_row.xml.twig') }}
             {% endfor %}
 
-            {# Zeile für Gesamtbetrag #}
+            {# Zeile für Summe Raummieten #}
+            <w:tr w:rsidR="00847596" w:rsidRPr="00512D8F" w14:paraId="2DF2EE20" w14:textId="77777777"
+                  w:rsidTr="00374C8B">
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="4106" w:type="dxa"/>
+                        <w:gridSpan w:val="2"/>
+                        <w:tcBorders>
+                            <w:top w:val="single" w:sz="4" w:space="0" w:color="auto"/>
+                        </w:tcBorders>
+                    </w:tcPr>
+                    <w:p w14:paraId="32DD6E0A" w14:textId="0A148C4D" w:rsidR="00847596" w:rsidRPr="00512D8F" w:rsidRDefault="00512D8F" w:rsidP="00847596">
+                        <w:pPr>
+                            <w:rPr>
+                                <w:b/>
+                                <w:bCs/>
+                                <w:sz w:val="32"/>
+                                <w:szCs w:val="32"/>
+                            </w:rPr>
+                        </w:pPr>
+                        <w:r w:rsidRPr="00512D8F">
+                            <w:rPr>
+                                <w:b/>
+                                <w:bCs/>
+                            </w:rPr>
+                            <w:t>Summe der Raummieten*:</w:t>
+                        </w:r>
+                    </w:p>
+                </w:tc>
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="1701" w:type="dxa"/>
+                        <w:tcBorders>
+                            <w:top w:val="single" w:sz="4" w:space="0" w:color="auto"/>
+                        </w:tcBorders>
+                    </w:tcPr>
+                    <w:p w14:paraId="73D34E6C" w14:textId="77777777" w:rsidR="00847596" w:rsidRPr="00512D8F" w:rsidRDefault="00847596" w:rsidP="00847596">
+                        <w:pPr>
+                            <w:jc w:val="right"/>
+                            <w:rPr>
+                                <w:b/>
+                                <w:bCs/>
+                                <w:sz w:val="32"/>
+                                <w:szCs w:val="32"/>
+                            </w:rPr>
+                        </w:pPr>
+                        <w:r w:rsidRPr="00512D8F">
+                            <w:rPr>
+                                <w:b/>
+                                <w:bCs/>
+                            </w:rPr>
+                            <w:t>{{ (e.allRoomFees / 100) | number_format(2, ',', '.') }} €</w:t>
+                        </w:r>
+                    </w:p>
+                </w:tc>
+
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="1442" w:type="dxa"/>
+                        <w:tcBorders>
+                            <w:top w:val="single" w:sz="4" w:space="0" w:color="auto"/>
+                        </w:tcBorders>
+                    </w:tcPr>
+                    <w:p w14:paraId="0C746871" w14:textId="77777777" w:rsidR="00847596" w:rsidRPr="00512D8F" w:rsidRDefault="00847596" w:rsidP="00847596">
+                        <w:pPr>
+                            <w:jc w:val="right"/>
+                            <w:rPr>
+                                <w:b/>
+                                <w:bCs/>
+                            </w:rPr>
+                        </w:pPr>
+                        <w:r w:rsidRPr="00512D8F">
+                            <w:rPr>
+                                <w:b/>
+                                <w:bCs/>
+                            </w:rPr>
+                            <w:t>0,00 €</w:t>
+                        </w:r>
+                    </w:p>
+                </w:tc>
+
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="1813" w:type="dxa"/>
+                        <w:tcBorders>
+                            <w:top w:val="single" w:sz="4" w:space="0" w:color="auto"/>
+                        </w:tcBorders>
+                    </w:tcPr>
+                    <w:p w14:paraId="32DD6E0A" w14:textId="0A148C4D" w:rsidR="00847596" w:rsidRPr="00512D8F" w:rsidRDefault="00512D8F" w:rsidP="00847596">
+                        <w:pPr>
+                            <w:jc w:val="right"/>
+                            <w:rPr>
+                                <w:b/>
+                                <w:bCs/>
+                                <w:sz w:val="32"/>
+                                <w:szCs w:val="32"/>
+                            </w:rPr>
+                        </w:pPr>
+                        <w:r w:rsidRPr="00512D8F">
+                            <w:rPr>
+                                <w:b/>
+                                <w:bCs/>
+                            </w:rPr>
+                            <w:t>{{ (e.allRoomFees / 100) | number_format(2, ',', '.') }} €</w:t>
+                        </w:r>
+                    </w:p>
+                </w:tc>
+            </w:tr>
+
+
+
+
+
+
+
+
+
+
+
+            <w:tr w:rsidR="00847596" w:rsidRPr="00512D8F" w14:paraId="2DF2EE20" w14:textId="77777777"
+                  w:rsidTr="00374C8B">
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="4106" w:type="dxa"/>
+                        <w:gridSpan w:val="2"/>
+                        <w:tcBorders>
+                            <w:top w:val="single" w:sz="4" w:space="0" w:color="auto"/>
+                        </w:tcBorders>
+                    </w:tcPr>
+                    <w:p w14:paraId="32DD6E0A" w14:textId="0A148C4D" w:rsidR="00847596" w:rsidRPr="00512D8F" w:rsidRDefault="00512D8F" w:rsidP="00847596">
+                        <w:pPr>
+                            <w:rPr>
+                                <w:b/>
+                                <w:bCs/>
+                                <w:sz w:val="32"/>
+                                <w:szCs w:val="32"/>
+                            </w:rPr>
+                        </w:pPr>
+                        <w:r w:rsidRPr="00512D8F">
+                            <w:rPr>
+                                <w:b/>
+                                <w:bCs/>
+                            </w:rPr>
+                            <w:t>Summe sonst. Ausstattung:</w:t>
+                        </w:r>
+                    </w:p>
+                </w:tc>
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="1701" w:type="dxa"/>
+                        <w:tcBorders>
+                            <w:top w:val="single" w:sz="4" w:space="0" w:color="auto"/>
+                        </w:tcBorders>
+                    </w:tcPr>
+                    <w:p w14:paraId="73D34E6C" w14:textId="77777777" w:rsidR="00847596" w:rsidRPr="00512D8F" w:rsidRDefault="00847596" w:rsidP="00847596">
+                        <w:pPr>
+                            <w:jc w:val="right"/>
+                            <w:rPr>
+                                <w:b/>
+                                <w:bCs/>
+                                <w:sz w:val="32"/>
+                                <w:szCs w:val="32"/>
+                            </w:rPr>
+                        </w:pPr>
+                        <w:r w:rsidRPr="00512D8F">
+                            <w:rPr>
+                                <w:b/>
+                                <w:bCs/>
+                            </w:rPr>
+                            <w:t>{{ (e.allAusstattungNettoPreis / 100) | number_format(2, ',', '.') }} €</w:t>
+                        </w:r>
+                    </w:p>
+                </w:tc>
+
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="1442" w:type="dxa"/>
+                        <w:tcBorders>
+                            <w:top w:val="single" w:sz="4" w:space="0" w:color="auto"/>
+                        </w:tcBorders>
+                    </w:tcPr>
+                    <w:p w14:paraId="0C746871" w14:textId="77777777" w:rsidR="00847596" w:rsidRPr="00512D8F" w:rsidRDefault="00847596" w:rsidP="00847596">
+                        <w:pPr>
+                            <w:jc w:val="right"/>
+                            <w:rPr>
+                                <w:b/>
+                                <w:bCs/>
+                                <w:sz w:val="32"/>
+                                <w:szCs w:val="32"/>
+                            </w:rPr>
+                        </w:pPr>
+                        <w:r w:rsidRPr="00512D8F">
+                            <w:rPr>
+                                <w:b/>
+                                <w:bCs/>
+                            </w:rPr>
+                            <w:t>{{ (e.allMwSt / 100) | number_format(2, ',', '.') }} €</w:t>
+                        </w:r>
+                    </w:p>
+                </w:tc>
+
+                <w:tc>
+                    <w:tcPr>
+                        <w:tcW w:w="1813" w:type="dxa"/>
+                        <w:tcBorders>
+                            <w:top w:val="single" w:sz="4" w:space="0" w:color="auto"/>
+                        </w:tcBorders>
+                    </w:tcPr>
+                    <w:p w14:paraId="32DD6E0A" w14:textId="0A148C4D" w:rsidR="00847596" w:rsidRPr="00512D8F" w:rsidRDefault="00512D8F" w:rsidP="00847596">
+                        <w:pPr>
+                            <w:jc w:val="right"/>
+                            <w:rPr>
+                                <w:b/>
+                                <w:bCs/>
+                                <w:sz w:val="32"/>
+                                <w:szCs w:val="32"/>
+                            </w:rPr>
+                        </w:pPr>
+                        <w:r w:rsidRPr="00512D8F">
+                            <w:rPr>
+                                <w:b/>
+                                <w:bCs/>
+                            </w:rPr>
+                            <w:t>{{ (e.allAusstattungBruttoPreis / 100) | number_format(2, ',', '.') }} €</w:t>
+                        </w:r>
+                    </w:p>
+                </w:tc>
+            </w:tr>
+
+
             <w:tr w:rsidR="00847596" w:rsidRPr="00512D8F" w14:paraId="2DF2EE20" w14:textId="77777777"
                   w:rsidTr="00374C8B">
                 <w:tc>
@@ -875,7 +1104,7 @@
                                 <w:sz w:val="32"/>
                                 <w:szCs w:val="32"/>
                             </w:rPr>
-                            <w:t>{{ (e.nettoPreis / 100) | number_format(2, ',', '.') }} €</w:t>
+                            <w:t>{{ (e.allNettoPreis / 100) | number_format(2, ',', '.') }} €</w:t>
                         </w:r>
                     </w:p>
                 </w:tc>
@@ -904,7 +1133,7 @@
                                 <w:sz w:val="32"/>
                                 <w:szCs w:val="32"/>
                             </w:rPr>
-                            <w:t>{{ ( (e.bruttoPreis - e.nettoPreis) / 100) | number_format(2, ',', '.') }} €</w:t>
+                            <w:t>{{ (e.allMwSt / 100) | number_format(2, ',', '.') }} €</w:t>
                         </w:r>
                     </w:p>
                 </w:tc>
@@ -933,12 +1162,37 @@
                                 <w:sz w:val="32"/>
                                 <w:szCs w:val="32"/>
                             </w:rPr>
-                            <w:t>{{ (e.bruttoPreis / 100) | number_format(2, ',', '.') }} €</w:t>
+                            <w:t>{{ (e.allBruttoPreis / 100) | number_format(2, ',', '.') }} €</w:t>
                         </w:r>
                     </w:p>
                 </w:tc>
-
             </w:tr>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

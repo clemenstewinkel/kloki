@@ -50,6 +50,8 @@ $(document).ready(function() {
         {
             plugins: [ dayGridPlugin, interactionPlugin, bootstrapPlugin, timeGridPlugin, resourceTimeGridPlugin],
             height: 'parent',
+            firstDay: 1,
+            fixedWeekCount: false,
             navLinks: true,
             editable: userRoles.includes('ROLE_ADMIN') || userRoles.includes('ROLE_FOOD'),
             locale: 'de',

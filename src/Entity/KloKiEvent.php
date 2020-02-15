@@ -296,6 +296,11 @@ class KloKiEvent
      */
     private $overnightStays;
 
+    /**
+     * @ORM\Column(type="string", length=32, nullable=true)
+     */
+    private $contractNumber;
+
 
     public function __construct()
     {
@@ -316,6 +321,7 @@ class KloKiEvent
 
     public function setName($name):                                   self { $this->name = $name;                             return $this; }
     public function setArt($art):                                     self { $this->art = $art;                               return $this; }
+    public function setContractNumber(?string $contractNumber):       self { $this->contractNumber = $contractNumber;         return $this; }
     public function setKategorie(?KloKiEventKategorie $kategorie):    self { $this->kategorie = $kategorie;                   return $this; }
     public function setRoom(?Room $room):                             self { $this->room = $room;                             return $this; }
     public function setKontakt(?Addresse $kontakt):                   self { $this->kontakt = $kontakt;                       return $this; }
@@ -470,6 +476,7 @@ class KloKiEvent
     // String-Getters
     public function getName():                  ?string { return $this->name;               }
     public function getBemerkung():             ?string { return $this->Bemerkung;          }
+    public function getContractNumber():        ?string { return $this->contractNumber;     }
 
     // Entity-Getters
     public function getKategorie():   ?KloKiEventKategorie  { return $this->kategorie;    }
@@ -839,6 +846,8 @@ class KloKiEvent
         }
         return $this;
     }
+
+
 
 
 
