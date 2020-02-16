@@ -347,7 +347,7 @@
                     <w:sz w:val="28"/>
                     <w:szCs w:val="28"/>
                 </w:rPr>
-                <w:t>Rechnungs- und Vertragsnummer: 4711-123</w:t>
+                <w:t>Rechnungs- und Vertragsnummer: 4711</w:t>
             </w:r>
         </w:p>
         <w:p w14:paraId="6A8D0DF7" w14:textId="77777777" w:rsidR="000C47FF" w:rsidRPr="00976B77"
@@ -726,7 +726,7 @@
             </w:pPr>
             <w:proofErr w:type="gramStart"/>
             <w:r>
-                <w:t>Tolles Event</w:t>
+                <w:t>Probe Lebenshilfe</w:t>
             </w:r>
         </w:p>
         <w:p w14:paraId="5822C519" w14:textId="7C42AB78" w:rsidR="00847596" w:rsidRPr="00976B77"
@@ -880,7 +880,7 @@
     </w:tcPr>
     <w:p>
         <w:r>
-            <w:t>Minoritensaal</w:t>
+            <w:t>Foyer unten</w:t>
         </w:r>
     </w:p>
 </w:tc>
@@ -891,756 +891,7 @@
     </w:tcPr>
     <w:p>
         <w:r>
-            <w:t>                            Dienstag, 4. Februar 2020, 08:00 bis 21:30 Uhr
-    </w:t>
-        </w:r>
-    </w:p>
-</w:tc>
-<w:tc>
-    <w:tcPr>
-        <w:tcW w:w="1813" w:type="dxa"/>
-    </w:tcPr>
-    <w:p>
-        <w:pPr>
-            <w:jc w:val="right"/>
-        </w:pPr>
-        <w:r>
-            <w:t>208,25 €</w:t>
-        </w:r>
-    </w:p>
-</w:tc>
-</w:tr>
-
-
-<w:tr>
-<w:tc>
-    <w:tcPr>
-        <w:tcW w:w="4106" w:type="dxa"/>
-        <w:gridSpan w:val="2"/>
-    </w:tcPr>
-    <w:p>
-        <w:pPr>
-            <w:rPr>
-                <w:b/>
-                <w:bCs/>
-            </w:rPr>
-        </w:pPr>
-        <w:r w:rsidRPr="00847596">
-            <w:rPr>
-                <w:b/>
-                <w:bCs/>
-            </w:rPr>
-            <w:t>Ausstattung</w:t>
-        </w:r>
-    </w:p>
-</w:tc>
-<w:tc>
-    <w:tcPr>
-        <w:tcW w:w="1701" w:type="dxa"/>
-    </w:tcPr>
-    <w:p>
-        <w:pPr>
-            <w:rPr>
-                <w:b/>
-                <w:bCs/>
-            </w:rPr>
-        </w:pPr>
-        <w:r>
-            <w:rPr>
-                <w:b/>
-                <w:bCs/>
-            </w:rPr>
-            <w:t>Nettobetrag</w:t>
-        </w:r>
-    </w:p>
-</w:tc>
-<w:tc>
-    <w:tcPr>
-        <w:tcW w:w="1442" w:type="dxa"/>
-    </w:tcPr>
-    <w:p>
-        <w:pPr>
-            <w:rPr>
-                <w:b/>
-                <w:bCs/>
-            </w:rPr>
-        </w:pPr>
-        <w:r>
-            <w:rPr>
-                <w:b/>
-                <w:bCs/>
-            </w:rPr>
-            <w:t>MwSt. 19%</w:t>
-        </w:r>
-    </w:p>
-</w:tc>
-<w:tc>
-    <w:tcPr>
-        <w:tcW w:w="1813" w:type="dxa"/>
-    </w:tcPr>
-    <w:p>
-        <w:pPr>
-            <w:rPr>
-                <w:b/>
-                <w:bCs/>
-            </w:rPr>
-        </w:pPr>
-        <w:r>
-            <w:rPr>
-                <w:b/>
-                <w:bCs/>
-            </w:rPr>
-            <w:t>Bruttobetrag</w:t>
-        </w:r>
-    </w:p>
-</w:tc>
-</w:tr>
-
-
-<w:tr>
-    <w:tc>
-        <w:tcPr><w:tcW w:w="4106" w:type="dxa"/><w:gridSpan w:val="2"/></w:tcPr>
-        <w:p><w:r><w:t>Bühne (inkl. Bühnenlicht, weiß, dimmbar)</w:t></w:r></w:p>
-    </w:tc>
-    <w:tc>
-        <w:tcPr><w:tcW w:w="1701" w:type="dxa"/></w:tcPr>
-        <w:p>
-            <w:pPr><w:jc w:val="right"/></w:pPr>
-            <w:r><w:t>71,43 €</w:t></w:r>
-        </w:p>
-    </w:tc>
-    <w:tc>
-        <w:tcPr><w:tcW w:w="1442" w:type="dxa"/></w:tcPr>
-        <w:p>
-            <w:pPr><w:jc w:val="right"/></w:pPr>
-            <w:r><w:t>13,57 €</w:t></w:r>
-        </w:p>
-    </w:tc>
-    <w:tc>
-        <w:tcPr><w:tcW w:w="1813" w:type="dxa"/></w:tcPr>
-        <w:p>
-            <w:pPr><w:jc w:val="right"/></w:pPr>
-            <w:r><w:t>85,00 €</w:t></w:r>
-        </w:p>
-    </w:tc>
-</w:tr>
-<w:tr>
-    <w:tc>
-        <w:tcPr><w:tcW w:w="4106" w:type="dxa"/><w:gridSpan w:val="2"/></w:tcPr>
-        <w:p><w:r><w:t>kleine Tonanlage in Selbstbedienung inkl. 1 Kabelmikrophon</w:t></w:r></w:p>
-    </w:tc>
-    <w:tc>
-        <w:tcPr><w:tcW w:w="1701" w:type="dxa"/></w:tcPr>
-        <w:p>
-            <w:pPr><w:jc w:val="right"/></w:pPr>
-            <w:r><w:t>54,62 €</w:t></w:r>
-        </w:p>
-    </w:tc>
-    <w:tc>
-        <w:tcPr><w:tcW w:w="1442" w:type="dxa"/></w:tcPr>
-        <w:p>
-            <w:pPr><w:jc w:val="right"/></w:pPr>
-            <w:r><w:t>10,38 €</w:t></w:r>
-        </w:p>
-    </w:tc>
-    <w:tc>
-        <w:tcPr><w:tcW w:w="1813" w:type="dxa"/></w:tcPr>
-        <w:p>
-            <w:pPr><w:jc w:val="right"/></w:pPr>
-            <w:r><w:t>65,00 €</w:t></w:r>
-        </w:p>
-    </w:tc>
-</w:tr>
-<w:tr>
-    <w:tc>
-        <w:tcPr><w:tcW w:w="4106" w:type="dxa"/><w:gridSpan w:val="2"/></w:tcPr>
-        <w:p><w:r><w:t>professionelle Ton- und Lichtanlage (inkl. Techniker)</w:t></w:r></w:p>
-    </w:tc>
-    <w:tc>
-        <w:tcPr><w:tcW w:w="1701" w:type="dxa"/></w:tcPr>
-        <w:p>
-            <w:pPr><w:jc w:val="right"/></w:pPr>
-            <w:r><w:t>357,14 €</w:t></w:r>
-        </w:p>
-    </w:tc>
-    <w:tc>
-        <w:tcPr><w:tcW w:w="1442" w:type="dxa"/></w:tcPr>
-        <w:p>
-            <w:pPr><w:jc w:val="right"/></w:pPr>
-            <w:r><w:t>67,86 €</w:t></w:r>
-        </w:p>
-    </w:tc>
-    <w:tc>
-        <w:tcPr><w:tcW w:w="1813" w:type="dxa"/></w:tcPr>
-        <w:p>
-            <w:pPr><w:jc w:val="right"/></w:pPr>
-            <w:r><w:t>425,00 €</w:t></w:r>
-        </w:p>
-    </w:tc>
-</w:tr>
-
-            <w:tr w:rsidR="00512D8F" w14:paraId="19198816" w14:textId="77777777" w:rsidTr="00512D8F">
-    <w:tc>
-        <w:tcPr>
-            <w:tcW w:w="4106" w:type="dxa"/>
-            <w:gridSpan w:val="2"/>
-            <w:tcBorders>
-                <w:top w:val="nil"/>
-                <w:left w:val="nil"/>
-                <w:bottom w:val="nil"/>
-                <w:right w:val="nil"/>
-            </w:tcBorders>
-        </w:tcPr>
-        <w:p w14:paraId="3C2C84E4" w14:textId="77777777" w:rsidR="00512D8F" w:rsidRDefault="00512D8F" w:rsidP="002C162A"/>
-    </w:tc>
-    <w:tc>
-        <w:tcPr>
-            <w:tcW w:w="1701" w:type="dxa"/>
-            <w:tcBorders>
-                <w:top w:val="nil"/>
-                <w:left w:val="nil"/>
-                <w:bottom w:val="nil"/>
-                <w:right w:val="nil"/>
-            </w:tcBorders>
-        </w:tcPr>
-        <w:p w14:paraId="12F301F6" w14:textId="77777777" w:rsidR="00512D8F" w:rsidRDefault="00512D8F" w:rsidP="002C162A"/>
-    </w:tc>
-    <w:tc>
-        <w:tcPr>
-            <w:tcW w:w="1442" w:type="dxa"/>
-            <w:tcBorders>
-                <w:top w:val="nil"/>
-                <w:left w:val="nil"/>
-                <w:bottom w:val="nil"/>
-                <w:right w:val="nil"/>
-            </w:tcBorders>
-        </w:tcPr>
-        <w:p w14:paraId="0F9EF9C3" w14:textId="77777777" w:rsidR="00512D8F" w:rsidRDefault="00512D8F" w:rsidP="002C162A"/>
-    </w:tc>
-    <w:tc>
-        <w:tcPr>
-            <w:tcW w:w="1813" w:type="dxa"/>
-            <w:tcBorders>
-                <w:top w:val="nil"/>
-                <w:left w:val="nil"/>
-                <w:bottom w:val="nil"/>
-                <w:right w:val="nil"/>
-            </w:tcBorders>
-        </w:tcPr>
-        <w:p w14:paraId="60E05493" w14:textId="77777777" w:rsidR="00512D8F" w:rsidRDefault="00512D8F" w:rsidP="002C162A"/>
-    </w:tc>
-</w:tr>
-
-            <w:tr w:rsidR="00512D8F" w14:paraId="19198816" w14:textId="77777777" w:rsidTr="00512D8F">
-    <w:tc>
-        <w:tcPr>
-            <w:tcW w:w="4106" w:type="dxa"/>
-            <w:gridSpan w:val="2"/>
-            <w:tcBorders>
-                <w:top w:val="nil"/>
-                <w:left w:val="nil"/>
-                <w:bottom w:val="nil"/>
-                <w:right w:val="nil"/>
-            </w:tcBorders>
-        </w:tcPr>
-        <w:p w14:paraId="3C2C84E4" w14:textId="77777777" w:rsidR="00512D8F" w:rsidRDefault="00512D8F" w:rsidP="002C162A"/>
-    </w:tc>
-    <w:tc>
-        <w:tcPr>
-            <w:tcW w:w="1701" w:type="dxa"/>
-            <w:tcBorders>
-                <w:top w:val="nil"/>
-                <w:left w:val="nil"/>
-                <w:bottom w:val="nil"/>
-                <w:right w:val="nil"/>
-            </w:tcBorders>
-        </w:tcPr>
-        <w:p w14:paraId="12F301F6" w14:textId="77777777" w:rsidR="00512D8F" w:rsidRDefault="00512D8F" w:rsidP="002C162A"/>
-    </w:tc>
-    <w:tc>
-        <w:tcPr>
-            <w:tcW w:w="1442" w:type="dxa"/>
-            <w:tcBorders>
-                <w:top w:val="nil"/>
-                <w:left w:val="nil"/>
-                <w:bottom w:val="nil"/>
-                <w:right w:val="nil"/>
-            </w:tcBorders>
-        </w:tcPr>
-        <w:p w14:paraId="0F9EF9C3" w14:textId="77777777" w:rsidR="00512D8F" w:rsidRDefault="00512D8F" w:rsidP="002C162A"/>
-    </w:tc>
-    <w:tc>
-        <w:tcPr>
-            <w:tcW w:w="1813" w:type="dxa"/>
-            <w:tcBorders>
-                <w:top w:val="nil"/>
-                <w:left w:val="nil"/>
-                <w:bottom w:val="nil"/>
-                <w:right w:val="nil"/>
-            </w:tcBorders>
-        </w:tcPr>
-        <w:p w14:paraId="60E05493" w14:textId="77777777" w:rsidR="00512D8F" w:rsidRDefault="00512D8F" w:rsidP="002C162A"/>
-    </w:tc>
-</w:tr>
-
-
-                            <w:tr>
-    <w:tc>
-        <w:tcPr>
-            <w:tcW w:w="1980" w:type="dxa"/>
-        </w:tcPr>
-        <w:p>
-            <w:pPr>
-                <w:rPr>
-                    <w:b/>
-                    <w:bCs/>
-                </w:rPr>
-            </w:pPr>
-            <w:r>
-                <w:rPr>
-                    <w:b/>
-                    <w:bCs/>
-                </w:rPr>
-                <w:t xml:space="preserve">Raum</w:t>
-            </w:r>
-        </w:p>
-    </w:tc>
-    <w:tc>
-        <w:tcPr>
-            <w:tcW w:w="5269" w:type="dxa"/>
-            <w:gridSpan w:val="3"/>
-        </w:tcPr>
-        <w:p>
-            <w:pPr>
-                <w:rPr>
-                    <w:b/>
-                    <w:bCs/>
-                </w:rPr>
-            </w:pPr>
-            <w:r>
-                <w:rPr>
-                    <w:b/>
-                    <w:bCs/>
-                </w:rPr>
-                <w:t>Zeitraum</w:t>
-            </w:r>
-        </w:p>
-    </w:tc>
-    <w:tc>
-        <w:tcPr>
-            <w:tcW w:w="1813" w:type="dxa"/>
-        </w:tcPr>
-        <w:p>
-            <w:pPr>
-                <w:rPr>
-                    <w:b/>
-                    <w:bCs/>
-                </w:rPr>
-            </w:pPr>
-            <w:r w:rsidRPr="00847596">
-                <w:rPr>
-                    <w:b/>
-                    <w:bCs/>
-                </w:rPr>
-                <w:t>Bruttobetrag*</w:t>
-            </w:r>
-        </w:p>
-    </w:tc>
-</w:tr>
-
-<w:tr>
-<w:tc>
-    <w:tcPr>
-        <w:tcW w:w="1980" w:type="dxa"/>
-    </w:tcPr>
-    <w:p>
-        <w:r>
-            <w:t>Färbersaal</w:t>
-        </w:r>
-    </w:p>
-</w:tc>
-<w:tc>
-    <w:tcPr>
-        <w:tcW w:w="5269" w:type="dxa"/>
-        <w:gridSpan w:val="3"/>
-    </w:tcPr>
-    <w:p>
-        <w:r>
-            <w:t>                            Dienstag, 4. Februar 2020, 08:00 bis 21:30 Uhr
-    </w:t>
-        </w:r>
-    </w:p>
-</w:tc>
-<w:tc>
-    <w:tcPr>
-        <w:tcW w:w="1813" w:type="dxa"/>
-    </w:tcPr>
-    <w:p>
-        <w:pPr>
-            <w:jc w:val="right"/>
-        </w:pPr>
-        <w:r>
-            <w:t>70,00 €</w:t>
-        </w:r>
-    </w:p>
-</w:tc>
-</w:tr>
-
-
-<w:tr>
-<w:tc>
-    <w:tcPr>
-        <w:tcW w:w="4106" w:type="dxa"/>
-        <w:gridSpan w:val="2"/>
-    </w:tcPr>
-    <w:p>
-        <w:pPr>
-            <w:rPr>
-                <w:b/>
-                <w:bCs/>
-            </w:rPr>
-        </w:pPr>
-        <w:r w:rsidRPr="00847596">
-            <w:rPr>
-                <w:b/>
-                <w:bCs/>
-            </w:rPr>
-            <w:t>Ausstattung</w:t>
-        </w:r>
-    </w:p>
-</w:tc>
-<w:tc>
-    <w:tcPr>
-        <w:tcW w:w="1701" w:type="dxa"/>
-    </w:tcPr>
-    <w:p>
-        <w:pPr>
-            <w:rPr>
-                <w:b/>
-                <w:bCs/>
-            </w:rPr>
-        </w:pPr>
-        <w:r>
-            <w:rPr>
-                <w:b/>
-                <w:bCs/>
-            </w:rPr>
-            <w:t>Nettobetrag</w:t>
-        </w:r>
-    </w:p>
-</w:tc>
-<w:tc>
-    <w:tcPr>
-        <w:tcW w:w="1442" w:type="dxa"/>
-    </w:tcPr>
-    <w:p>
-        <w:pPr>
-            <w:rPr>
-                <w:b/>
-                <w:bCs/>
-            </w:rPr>
-        </w:pPr>
-        <w:r>
-            <w:rPr>
-                <w:b/>
-                <w:bCs/>
-            </w:rPr>
-            <w:t>MwSt. 19%</w:t>
-        </w:r>
-    </w:p>
-</w:tc>
-<w:tc>
-    <w:tcPr>
-        <w:tcW w:w="1813" w:type="dxa"/>
-    </w:tcPr>
-    <w:p>
-        <w:pPr>
-            <w:rPr>
-                <w:b/>
-                <w:bCs/>
-            </w:rPr>
-        </w:pPr>
-        <w:r>
-            <w:rPr>
-                <w:b/>
-                <w:bCs/>
-            </w:rPr>
-            <w:t>Bruttobetrag</w:t>
-        </w:r>
-    </w:p>
-</w:tc>
-</w:tr>
-
-
-<w:tr>
-    <w:tc>
-        <w:tcPr><w:tcW w:w="4106" w:type="dxa"/><w:gridSpan w:val="2"/></w:tcPr>
-        <w:p><w:r><w:t>Leinwand</w:t></w:r></w:p>
-    </w:tc>
-    <w:tc>
-        <w:tcPr><w:tcW w:w="1701" w:type="dxa"/></w:tcPr>
-        <w:p>
-            <w:pPr><w:jc w:val="right"/></w:pPr>
-            <w:r><w:t>33,61 €</w:t></w:r>
-        </w:p>
-    </w:tc>
-    <w:tc>
-        <w:tcPr><w:tcW w:w="1442" w:type="dxa"/></w:tcPr>
-        <w:p>
-            <w:pPr><w:jc w:val="right"/></w:pPr>
-            <w:r><w:t>6,39 €</w:t></w:r>
-        </w:p>
-    </w:tc>
-    <w:tc>
-        <w:tcPr><w:tcW w:w="1813" w:type="dxa"/></w:tcPr>
-        <w:p>
-            <w:pPr><w:jc w:val="right"/></w:pPr>
-            <w:r><w:t>40,00 €</w:t></w:r>
-        </w:p>
-    </w:tc>
-</w:tr>
-<w:tr>
-    <w:tc>
-        <w:tcPr><w:tcW w:w="4106" w:type="dxa"/><w:gridSpan w:val="2"/></w:tcPr>
-        <w:p><w:r><w:t>Flügel inkl. Stimmung</w:t></w:r></w:p>
-    </w:tc>
-    <w:tc>
-        <w:tcPr><w:tcW w:w="1701" w:type="dxa"/></w:tcPr>
-        <w:p>
-            <w:pPr><w:jc w:val="right"/></w:pPr>
-            <w:r><w:t>117,65 €</w:t></w:r>
-        </w:p>
-    </w:tc>
-    <w:tc>
-        <w:tcPr><w:tcW w:w="1442" w:type="dxa"/></w:tcPr>
-        <w:p>
-            <w:pPr><w:jc w:val="right"/></w:pPr>
-            <w:r><w:t>22,35 €</w:t></w:r>
-        </w:p>
-    </w:tc>
-    <w:tc>
-        <w:tcPr><w:tcW w:w="1813" w:type="dxa"/></w:tcPr>
-        <w:p>
-            <w:pPr><w:jc w:val="right"/></w:pPr>
-            <w:r><w:t>140,00 €</w:t></w:r>
-        </w:p>
-    </w:tc>
-</w:tr>
-<w:tr>
-    <w:tc>
-        <w:tcPr><w:tcW w:w="4106" w:type="dxa"/><w:gridSpan w:val="2"/></w:tcPr>
-        <w:p><w:r><w:t>Kerzensatz</w:t></w:r></w:p>
-    </w:tc>
-    <w:tc>
-        <w:tcPr><w:tcW w:w="1701" w:type="dxa"/></w:tcPr>
-        <w:p>
-            <w:pPr><w:jc w:val="right"/></w:pPr>
-            <w:r><w:t>54,62 €</w:t></w:r>
-        </w:p>
-    </w:tc>
-    <w:tc>
-        <w:tcPr><w:tcW w:w="1442" w:type="dxa"/></w:tcPr>
-        <w:p>
-            <w:pPr><w:jc w:val="right"/></w:pPr>
-            <w:r><w:t>10,38 €</w:t></w:r>
-        </w:p>
-    </w:tc>
-    <w:tc>
-        <w:tcPr><w:tcW w:w="1813" w:type="dxa"/></w:tcPr>
-        <w:p>
-            <w:pPr><w:jc w:val="right"/></w:pPr>
-            <w:r><w:t>65,00 €</w:t></w:r>
-        </w:p>
-    </w:tc>
-</w:tr>
-
-                <w:tr w:rsidR="00512D8F" w14:paraId="19198816" w14:textId="77777777" w:rsidTr="00512D8F">
-    <w:tc>
-        <w:tcPr>
-            <w:tcW w:w="4106" w:type="dxa"/>
-            <w:gridSpan w:val="2"/>
-            <w:tcBorders>
-                <w:top w:val="nil"/>
-                <w:left w:val="nil"/>
-                <w:bottom w:val="nil"/>
-                <w:right w:val="nil"/>
-            </w:tcBorders>
-        </w:tcPr>
-        <w:p w14:paraId="3C2C84E4" w14:textId="77777777" w:rsidR="00512D8F" w:rsidRDefault="00512D8F" w:rsidP="002C162A"/>
-    </w:tc>
-    <w:tc>
-        <w:tcPr>
-            <w:tcW w:w="1701" w:type="dxa"/>
-            <w:tcBorders>
-                <w:top w:val="nil"/>
-                <w:left w:val="nil"/>
-                <w:bottom w:val="nil"/>
-                <w:right w:val="nil"/>
-            </w:tcBorders>
-        </w:tcPr>
-        <w:p w14:paraId="12F301F6" w14:textId="77777777" w:rsidR="00512D8F" w:rsidRDefault="00512D8F" w:rsidP="002C162A"/>
-    </w:tc>
-    <w:tc>
-        <w:tcPr>
-            <w:tcW w:w="1442" w:type="dxa"/>
-            <w:tcBorders>
-                <w:top w:val="nil"/>
-                <w:left w:val="nil"/>
-                <w:bottom w:val="nil"/>
-                <w:right w:val="nil"/>
-            </w:tcBorders>
-        </w:tcPr>
-        <w:p w14:paraId="0F9EF9C3" w14:textId="77777777" w:rsidR="00512D8F" w:rsidRDefault="00512D8F" w:rsidP="002C162A"/>
-    </w:tc>
-    <w:tc>
-        <w:tcPr>
-            <w:tcW w:w="1813" w:type="dxa"/>
-            <w:tcBorders>
-                <w:top w:val="nil"/>
-                <w:left w:val="nil"/>
-                <w:bottom w:val="nil"/>
-                <w:right w:val="nil"/>
-            </w:tcBorders>
-        </w:tcPr>
-        <w:p w14:paraId="60E05493" w14:textId="77777777" w:rsidR="00512D8F" w:rsidRDefault="00512D8F" w:rsidP="002C162A"/>
-    </w:tc>
-</w:tr>
-
-                <w:tr w:rsidR="00512D8F" w14:paraId="19198816" w14:textId="77777777" w:rsidTr="00512D8F">
-    <w:tc>
-        <w:tcPr>
-            <w:tcW w:w="4106" w:type="dxa"/>
-            <w:gridSpan w:val="2"/>
-            <w:tcBorders>
-                <w:top w:val="nil"/>
-                <w:left w:val="nil"/>
-                <w:bottom w:val="nil"/>
-                <w:right w:val="nil"/>
-            </w:tcBorders>
-        </w:tcPr>
-        <w:p w14:paraId="3C2C84E4" w14:textId="77777777" w:rsidR="00512D8F" w:rsidRDefault="00512D8F" w:rsidP="002C162A"/>
-    </w:tc>
-    <w:tc>
-        <w:tcPr>
-            <w:tcW w:w="1701" w:type="dxa"/>
-            <w:tcBorders>
-                <w:top w:val="nil"/>
-                <w:left w:val="nil"/>
-                <w:bottom w:val="nil"/>
-                <w:right w:val="nil"/>
-            </w:tcBorders>
-        </w:tcPr>
-        <w:p w14:paraId="12F301F6" w14:textId="77777777" w:rsidR="00512D8F" w:rsidRDefault="00512D8F" w:rsidP="002C162A"/>
-    </w:tc>
-    <w:tc>
-        <w:tcPr>
-            <w:tcW w:w="1442" w:type="dxa"/>
-            <w:tcBorders>
-                <w:top w:val="nil"/>
-                <w:left w:val="nil"/>
-                <w:bottom w:val="nil"/>
-                <w:right w:val="nil"/>
-            </w:tcBorders>
-        </w:tcPr>
-        <w:p w14:paraId="0F9EF9C3" w14:textId="77777777" w:rsidR="00512D8F" w:rsidRDefault="00512D8F" w:rsidP="002C162A"/>
-    </w:tc>
-    <w:tc>
-        <w:tcPr>
-            <w:tcW w:w="1813" w:type="dxa"/>
-            <w:tcBorders>
-                <w:top w:val="nil"/>
-                <w:left w:val="nil"/>
-                <w:bottom w:val="nil"/>
-                <w:right w:val="nil"/>
-            </w:tcBorders>
-        </w:tcPr>
-        <w:p w14:paraId="60E05493" w14:textId="77777777" w:rsidR="00512D8F" w:rsidRDefault="00512D8F" w:rsidP="002C162A"/>
-    </w:tc>
-</w:tr>
-
-                            <w:tr>
-    <w:tc>
-        <w:tcPr>
-            <w:tcW w:w="1980" w:type="dxa"/>
-        </w:tcPr>
-        <w:p>
-            <w:pPr>
-                <w:rPr>
-                    <w:b/>
-                    <w:bCs/>
-                </w:rPr>
-            </w:pPr>
-            <w:r>
-                <w:rPr>
-                    <w:b/>
-                    <w:bCs/>
-                </w:rPr>
-                <w:t xml:space="preserve">Raum</w:t>
-            </w:r>
-        </w:p>
-    </w:tc>
-    <w:tc>
-        <w:tcPr>
-            <w:tcW w:w="5269" w:type="dxa"/>
-            <w:gridSpan w:val="3"/>
-        </w:tcPr>
-        <w:p>
-            <w:pPr>
-                <w:rPr>
-                    <w:b/>
-                    <w:bCs/>
-                </w:rPr>
-            </w:pPr>
-            <w:r>
-                <w:rPr>
-                    <w:b/>
-                    <w:bCs/>
-                </w:rPr>
-                <w:t>Zeitraum</w:t>
-            </w:r>
-        </w:p>
-    </w:tc>
-    <w:tc>
-        <w:tcPr>
-            <w:tcW w:w="1813" w:type="dxa"/>
-        </w:tcPr>
-        <w:p>
-            <w:pPr>
-                <w:rPr>
-                    <w:b/>
-                    <w:bCs/>
-                </w:rPr>
-            </w:pPr>
-            <w:r w:rsidRPr="00847596">
-                <w:rPr>
-                    <w:b/>
-                    <w:bCs/>
-                </w:rPr>
-                <w:t>Bruttobetrag*</w:t>
-            </w:r>
-        </w:p>
-    </w:tc>
-</w:tr>
-
-<w:tr>
-<w:tc>
-    <w:tcPr>
-        <w:tcW w:w="1980" w:type="dxa"/>
-    </w:tcPr>
-    <w:p>
-        <w:r>
-            <w:t>Zwirnstube</w:t>
-        </w:r>
-    </w:p>
-</w:tc>
-<w:tc>
-    <w:tcPr>
-        <w:tcW w:w="5269" w:type="dxa"/>
-        <w:gridSpan w:val="3"/>
-    </w:tcPr>
-    <w:p>
-        <w:r>
-            <w:t>                            Dienstag, 4. Februar 2020, 08:00 bis 21:30 Uhr
+            <w:t>                            Samstag, 8. Februar 2020, 08:00 bis 13:00 Uhr
     </w:t>
         </w:r>
     </w:p>
@@ -1661,174 +912,10 @@
 </w:tr>
 
 
-<w:tr>
-<w:tc>
-    <w:tcPr>
-        <w:tcW w:w="4106" w:type="dxa"/>
-        <w:gridSpan w:val="2"/>
-    </w:tcPr>
-    <w:p>
-        <w:pPr>
-            <w:rPr>
-                <w:b/>
-                <w:bCs/>
-            </w:rPr>
-        </w:pPr>
-        <w:r w:rsidRPr="00847596">
-            <w:rPr>
-                <w:b/>
-                <w:bCs/>
-            </w:rPr>
-            <w:t>Ausstattung</w:t>
-        </w:r>
-    </w:p>
-</w:tc>
-<w:tc>
-    <w:tcPr>
-        <w:tcW w:w="1701" w:type="dxa"/>
-    </w:tcPr>
-    <w:p>
-        <w:pPr>
-            <w:rPr>
-                <w:b/>
-                <w:bCs/>
-            </w:rPr>
-        </w:pPr>
-        <w:r>
-            <w:rPr>
-                <w:b/>
-                <w:bCs/>
-            </w:rPr>
-            <w:t>Nettobetrag</w:t>
-        </w:r>
-    </w:p>
-</w:tc>
-<w:tc>
-    <w:tcPr>
-        <w:tcW w:w="1442" w:type="dxa"/>
-    </w:tcPr>
-    <w:p>
-        <w:pPr>
-            <w:rPr>
-                <w:b/>
-                <w:bCs/>
-            </w:rPr>
-        </w:pPr>
-        <w:r>
-            <w:rPr>
-                <w:b/>
-                <w:bCs/>
-            </w:rPr>
-            <w:t>MwSt. 19%</w:t>
-        </w:r>
-    </w:p>
-</w:tc>
-<w:tc>
-    <w:tcPr>
-        <w:tcW w:w="1813" w:type="dxa"/>
-    </w:tcPr>
-    <w:p>
-        <w:pPr>
-            <w:rPr>
-                <w:b/>
-                <w:bCs/>
-            </w:rPr>
-        </w:pPr>
-        <w:r>
-            <w:rPr>
-                <w:b/>
-                <w:bCs/>
-            </w:rPr>
-            <w:t>Bruttobetrag</w:t>
-        </w:r>
-    </w:p>
-</w:tc>
-</w:tr>
 
 
-<w:tr>
-    <w:tc>
-        <w:tcPr><w:tcW w:w="4106" w:type="dxa"/><w:gridSpan w:val="2"/></w:tcPr>
-        <w:p><w:r><w:t>Bühne (inkl. Bühnenlicht, weiß, dimmbar)</w:t></w:r></w:p>
-    </w:tc>
-    <w:tc>
-        <w:tcPr><w:tcW w:w="1701" w:type="dxa"/></w:tcPr>
-        <w:p>
-            <w:pPr><w:jc w:val="right"/></w:pPr>
-            <w:r><w:t>71,43 €</w:t></w:r>
-        </w:p>
-    </w:tc>
-    <w:tc>
-        <w:tcPr><w:tcW w:w="1442" w:type="dxa"/></w:tcPr>
-        <w:p>
-            <w:pPr><w:jc w:val="right"/></w:pPr>
-            <w:r><w:t>13,57 €</w:t></w:r>
-        </w:p>
-    </w:tc>
-    <w:tc>
-        <w:tcPr><w:tcW w:w="1813" w:type="dxa"/></w:tcPr>
-        <w:p>
-            <w:pPr><w:jc w:val="right"/></w:pPr>
-            <w:r><w:t>85,00 €</w:t></w:r>
-        </w:p>
-    </w:tc>
-</w:tr>
-<w:tr>
-    <w:tc>
-        <w:tcPr><w:tcW w:w="4106" w:type="dxa"/><w:gridSpan w:val="2"/></w:tcPr>
-        <w:p><w:r><w:t>Klavier inkl. Stimmung</w:t></w:r></w:p>
-    </w:tc>
-    <w:tc>
-        <w:tcPr><w:tcW w:w="1701" w:type="dxa"/></w:tcPr>
-        <w:p>
-            <w:pPr><w:jc w:val="right"/></w:pPr>
-            <w:r><w:t>92,44 €</w:t></w:r>
-        </w:p>
-    </w:tc>
-    <w:tc>
-        <w:tcPr><w:tcW w:w="1442" w:type="dxa"/></w:tcPr>
-        <w:p>
-            <w:pPr><w:jc w:val="right"/></w:pPr>
-            <w:r><w:t>17,56 €</w:t></w:r>
-        </w:p>
-    </w:tc>
-    <w:tc>
-        <w:tcPr><w:tcW w:w="1813" w:type="dxa"/></w:tcPr>
-        <w:p>
-            <w:pPr><w:jc w:val="right"/></w:pPr>
-            <w:r><w:t>110,00 €</w:t></w:r>
-        </w:p>
-    </w:tc>
-</w:tr>
-<w:tr>
-    <w:tc>
-        <w:tcPr><w:tcW w:w="4106" w:type="dxa"/><w:gridSpan w:val="2"/></w:tcPr>
-        <w:p><w:r><w:t>Kerzensatz</w:t></w:r></w:p>
-    </w:tc>
-    <w:tc>
-        <w:tcPr><w:tcW w:w="1701" w:type="dxa"/></w:tcPr>
-        <w:p>
-            <w:pPr><w:jc w:val="right"/></w:pPr>
-            <w:r><w:t>54,62 €</w:t></w:r>
-        </w:p>
-    </w:tc>
-    <w:tc>
-        <w:tcPr><w:tcW w:w="1442" w:type="dxa"/></w:tcPr>
-        <w:p>
-            <w:pPr><w:jc w:val="right"/></w:pPr>
-            <w:r><w:t>10,38 €</w:t></w:r>
-        </w:p>
-    </w:tc>
-    <w:tc>
-        <w:tcPr><w:tcW w:w="1813" w:type="dxa"/></w:tcPr>
-        <w:p>
-            <w:pPr><w:jc w:val="right"/></w:pPr>
-            <w:r><w:t>65,00 €</w:t></w:r>
-        </w:p>
-    </w:tc>
-</w:tr>
 
-                <w:tr w:rsidR="00512D8F" w14:paraId="19198816" w14:textId="77777777" w:rsidTr="00512D8F">
+            <w:tr w:rsidR="00512D8F" w14:paraId="19198816" w14:textId="77777777" w:rsidTr="00512D8F">
     <w:tc>
         <w:tcPr>
             <w:tcW w:w="4106" w:type="dxa"/>
@@ -1880,7 +967,7 @@
     </w:tc>
 </w:tr>
 
-                <w:tr w:rsidR="00512D8F" w14:paraId="19198816" w14:textId="77777777" w:rsidTr="00512D8F">
+            <w:tr w:rsidR="00512D8F" w14:paraId="19198816" w14:textId="77777777" w:rsidTr="00512D8F">
     <w:tc>
         <w:tcPr>
             <w:tcW w:w="4106" w:type="dxa"/>
@@ -1931,6 +1018,7 @@
         <w:p w14:paraId="60E05493" w14:textId="77777777" w:rsidR="00512D8F" w:rsidRDefault="00512D8F" w:rsidP="002C162A"/>
     </w:tc>
 </w:tr>
+
 
             
                         <w:tr w:rsidR="00847596" w:rsidRPr="00512D8F" w14:paraId="2DF2EE20" w14:textId="77777777"
@@ -1983,7 +1071,7 @@
                                 <w:b/>
                                 <w:bCs/>
                             </w:rPr>
-                            <w:t>328,25 €</w:t>
+                            <w:t>50,00 €</w:t>
                         </w:r>
                     </w:p>
                 </w:tc>
@@ -2035,7 +1123,7 @@
                                 <w:b/>
                                 <w:bCs/>
                             </w:rPr>
-                            <w:t>328,25 €</w:t>
+                            <w:t>50,00 €</w:t>
                         </w:r>
                     </w:p>
                 </w:tc>
@@ -2101,7 +1189,7 @@
                                 <w:b/>
                                 <w:bCs/>
                             </w:rPr>
-                            <w:t>907,56 €</w:t>
+                            <w:t>0,00 €</w:t>
                         </w:r>
                     </w:p>
                 </w:tc>
@@ -2128,7 +1216,7 @@
                                 <w:b/>
                                 <w:bCs/>
                             </w:rPr>
-                            <w:t>172,44 €</w:t>
+                            <w:t>0,00 €</w:t>
                         </w:r>
                     </w:p>
                 </w:tc>
@@ -2155,7 +1243,7 @@
                                 <w:b/>
                                 <w:bCs/>
                             </w:rPr>
-                            <w:t>1.080,00 €</w:t>
+                            <w:t>0,00 €</w:t>
                         </w:r>
                     </w:p>
                 </w:tc>
@@ -2216,7 +1304,7 @@
                                 <w:sz w:val="32"/>
                                 <w:szCs w:val="32"/>
                             </w:rPr>
-                            <w:t>1.235,81 €</w:t>
+                            <w:t>50,00 €</w:t>
                         </w:r>
                     </w:p>
                 </w:tc>
@@ -2245,7 +1333,7 @@
                                 <w:sz w:val="32"/>
                                 <w:szCs w:val="32"/>
                             </w:rPr>
-                            <w:t>172,44 €</w:t>
+                            <w:t>0,00 €</w:t>
                         </w:r>
                     </w:p>
                 </w:tc>
@@ -2274,7 +1362,7 @@
                                 <w:sz w:val="32"/>
                                 <w:szCs w:val="32"/>
                             </w:rPr>
-                            <w:t>1.408,25 €</w:t>
+                            <w:t>50,00 €</w:t>
                         </w:r>
                     </w:p>
                 </w:tc>

@@ -1,5 +1,5 @@
-<form method="post" action="{{ path('addresse_delete', {'id': addresse.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+<form method="post" action="{{ path('addresse_delete', {'id': adr.id}) }}" onsubmit="return confirm('Wollen Sie diese Adresse wirklich löschen?');" style="display: inline;">
     <input type="hidden" name="_method" value="DELETE">
-    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ addresse.id) }}">
-    <button class="btn btn-danger">Löschen</button>
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ adr.id) }}">
+    <button class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>
 </form>

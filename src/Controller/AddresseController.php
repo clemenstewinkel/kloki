@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Addresse;
 use App\Form\AddresseType;
 use App\Repository\AddresseRepository;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,10 +28,16 @@ class AddresseController extends AbstractController
     /**
      * @Route("/", name="addresse_index", methods={"GET"})
      */
-    public function index(AddresseRepository $addresseRepository): Response
+    public function index(Request $request, PaginatorInterface $paginator, AddresseRepository $adrRepo): Response
     {
+        $query = $adrRepo->getQueryFromRequest($request);
+        $pagination = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1),
+            10
+        );
         return $this->render('addresse/index.html.twig', [
-            'addresses' => $addresseRepository->findAll(),
+            'pagination' => $pagination
         ]);
     }
 
@@ -52,6 +59,7 @@ class AddresseController extends AbstractController
                 return new Response('OK;'.$addresse->getForAutoComplete());
             }
 
+            $this->addFlash('success', "Die Adresse wurde angelegt.");
             return $this->redirectToRoute('addresse_index');
         }
 
@@ -77,7 +85,7 @@ class AddresseController extends AbstractController
     public function show(Addresse $addresse): Response
     {
         return $this->render('addresse/show.html.twig', [
-            'addresse' => $addresse,
+            'adr' => $addresse,
         ]);
     }
 
@@ -92,11 +100,12 @@ class AddresseController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
+            $this->addFlash('success', "Die Adresse wurde gespeichert.");
             return $this->redirectToRoute('addresse_index');
         }
 
         return $this->render('addresse/edit.html.twig', [
-            'addresse' => $addresse,
+            'adr' => $addresse,
             'klo_ki_form_action' => $this->generateUrl('addresse_edit', ['id' => $addresse->getId()]),
             'form' => $form->createView(),
         ]);
@@ -111,6 +120,8 @@ class AddresseController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($addresse);
             $entityManager->flush();
+            $this->addFlash('success', "Die Adresse wurde gelöscht.");
+
         }
 
         return $this->redirectToRoute('addresse_index');

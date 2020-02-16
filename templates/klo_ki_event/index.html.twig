@@ -149,13 +149,13 @@
                 <td>{{ e.pressMaterialState | readable_enum('PressMaterialStateType')}}</td>
                 <td>{{ e.gemaListState | readable_enum('PressMaterialStateType')}}</td>
                 <td>
-                    <a href="{{ path('klo_ki_event_show', {'id': e.id}) }}"><span class="fas fa-eye"></span></a>
-                    <a href="{{ path('klo_ki_event_edit', {'id': e.id}) }}"><span class="fas fa-edit"></span></a>
+                    <a class="btn btn-primary" href="{{ path('klo_ki_event_show', {'id': e.id}) }}"><span class="fas fa-search"></span></a>
+                    <a class="btn btn-primary" href="{{ path('klo_ki_event_edit', {'id': e.id}) }}"><span class="fas fa-edit"></span></a>
                     {% if e.childEvents.count == 0 %}
-                        <form method="post" action="{{ path('klo_ki_event_delete', {'id': e.id}) }}" onsubmit="return confirm('Wollen Sie dieses Event wirklich löschen?');">
+                        <form method="post" action="{{ path('klo_ki_event_delete', {'id': e.id}) }}" onsubmit="return confirm('Wollen Sie dieses Event wirklich löschen?');" style="display: inline;">
                             <input type="hidden" name="_method" value="DELETE">
                             <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ e.id) }}">
-                            <button class="btn"><span class="fas fa-trash-alt"></span></button>
+                            <button class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>
                         </form>
                     {% endif %}
                 </td>

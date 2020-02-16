@@ -3,47 +3,76 @@
 {% block title %}Addressen{% endblock %}
 
 {% block body %}
-    <h1>Addressen</h1>
+    <div class="container-fluid">
+        <h1>Addressen</h1>
 
-    <table class="table">
-        <thead>
+
+        <div class="row">
+            <div class="col">
+                {{ knp_pagination_render(pagination) }}
+            </div>
+            <div class="col col-form-label">
+                {{ pagination.totalItemCount }} Adressen gefunden
+            </div>
+            <div class="col">
+                <form action="{{ path('addresse_index') }}" method="GET" style="display: inline;">
+                    <div class="row">
+                        <div class="col-4"><label class="col-form-label" for="query" style="float: right">Suchen: </label></div>
+                        <div class="col-8">
+                            <input type="text" class="form-control" id="query" name="query" value="{{ app.request.query.get('query') }}" placeholder="..."/>
+                        </div>
+                        <!--<div class="col-1">
+                            <button class="btn btn-primary"><span class="fas fa-filter"></span></button>
+                        </div>-->
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
+
+
+        <table class="table table-striped">
+            <thead>
             <tr>
-                <th>Vorname</th>
-                <th>Nachname</th>
-                <th>Strasse</th>
-                <th>Plz</th>
-                <th>Ort</th>
-                <th>Telefon</th>
-                <th>Email</th>
+                <th>{{ knp_pagination_sortable(pagination, 'Firma',    'adr.firma') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'Vorname',  'adr.vorname') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'Nachname', 'adr.nachname') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'Strasse',  'adr.strasse') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'PLZ',      'adr.plz') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'Ort',      'adr.ort') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'Telefon',  'adr.telefon') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'Email',    'adr.email') }}</th>
                 <th>Aktionen</th>
             </tr>
-        </thead>
-        <tbody>
-        {% for addresse in addresses %}
-            <tr>
-                <td>{{ addresse.vorname }}</td>
-                <td>{{ addresse.nachname }}</td>
-                <td>{{ addresse.strasse }}</td>
-                <td>{{ addresse.plz }}</td>
-                <td>{{ addresse.ort }}</td>
-                <td>{{ addresse.telefon }}</td>
-                <td>{% if addresse.email %}<a href="mailto:{{ addresse.email }}">{{ addresse.email }}</a>{% endif %}</td>
-                <td>
-                    <a class="btn btn-primary" href="{{ path('addresse_show', {'id': addresse.id}) }}">Details</a>
-                    <a class="btn btn-primary" href="{{ path('addresse_edit', {'id': addresse.id}) }}">Bearbeiten</a>
-                    {% if addresse.kloKiEvents.count == 0 %}
-                        {{ include('addresse/_delete_form.html.twig') }}
-                    {% endif %}
+            </thead>
+            <tbody>
+            {% for adr in pagination %}
+                <tr>
+                    <td>{{ adr.firma }}</td>
+                    <td>{{ adr.vorname }}</td>
+                    <td>{{ adr.nachname }}</td>
+                    <td>{{ adr.strasse }}</td>
+                    <td>{{ adr.plz }}</td>
+                    <td>{{ adr.ort }}</td>
+                    <td>{{ adr.telefon }}</td>
+                    <td>{% if adr.email %}<a href="mailto:{{ adr.email }}">{{ adr.email }}</a>{% endif %}</td>
+                    <td>
+                        <a class="btn btn-primary" href="{{ path('addresse_show', {'id': adr.id}) }}"><span class="fas fa-search"></span></a>
+                        <a class="btn btn-primary" href="{{ path('addresse_edit', {'id': adr.id}) }}"><span class="fas fa-edit"></span></a>
+                        {% if adr.kloKiEvents.count == 0 and adr.users.count == 0%}
+                            {{ include('addresse/_delete_form.html.twig') }}
+                        {% endif %}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="8">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
 
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="8">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a class="btn btn-primary" href="{{ path('addresse_new') }}">Neue Adresse anlegen</a>
+        <a class="btn btn-primary" href="{{ path('addresse_new') }}">Neue Adresse anlegen</a>
+    </div>
 {% endblock %}

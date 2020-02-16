@@ -99,27 +99,28 @@ class User implements UserInterface
      */
     private $eventsTon;
 
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Addresse", cascade={"persist", "remove"})
-     */
-    private $address;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\KloKiEvent", mappedBy="helperGarderobe")
      */
     private $garderobeAtEvents;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Addresse", inversedBy="users")
+     */
+    private $address;
+
     public function __construct()
     {
-        $this->kloKiEvents = new ArrayCollection();
-        $this->einlassEinsAtEvents = new ArrayCollection();
-        $this->einlassZweiAtEvents = new ArrayCollection();
-        $this->kasseAtEvents = new ArrayCollection();
+        $this->kloKiEvents          = new ArrayCollection();
+        $this->einlassEinsAtEvents  = new ArrayCollection();
+        $this->einlassZweiAtEvents  = new ArrayCollection();
+        $this->kasseAtEvents        = new ArrayCollection();
         $this->springerEinsAtEvents = new ArrayCollection();
         $this->springerZweiAtEvents = new ArrayCollection();
-        $this->eventsLicht = new ArrayCollection();
-        $this->eventsTon = new ArrayCollection();
-        $this->garderobeAtEvents = new ArrayCollection();
+        $this->eventsLicht          = new ArrayCollection();
+        $this->eventsTon            = new ArrayCollection();
+        $this->garderobeAtEvents    = new ArrayCollection();
     }
 
     /**

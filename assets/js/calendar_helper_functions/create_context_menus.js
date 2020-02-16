@@ -27,16 +27,19 @@ export default function create_context_menus()
                 delete: {name: "Delete", icon: "delete"},
                 vertrag: {
                     name: "Mietvertrag",
-                    icon: "edit",
+                    icon: "paste",
                     visible: function(key, opt){
                         let event_id = $(this).data('event-id');
-                        // Hide this item if our event has a parent itself
-                        return (fullcalendar.getEventById(event_id).extendedProps['ParentEvent'] === null);
+                        // Only show if it is a rental event and has no parents
+                        return (
+                            fullcalendar.getEventById(event_id).extendedProps['art'] === 'rental' &&
+                            fullcalendar.getEventById(event_id).extendedProps['ParentEvent'] === null
+                        );
                     }
                 },
                 child: {
                     name: "zus. Event zu diesem Event anlegen",
-                    icon: "edit",
+                    icon: "add",
                     visible: function(key, opt){
                         let event_id = $(this).data('event-id');
                         // Hide this item if our event has a parent itself

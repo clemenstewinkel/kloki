@@ -68,6 +68,16 @@ class Addresse
     private $email;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\User", mappedBy="address")
+     */
+    private $users;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $firma;
+
+    /**
      * @Groups({"address:autocomplete"})
      */
     public function getForAutoComplete()
@@ -85,6 +95,7 @@ class Addresse
     public function __construct()
     {
         $this->kloKiEvents = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -203,6 +214,49 @@ class Addresse
     public function setEmail(?string $email): self
     {
         $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+            $user->setAddress($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        if ($this->users->contains($user)) {
+            $this->users->removeElement($user);
+            // set the owning side to null (unless already changed)
+            if ($user->getAddress() === $this) {
+                $user->setAddress(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getFirma(): ?string
+    {
+        return $this->firma;
+    }
+
+    public function setFirma(?string $firma): self
+    {
+        $this->firma = $firma;
 
         return $this;
     }

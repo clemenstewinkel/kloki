@@ -1,54 +1,71 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Addresse{% endblock %}
+{% block title %}Adresse{% endblock %}
 
 {% block body %}
-    <h1>Addresse</h1>
+    <div class="container">
 
-    <table class="table">
+    <h1>Adresse</h1>
+
+    <table class="table table-striped">
         <tbody>
             <tr>
                 <th>Id</th>
-                <td>{{ addresse.id }}</td>
+                <td>{{ adr.id }}</td>
             </tr>
             <tr>
                 <th>Vorname</th>
-                <td>{{ addresse.vorname }}</td>
+                <td>{{ adr.vorname }}</td>
             </tr>
             <tr>
                 <th>Nachname</th>
-                <td>{{ addresse.nachname }}</td>
+                <td>{{ adr.nachname }}</td>
             </tr>
             <tr>
                 <th>Strasse</th>
-                <td>{{ addresse.strasse }}</td>
+                <td>{{ adr.strasse }}</td>
             </tr>
             <tr>
                 <th>Plz</th>
-                <td>{{ addresse.plz }}</td>
+                <td>{{ adr.plz }}</td>
             </tr>
             <tr>
                 <th>Ort</th>
-                <td>{{ addresse.ort }}</td>
+                <td>{{ adr.ort }}</td>
             </tr>
             <tr>
                 <th>Telefon</th>
-                <td>{{ addresse.telefon }}</td>
+                <td>{{ adr.telefon }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ adr.email }}</td>
             </tr>
         </tbody>
     </table>
+    <a class="btn btn-primary" href="{{ path('addresse_edit', {'id': adr.id}) }}"><span class="fas fa-edit"></span></a>
+    {% if adr.kloKiEvents.count == 0 and adr.users.count == 0%}
+        {{ include('addresse/_delete_form.html.twig') }}
+    {% endif %}
 
-    {% if addresse.kloKiEvents | length > 0 %}
+    {% if adr.users.count > 0 %}
+        <h2>User mit dieser Adresse</h2>
+        <ul>
+            {% for user in adr.users %}
+                <li><a href="{{ path('user_show', {'id': user.id}) }}">{{ user }}</a></li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+
+    {% if adr.kloKiEvents.count > 0 %}
     <h2>Events zu dieser Adresse</h2>
     <ul>
-        {% for event in addresse.kloKiEvents %}
+        {% for event in adr.kloKiEvents %}
             <li><a href="{{ path('klo_ki_event_show', {'id': event.id}) }}">{{ event }}</a></li>
         {% endfor %}
     </ul>
     {% endif %}
-    <a href="{{ path('addresse_index') }}">back to list</a>
 
-    <a href="{{ path('addresse_edit', {'id': addresse.id}) }}">edit</a>
-
-    {{ include('addresse/_delete_form.html.twig') }}
+    </div>
 {% endblock %}

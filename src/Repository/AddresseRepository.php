@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Addresse;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @method Addresse|null find($id, $lockMode = null, $lockVersion = null)
@@ -19,6 +20,27 @@ class AddresseRepository extends ServiceEntityRepository
         parent::__construct($registry, Addresse::class);
     }
 
+    public function getQueryFromRequest(Request $request)
+    {
+        $queryBuilder = $this->createQueryBuilder('a');
+        if($query = $request->query->get('query'))
+        {
+            $queryBuilder
+                ->andWhere('a.firma LIKE :query OR a.vorname LIKE :query OR a.nachname LIKE :query OR a.strasse LIKE :query OR a.ort LIKE :query')
+                ->setParameter('query', '%' .  $query . '%');
+        }
+        return $queryBuilder;
+    }
+
+
+
+    public function getMatchingQueryBuilder(string $query)
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.vorname LIKE :query OR a.nachname LIKE :query OR a.strasse LIKE :query OR a.ort LIKE :query')
+            ->setParameter('query', '%' .  $query . '%');
+    }
+
     /**
      * @param string $query
      * @param int $limit
@@ -26,9 +48,7 @@ class AddresseRepository extends ServiceEntityRepository
      */
     public function findAllMatching(string $query, int $limit = 10)
     {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.vorname LIKE :query OR a.nachname LIKE :query OR a.strasse LIKE :query OR a.ort LIKE :query')
-            ->setParameter('query', '%' .  $query . '%')
+        return $this->getMatchingQueryBuilder($query)
             ->setMaxResults($limit)
             ->getQuery()
             ->getResult();
