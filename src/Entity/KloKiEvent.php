@@ -364,20 +364,25 @@ class KloKiEvent
             $this->end = $end;
         return $this;
     }
+/*
     public function setPleaseMakeContract(bool $s)
     {
         if($s && ($this->getContractState() == ContractStateType::NONE || $this->getContractState() == null))
         {
             $this->setContractState(ContractStateType::REQUESTED);
         }
-        if((!$s) && ($this->getContractState() == ContractStateType::REQUESTED))
+        if((!$s) && ($this->getContractState() == ContractStateType::REQUESTED || $this->getContractState() == null))
         {
             $this->setContractState(ContractStateType::NONE);
         }
         return $this;
     }
 
-
+    public function getPleaseMakeContract() : bool
+    {
+        return in_array($this->contractState, [ContractStateType::REQUESTED, ContractStateType::SENT, ContractStateType::RECEIVED]);
+    }
+*/
 
 
 
@@ -723,12 +728,6 @@ class KloKiEvent
             return $this->end->add(new \DateInterval('P1D'));
         else
             return $this->end;
-    }
-
-    public function getPleaseMakeContract():bool
-    {
-        if($this->getContractState() == null ) return false;
-        return $this->getContractState() != ContractStateType::NONE;
     }
 
 

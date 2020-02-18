@@ -1,14 +1,18 @@
 import $ from "jquery";
 import setSpinner from "./setSpinner";
 import setErrorNotAllowed from "./setErrorNotAllowed";
-import {$calendarDetail} from "../calendar";
+import {$calendarDetail, userRoles} from "../calendar";
 import reTargetLinks from "./reTargetLinks";
 
 export default function loadNewEventForm(info)
 {
+    let url4new = '';
+    if(userRoles.includes('ROLE_ADMIN')) url4new = 'new';
+    else if (userRoles.includes('ROLE_FOOD')) url4new = 'newfood'
+    else return false;
     setSpinner();
     $.ajax({
-        url: 'new',
+        url: url4new,
         method: 'GET',
         success: function(data) {
             $calendarDetail.html(data);

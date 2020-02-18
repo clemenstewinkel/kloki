@@ -2,7 +2,10 @@
 
 namespace App\Controller;
 
+use App\DBAL\Types\ContractStateType;
 use App\DBAL\Types\EventArtType;
+use App\DBAL\Types\HotelStateType;
+use App\DBAL\Types\PressMaterialStateType;
 use App\Entity\KloKiEvent;
 use App\Form\AddresseType;
 use App\Form\KloKiEventEditType;
@@ -116,7 +119,7 @@ class KloKiEventController extends AbstractController
 
     /**
      * @Route("/new", name="klo_ki_event_new", methods={"GET","POST"})
-     * @IsGranted({"ROLE_ADMIN", "ROLE_FOOD"})
+     * @IsGranted({"ROLE_ADMIN"})
      */
     public function new(LoggerInterface $logger, Request $request, KloKiEventRepository $eventRepo): Response
     {
@@ -140,19 +143,8 @@ class KloKiEventController extends AbstractController
             }
         }
 
-        // Wenn wir keine Admin sind, dürfen wir nur optionale Events anlegen!
-        if ($this->isGranted("ROLE_ADMIN"))
-        {
-            $form = $this->createForm(KloKiEventType::class, $kloKiEvent);
-            $formTemplate = 'klo_ki_event/_form.html.twig';
-        }
-        else // Role: Food!
-        {
-            $form = $this->get('form.factory')->createNamed('klo_ki_event', KloKiEventFoodType::class, $kloKiEvent);
-            $kloKiEvent->setIsFixed(false);
-            $kloKiEvent->setArt(EventArtType::RENTAL);
-            $formTemplate = 'klo_ki_event/_form_food.html.twig';
-        }
+        $form = $this->createForm(KloKiEventType::class, $kloKiEvent);
+        $formTemplate = 'klo_ki_event/_form.html.twig';
 
         $form->handleRequest($request);
 
@@ -186,6 +178,75 @@ class KloKiEventController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+
+    /**
+     * @Route("/newfood", name="klo_ki_event_new_food", methods={"GET","POST"})
+     * @IsGranted({"ROLE_FOOD"})
+     */
+    public function newfood(LoggerInterface $logger, Request $request, KloKiEventRepository $eventRepo): Response
+    {
+        $kloKiEvent = new KloKiEvent();
+
+        // Wenn wir in der URL den Paremeter parentIdForNewChild haben, übernehmen wir
+        // einige Werte aus dem Mutter-Element
+        if($parentId = $request->query->getInt('parentIdForNewChild'))
+        {
+            $parentEvent = $eventRepo->findOneBy(['id' => $parentId]);
+            if($parentEvent)
+            {
+                $kloKiEvent->setStart($parentEvent->getStart());
+                $kloKiEvent->setEnd($parentEvent->getEnd());
+                $kloKiEvent->setAllDay($parentEvent->getAllDay());
+                $kloKiEvent->setName($parentEvent->getName() . ' (zus.)');
+                $kloKiEvent->setParentEvent($parentEvent);
+                $kloKiEvent->setKontakt($parentEvent->getKontakt());
+                $kloKiEvent->setKategorie($parentEvent->getKategorie());
+                $kloKiEvent->setArt($parentEvent->getArt());
+            }
+        }
+
+        $form = $this->get('form.factory')->createNamed('klo_ki_event', KloKiEventFoodType::class, $kloKiEvent);
+        $kloKiEvent->setIsFixed(false);
+        $kloKiEvent->setArt(EventArtType::RENTAL);
+        $kloKiEvent->setHotelState(HotelStateType::NONE);
+        $kloKiEvent->setPressMaterialState(PressMaterialStateType::NONE);
+        $kloKiEvent->setGemaListState(PressMaterialStateType::NONE);
+        $formTemplate = 'klo_ki_event/_form_food.html.twig';
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($kloKiEvent);
+            $entityManager->flush();
+            if ($request->isXmlHttpRequest()) {
+                return $this->render('klo_ki_event/_show.html.twig', [
+                    'klo_ki_event' => $kloKiEvent,
+                ]);
+            }
+            return $this->redirectToRoute('klo_ki_event_index');
+        }
+
+        // Wenn die Anfrage über AJAX kam, rendern wir nur das Formular!
+        if ($request->isXmlHttpRequest()) {
+            return $this->render($formTemplate, [
+                'klo_ki_event' => $kloKiEvent,
+                'klo_ki_form_action' => $this->generateUrl('klo_ki_event_new'),
+                'form' => $form->createView()
+            ]);
+        }
+
+        return $this->render('klo_ki_event/new.html.twig', [
+            'klo_ki_event' => $kloKiEvent,
+            'form_template' => $formTemplate,
+            'klo_ki_form_action' => $this->generateUrl('klo_ki_event_new'),
+            'form' => $form->createView(),
+        ]);
+    }
+
+
+
 
     /**
      * @Route("/icanhelp/{id}", name="klo_ki_event_icanhelp", methods={"POST"})
@@ -291,6 +352,7 @@ class KloKiEventController extends AbstractController
 
     /**
      * @Route("/createWord/{id}", name="klo_ki_event_create_word", methods={"GET"})
+     * @IsGranted({"ROLE_ADMIN"})
      */
     public function create_word(WordCreatorService $wService, KloKiEvent $kloKiEvent): Response
     {
@@ -320,6 +382,10 @@ class KloKiEventController extends AbstractController
         else // Role: Food!
         {
             $form = $this->get('form.factory')->createNamed('klo_ki_event', KloKiEventFoodType::class, $kloKiEvent);
+            if(in_array($kloKiEvent->getContractState(), [ContractStateType::SENT, ContractStateType::RECEIVED]))
+            {
+                $form->remove('contractState');
+            }
             $formTemplate = 'klo_ki_event/_form_food.html.twig';
         }
 

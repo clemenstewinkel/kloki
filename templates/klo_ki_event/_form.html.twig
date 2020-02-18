@@ -1,10 +1,10 @@
-{{ form_start(form, {'action': klo_ki_form_action, attr: {novalidate: 'novalidate'}}) }} {# TODO: novalidate raus! #}
 <style>
     .ck-editor__editable_inline {
-        min-height: 200px;
+        min-height: 180px;
     }
 </style>
 
+{{ form_start(form, {'action': klo_ki_form_action}) }}
 <div class="container kloki-form-div" style="background-color: #c2d87e;">
     <h5>Datum</h5>
     <div class="form-group row {% if form.startDate.vars.errors|length %} is-invalid {% endif %}">
@@ -39,14 +39,10 @@
             {{ form_errors(form.name) }}
         </div>
         <div class="col-sm-2">
-            {% if form.isFixed is defined %}
-                {{ form_widget(form.isFixed) }}
-            {% endif %}
+            {{ form_widget(form.isFixed) }}
         </div>
         <div class="col-sm-2">
-            {% if form.contractState is defined %}
-                {{ form_widget(form.contractState) }}
-            {% endif %}
+            {{ form_widget(form.contractState) }}
         </div>
     </div>
     <div class="form-group row">
@@ -75,11 +71,7 @@
     <div class="form-group row">
         <label class="col-form-label col-sm-2">Art</label>
         <div class="col-sm-2">
-            {% if form.art is defined %}
-                {{ form_widget(form.art) }}
-            {% else %}
-                {{ 'rental' | readable_enum('EventArtType') }}
-            {% endif %}
+            {{ form_widget(form.art) }}
         </div>
         <div class="col-sm-2">
             {{ form_widget(form.kategorie) }}
@@ -101,8 +93,8 @@
 
 <div class="container kloki-form-div" style="background-color: #d8cb9b;">
     <h5>Dispo</h5>
-    <div class="form-group row">
-        <label class="col-form-label col-sm-2">Benötigt:</label>
+    <div class="form-group-sm row">
+        <label class="col-form-label-sm col-sm-2">Benötigt:</label>
         <div class="col-sm-2">
             {{ form_widget(form.isLichtBenoetigt, {'label': 'Licht'}) }}
         </div>
@@ -117,61 +109,55 @@
         </div>
     </div>
 
-
-    <div class="form-group row">
-        <label class="col-form-label col-sm-2">Presse-Mat.</label>
+    <div class="form-group-sm row">
+        <label class="col-form-label-sm col-sm-2">Presse-Mat.</label>
         <div class="col-sm-4">
-            {{ form_widget(form.pressMaterialState) }}
+            {{ form_widget(form.pressMaterialState, {'attr': {'class': 'form-control-sm'}}) }}
         </div>
-        <label class="col-form-label col-sm-2">Gema-Liste</label>
+        <label class="col-form-label-sm col-sm-2">Gema-Liste</label>
         <div class="col-sm-4">
-            {{ form_widget(form.gemaListState) }}
-        </div>
-    </div>
-
-    <div class="form-group row">
-        <label class="col-form-label col-sm-2">Bestuhlung</label>
-        <div class="col-sm-4">
-            {{ form_widget(form.bestPlan) }}
-        </div>
-        <label class="col-form-label col-sm-2">Bühnenanw.</label>
-        <div class="col-sm-4">
-            {{ form_widget(form.stageOrder) }}
+            {{ form_widget(form.gemaListState, {'attr': {'class': 'form-control-sm'}}) }}
         </div>
     </div>
 
-
-    {% if form.LichtTechniker is defined %}
-    <div class="form-group row">
-        <label class="col-form-label col-sm-2">Licht-Te.</label>
+    <div class="form-group-sm row">
+        <label class="col-form-label-sm col-sm-2">Bestuhlung</label>
         <div class="col-sm-4">
-            {{ form_widget(form.LichtTechniker) }}
+            {{ form_widget(form.bestPlan, {'attr': {'class': 'form-control-sm'}}) }}
         </div>
-        <label class="col-form-label col-sm-2">Ton-Te.</label>
+        <label class="col-form-label-sm col-sm-2">Bühnenanw.</label>
         <div class="col-sm-4">
-            {{ form_widget(form.TonTechniker) }}
+            {{ form_widget(form.stageOrder, {'attr': {'class': 'form-control-sm'}}) }}
         </div>
     </div>
-    {% endif %}
 
 
-    <div class="form-group row">
-        <label class="col-form-label col-sm-2">Künstler</label>
+    <div class="form-group-sm row">
+        <label class="col-form-label-sm col-sm-2">Licht-Te.</label>
         <div class="col-sm-4">
-            {{ form_widget(form.hotelState) }}
+            {{ form_widget(form.LichtTechniker, {'attr': {'class': 'form-control-sm'}}) }}
         </div>
-        <label class="col-form-label col-sm-1">Zimmer</label>
+        <label class="col-form-label-sm col-sm-2">Ton-Te.</label>
+        <div class="col-sm-4">
+            {{ form_widget(form.TonTechniker, {'attr': {'class': 'form-control-sm'}}) }}
+        </div>
+    </div>
+
+    <div class="form-group-sm row">
+        <label class="col-form-label-sm col-sm-2">Künstler</label>
+        <div class="col-sm-4">
+            {{ form_widget(form.hotelState, {'attr': {'class': 'form-control-sm'}}) }}
+        </div>
+        <label class="col-form-label-sm col-sm-1">Zimmer</label>
         <div class="col-sm-2">
-            {{ form_widget(form.overnightStays) }}
+            {{ form_widget(form.overnightStays, {'attr': {'class': 'form-control-sm'}}) }}
         </div>
-
-        <label class="col-form-label col-sm-1">Bewirt.</label>
+        <label class="col-form-label-sm col-sm-1">Bewirt.</label>
         <div class="col-sm-2">
-        {{ form.anzahlArtists is defined ? form_widget(form.anzahlArtists) : '' }}
+            {{ form_widget(form.anzahlArtists, {'attr': {'class': 'form-control-sm'}}) }}
         </div>
     </div>
 
-    {% if form.helperEinlassEins is defined %}
     <div id="js-event-helper-section">
         <div class="form-group row ">
             <label class="col-form-label col-sm-2">Helfer</label>
@@ -195,7 +181,6 @@
             </div>
         </div>
     </div>
-    {% endif %}
 </div>
 
 <div class="container kloki-form-div" style="background-color: #b6d893;">

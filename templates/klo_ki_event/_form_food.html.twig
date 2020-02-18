@@ -1,131 +1,123 @@
-{{ form_start(form, {'action': klo_ki_form_action, attr: {novalidate: 'novalidate'}}) }} {# TODO: novalidate raus! #}
+{{ form_start(form, {'action': klo_ki_form_action, attr: {novalidate: 'novalidate'}}) }}
 <style>
     .ck-editor__editable_inline {
-        min-height: 200px;
+        min-height: 180px;
     }
 </style>
 
-
-<div class="form-group row">
-    <label class="col-form-label col-sm-2">Name</label>
-    <div class="col-sm-6">
-        {{ form_widget(form.name) }}
-        {{ form_errors(form.name) }}
+<div class="container kloki-form-div" style="background-color: #c2d87e;">
+    <h5>Datum</h5>
+    <div class="form-group row {% if form.startDate.vars.errors|length %} is-invalid {% endif %}">
+        {{ form_label(form.startDate) }}
+        <div class="col-sm-4">
+            {{ form_widget(form.startDate) }}
+            {{ form_errors(form.startDate) }}
+        </div>
+        <div class="col-sm-2">
+            {{ form_widget(form.startTime, {attr: {class: form.endDate.vars.errors|length ? 'is-invalid js-event-time-field' : 'js-event-time-field'}}) }}
+        </div>
     </div>
-    <div class="col-sm-4">
-        {{ form_widget(form.pleaseMakeContract, {'label': 'Bitte Vertrag anfertigen'}) }}
+    <div class="form-group row {% if form.endDate.vars.errors|length %} is-invalid {% endif %}">
+        {{ form_label(form.endDate) }}
+        <div class="col-sm-4">
+            {{ form_widget(form.endDate) }}
+            {{ form_errors(form.endDate) }}
+        </div>
+        <div class="col-sm-2">
+            {{ form_widget(form.endTime, {attr: {class: form.endDate.vars.errors|length ? 'is-invalid js-event-time-field' : 'js-event-time-field'}}) }}
+        </div>
     </div>
+    {{ form_row(form.allDay) }}
 </div>
 
+<div class="container kloki-form-div" style="background-color: #BBCDD8;">
+    <h5>Veranstaltung (Vermietung)</h5>
+    <div class="form-group row">
+        <label class="col-form-label col-sm-2">Name/Vertrag</label>
+        <div class="col-sm-6">
+            {{ form_widget(form.name) }}
+            {{ form_errors(form.name) }}
+        </div>
+        <div class="col-sm-4">
+            {% if form.contractState is defined %}
+            {{ form_widget(form.contractState) }}
+            {% else %}
+                Vertrag wurde schon versandt!
+            {% endif %}
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-form-label col-sm-2">Kontakt</label>
+        <div class="col-sm-8">
+            {{ form_widget(form.kontakt) }}
+            {{ form_errors(form.kontakt) }}
+        </div>
+        <div class="col-sm-2">
+            <a id="js-new-address-button" class="js-no-retarget btn btn-primary">Neu...</a>
+        </div>
+    </div>
 
-<div class="form-group row">
-    <label class="col-form-label col-sm-2">Art / Ort</label>
-    <div class="col-sm-5">
-        {{ form_widget(form.kategorie) }}
+    <div class="form-group row">
+        <label class="col-form-label col-sm-2">Raum</label>
+        <div class="col-sm-4">
+            {{ form_widget(form.room) }}
+            {{ form_errors(form.room) }}
+        </div>
+        <label class="col-form-label col-sm-2">Hauptevent</label>
+        <div class="col-sm-4">
+            {{ form_widget(form.ParentEvent) }}
+        </div>
     </div>
-    <div class="col-sm-5">
-        {{ form_widget(form.room) }}
-        {{ form_errors(form.room) }}
-    </div>
-</div>
-<div class="form-group row">
-    <label class="col-form-label col-sm-2">Mietpreis:</label>
-    <div class="col-sm-4">
-        {{ form_widget(form.isReducedPrice, {'label': '10% Rabatt'}) }}
-    </div>
-    <div class="col-sm-4">
-        {{ form_widget(form.is4hPrice, {'label': '4h-Preis'}) }}
-    </div>
-</div>
 
+    <div class="form-group row">
+        <label class="col-form-label col-sm-2">Art</label>
+        <div class="col-sm-4">
+            {{ form_widget(form.kategorie) }}
+        </div>
+        <div class="col-sm-3">
+            {{ form_widget(form.isReducedPrice, {'label': '10% Rabatt'}) }}
+        </div>
+        <div class="col-sm-3">
+            {{ form_widget(form.is4hPrice, {'label': '4h-Preis'}) }}
+        </div>
+    </div>
 
-
-
-<hr/>
-{{ form_row(form.allDay) }}
-<div class="form-group row {% if form.startDate.vars.errors|length %} is-invalid {% endif %}">
-    {{ form_label(form.startDate) }}
-    <div class="col-sm-8">
-        {{ form_widget(form.startDate) }}
-        {{ form_errors(form.startDate) }}
-    </div>
-    <div class="col-sm-2">
-        {{ form_widget(form.startTime, {attr: {class: form.endDate.vars.errors|length ? 'is-invalid js-event-time-field' : 'js-event-time-field'}}) }}
-    </div>
-</div>
-
-
-<div class="form-group row {% if form.endDate.vars.errors|length %} is-invalid {% endif %}">
-    {{ form_label(form.endDate) }}
-    <div class="col-sm-8">
-        {{ form_widget(form.endDate) }}
-        {{ form_errors(form.endDate) }}
-    </div>
-    <div class="col-sm-2">
-        {{ form_widget(form.endTime, {attr: {class: form.endDate.vars.errors|length ? 'is-invalid js-event-time-field' : 'js-event-time-field'}}) }}
-    </div>
-</div>
-<hr/>
-
-
-<div class="form-group row">
-    <label class="col-form-label col-sm-2">Benötigt:</label>
-    <div class="col-sm-2">
-        {{ form_widget(form.isBestBenoetigt, {'label': 'Bestuhlung'}) }}
-    </div>
-    <div class="col-sm-2">
-        {{ form_widget(form.isLichtBenoetigt, {'label': 'Licht'}) }}
-    </div>
-    <div class="col-sm-2">
-        {{ form_widget(form.isTonBenoetigt, {'label': 'Ton'}) }}
-    </div>
-    <div class="col-sm-2">
-        {{ form_widget(form.helperRequired, {'label': 'Helfer'}) }}
-    </div>
-    <div class="col-sm-2">
-    </div>
+    {{ form_row(form.ausstattung) }}
 </div>
 
-{% if form.LichtTechniker is defined %}
-{{ form_row(form.LichtTechniker) }}
-{% endif %}
-{% if form.TonTechniker is defined %}
-{{ form_row(form.TonTechniker) }}
-{% endif %}
+<div class="container kloki-form-div" style="background-color: #d8cb9b;">
+    <h5>Dispo</h5>
+    <div class="form-group-sm row">
+        <label class="col-form-label-sm col-sm-2">Benötigt:</label>
+        <div class="col-sm-2">
+            {{ form_widget(form.isLichtBenoetigt, {'label': 'Licht'}) }}
+        </div>
+        <div class="col-sm-2">
+            {{ form_widget(form.isBestBenoetigt, {'label': 'Stühle'}) }}
+        </div>
+        <div class="col-sm-2">
+            {{ form_widget(form.isTonBenoetigt, {'label': 'Ton'}) }}
+        </div>
+        <div class="col-sm-2">
+            {{ form_widget(form.helperRequired, {'label': 'Helfer'}) }}
+        </div>
+    </div>
 
-{{ form.anzahlArtists is defined ? form_row(form.anzahlArtists) : '' }}
-
-{% if form.helperEinlassEins is defined %}
-<div id="js-event-helper-section">
-    <div class="form-group row ">
-        <label class="col-form-label col-sm-2">Helfer</label>
-        <div class="col-sm-10">
-            {{ form_row(form.helperEinlassEins) }}
-            {{ form_row(form.helperEinlassZwei) }}
-            {{ form_row(form.helperSpringerEins) }}
-            {{ form_row(form.helperSpringerZwei) }}
-            {{ form_row(form.helperKasse) }}
-            Verfügbar:
-            {% for helper in klo_ki_event.availableHelpers %}
-                {{ helper }}
-            {% endfor %}
+    <div class="form-group-sm row">
+        <label class="col-form-label-sm col-sm-2">Bestuhlung</label>
+        <div class="col-sm-4">
+            {{ form_widget(form.bestPlan, {'attr': {'class': 'form-control-sm'}}) }}
+        </div>
+        <label class="col-form-label-sm col-sm-2">Bühnenanw.</label>
+        <div class="col-sm-4">
+            {{ form_widget(form.stageOrder, {'attr': {'class': 'form-control-sm'}}) }}
         </div>
     </div>
 </div>
-{% endif %}
 
-<div class="form-group row">
-    <label class="col-form-label col-sm-2">Kontakt</label>
-    <div class="col-sm-8">
-        {{ form_widget(form.kontakt) }}
-        {{ form_errors(form.kontakt) }}
-    </div>
-    <div class="col-sm-2">
-        <a id="js-new-address-button" class="js-no-retarget btn btn-primary">Neu...</a>
-    </div>
+<div class="container kloki-form-div" style="background-color: #b6d893;">
+    {{ form_widget(form) }}
 </div>
-
-{{ form_widget(form) }}
 <button class="btn btn-primary">{{ button_label|default('Speichern') }}</button>
 
 {{ form_end(form) }}

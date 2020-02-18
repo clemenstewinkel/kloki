@@ -45,8 +45,8 @@ class KloKiEventType extends AbstractType
             ->add('allDay', null, ['label' => 'Ganzer Tag'])
             ->add('startDate', DateType::class, ['html5' => false, 'widget' => 'single_text', 'label' => 'Von'])
             ->add('endDate',   DateType::class, ['html5' => false, 'widget' => 'single_text', 'label' => 'Bis'])
-            ->add('startTime', TimeType::class, ['html5' => false, 'widget' => 'single_text', 'label' => false])
-            ->add('endTime',   TimeType::class, ['html5' => false, 'widget' => 'single_text', 'label' => false])
+            ->add('startTime', TimeType::class, ['required' => false, 'html5' => false, 'widget' => 'single_text', 'label' => false])
+            ->add('endTime',   TimeType::class, ['required' => false, 'html5' => false, 'widget' => 'single_text', 'label' => false])
 
             ->add('anzahlArtists',      null, ['label' => 'Anzahl der Künstler'])
             ->add('isBestBenoetigt',    null, ['label' => "Bestuhlung erforderlich"])
@@ -110,8 +110,8 @@ class KloKiEventType extends AbstractType
                 'label' => "Garderobe"
             ])
             ->add('art', null, ['label' => "Art"])
-            ->add('isReducedPrice', CheckboxType::class)
-            ->add('is4hPrice', CheckboxType::class)
+            ->add('isReducedPrice', CheckboxType::class, ['required' => false])
+            ->add('is4hPrice', CheckboxType::class, ['required' => false])
             ->add('kategorie', null, ['label' => "Kategorie"])
             ->add('room', null, ['label' => 'Raum'])
             ->add('kontakt', AddressSelectType::class, ['required' => true])
@@ -126,8 +126,8 @@ class KloKiEventType extends AbstractType
                 'label' => "Hauptevent"
             ])
 
-            ->add('ausstattung', EntityType::class, ['class' => 'App:Ausstattung', 'multiple' => true, 'expanded' => false, 'attr' => ['title' => 'Ausstattung auswählen']])
-            ->add('bemerkung', TextareaType::class)
+            ->add('ausstattung', EntityType::class, ['required' => false, 'class' => 'App:Ausstattung', 'multiple' => true, 'expanded' => false, 'attr' => ['title' => 'Ausstattung auswählen']])
+            ->add('bemerkung', TextareaType::class, ['required' => false])
             ->add('isFixed', ChoiceType::class, ['label' => 'Vertragsstatus', 'choices' => ['option' => 0, 'fest' => 1]])
             ->add('contractNumber')
         ;
