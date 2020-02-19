@@ -1,0 +1,77 @@
+# Install CentOS 8, minimale Installation
+# Update php7.4
+
+dnf install https://rpms.remirepo.net/enterprise/remi-release-8.rpm
+dnf module enable php:remi-7.4
+dnf install zip wget git httpd php php-pdo php-json php-xml php-intl npm mod_ssl mariadb-server
+dnf install php-pecl-imagick php-pecl-mysql
+
+# install composer
+wget https://getcomposer.org/installer
+php installer
+rm installer
+mv composer.phar /usr/bin/composer
+
+# install yarn
+npm install --global yarn
+
+# Start Webserver on boot
+systemctl enable httpd
+
+# open firewall 
+firewall-cmd --permanent --add-port 80/tcp
+firewall-cmd --permanent --add-port 443/tcp
+firewall-cmd --reload
+
+# TODO: Use Certificates from letsencrypt
+
+# Setup Database-Server
+systemctl start mariadb
+systemctl enable mariadb
+mysql_secure_installation
+
+mysql -u root -p
+MariaDB [(none)]> create database kloki;
+MariaDB [(none)]> grant all privileges on kloki.* TO 'kloki'@'localhost' identified by 'pwtest123';
+MariaDB [(none)]> flush privileges;
+MariaDB [(none)]> quit
+
+cd /var/www/
+git clone https://github.com/clemenstewinkel/kloki
+
+cd kloki
+composer install
+yarn install
+yarn build
+
+
+# Ownership
+chown apache:apache -R .
+ 
+# File permissions, recursive
+find . -type f -exec chmod 0644 {} \;
+ 
+# Dir permissions, recursive
+find . -type d -exec chmod 0755 {} \;
+ 
+# SELinux serve files off Apache, resursive
+chcon -t httpd_sys_content_t . -R
+ 
+# Allow write only to specific dirs
+chcon -t httpd_sys_rw_content_t uploaded_files/ -R
+chcon -t httpd_sys_rw_content_t var/ -R
+
+# Allow apache to connect to DB (takes some time...)
+setsebool -P httpd_can_network_connect_db 1
+
+# enter db-access using vi
+# vi .env
+# DATABASE_URL=mysql://kloki:pwtest123@127.0.0.1:3306/kloki?serverVersion=5.5
+
+# Create DB-Tables
+bin/console do:mi:mi
+
+# Load dummy data 
+bin/console do:fi:lo
+
+
