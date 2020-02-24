@@ -132,6 +132,10 @@ class StageOrderController extends AbstractController
     public function delete(Request $request, StageOrder $stageOrder): Response
     {
         if ($this->isCsrfTokenValid('delete'.$stageOrder->getId(), $request->request->get('_token'))) {
+            // First: Delete Files:
+            unlink($this->getParameter('png_file_directory').$stageOrder->getPngFileName());
+            unlink($this->getParameter('pdf_file_directory').$stageOrder->getPdfFileName());
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($stageOrder);
             $entityManager->flush();

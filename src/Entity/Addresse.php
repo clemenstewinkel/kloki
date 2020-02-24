@@ -82,9 +82,14 @@ class Addresse
      */
     public function getForAutoComplete()
     {
-        return $this->getVorname() . ' ' . $this->getNachname() . ', ' .
-            $this->getStrasse() . ', ' . $this->getPlz() . ' ' . $this->getOrt() .
-            ' (' . $this->getId() .')';
+        return
+            ($this->getFirma()?   $this->getFirma()    . ', ' : '') .
+            ($this->getVorname()? $this->getVorname()  . ' '  : '') .
+            $this->getNachname() . ', ' .
+            $this->getStrasse()  . ', ' .
+            $this->getPlz()      . ' '  .
+            $this->getOrt()      . ' (' .
+            $this->getId() .')';
     }
 
     public function __toString()

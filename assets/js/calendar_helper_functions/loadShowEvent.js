@@ -1,13 +1,22 @@
 import setSpinner from "./setSpinner";
 import $ from "jquery";
 import reTargetLinks from "./reTargetLinks";
-import {$calendarDetail} from "../calendar";
+import {$calendarDetail, userRoles} from "../calendar";
 
 export default function loadShowEvent(event_id)
 {
+    let url='';
+    if (userRoles.includes('ROLE_ADMIN') || userRoles.includes('ROLE_FOOD'))
+    {
+        url = 'show/' + event_id;
+    }
+    else if (userRoles.includes('ROLE_HELPER'))
+    {
+        url = 'showHelper/' + event_id;
+    }
+
     setSpinner();
     console.log('loadShowEvent');
-    let url = 'show/' + event_id;
     $.ajax({
         url: url,
         method: 'GET',

@@ -3,7 +3,7 @@
         angelegt: {{ klo_ki_event.createdAt | localizeddate('short', 'short') }}, {{ klo_ki_event.createdBy ? klo_ki_event.createdBy.name : '' }} /
         geändert: {{ klo_ki_event.updatedAt | localizeddate('short', 'short') }}, {{ klo_ki_event.updatedBy ? klo_ki_event.updatedBy.name : ''}}
     </small>
-    <table class="table table-sm">
+    <table class="table table-sm table-striped">
         <tbody>
         {% if klo_ki_event.getProblemDetails %}
             <tr>
@@ -36,46 +36,53 @@
                 <th>Art:</th>
                 <td>{{ klo_ki_event.art | readable_enum('EventArtType') }} / {{ klo_ki_event.kategorie }}</td>
             </tr>
-            {% if klo_ki_event.art == 'rental' %}
+            {% if klo_ki_event.art == 'rental' and klo_ki_event.parentEvent == null %}
                 <tr>
                     <th>Preis:</th>
                     <td>
-                    <table width="100%">
-                        <tr>
-                            <th colspan="2">Dieses Event</th>
-                            <th class="text-right">Brutto</th>
-                            <th class="text-right">Mwst.</th>
-                        </tr>
+                        {{ (klo_ki_event.allBruttoPreis / 100) | number_format(2, ',', '.')}} € inkl. {{ (klo_ki_event.allMwSt / 100) | number_format(2, ',', '.')}} € MwSt.
+                        <a class="js-no-retarget" data-toggle="collapse" href="#price-details-div" role="button" aria-expanded="false" aria-controls="collapseExample">
+                            (Details)
+                        </a>
 
-                        {{ include('klo_ki_event/_preis_table_rows.html.twig', {'e': klo_ki_event}) }}
-                        {% for e in klo_ki_event.childEvents %}
-                            <tr>
-                                <th colspan="4">{{ e }}</th>
-                            </tr>
-                            {{ include('klo_ki_event/_preis_table_rows.html.twig') }}
-                        {% endfor %}
-                        <tr>
-                            <th colspan="4">Zusammenfassung:</th>
-                        </tr>
-                        <tr>
-                            <th></th>
-                            <th>MwSt.-frei (Raummieten): </th>
-                            <td class="text-right">{{ (klo_ki_event.allRoomFees/100) | number_format(2, ',', '.')}}€</td>
-                            <td class="text-right">0,00 €</td>
-                        </tr>
-                        <tr>
-                            <th></th>
-                            <th>Besteuert mit 19% MwSt.: </th>
-                            <td class="text-right">{{ (klo_ki_event.allAusstattungBruttoPreis /100) | number_format(2, ',', '.')}} € </td>
-                            <td class="text-right">{{ (klo_ki_event.allMwSt /100) | number_format(2, ',', '.')}} €</td>
-                        </tr>
-                        <tr>
-                            <th></th>
-                            <th>Gesamt-Preis:</th>
-                            <th class="text-right">{{ (klo_ki_event.allBruttoPreis / 100) | number_format(2, ',', '.')}} €</th>
-                            <th class="text-right">{{ (klo_ki_event.allMwSt / 100) | number_format(2, ',', '.')}} €</th>
-                        </tr>
-                    </table>
+                        <div class="collapse" id="price-details-div">
+                            <table width="100%">
+                                <tr>
+                                    <th colspan="2">Dieses Event</th>
+                                    <th class="text-right">Brutto</th>
+                                    <th class="text-right">Mwst.</th>
+                                </tr>
+
+                                {{ include('klo_ki_event/_preis_table_rows.html.twig', {'e': klo_ki_event}) }}
+                                {% for e in klo_ki_event.childEvents %}
+                                    <tr>
+                                        <th colspan="4">{{ e }}</th>
+                                    </tr>
+                                    {{ include('klo_ki_event/_preis_table_rows.html.twig') }}
+                                {% endfor %}
+                                <tr>
+                                    <th colspan="4">Zusammenfassung:</th>
+                                </tr>
+                                <tr>
+                                    <th></th>
+                                    <th>MwSt.-frei (Raummieten): </th>
+                                    <td class="text-right">{{ (klo_ki_event.allRoomFees/100) | number_format(2, ',', '.')}}€</td>
+                                    <td class="text-right">0,00 €</td>
+                                </tr>
+                                <tr>
+                                    <th></th>
+                                    <th>Besteuert mit 19% MwSt.: </th>
+                                    <td class="text-right">{{ (klo_ki_event.allAusstattungBruttoPreis /100) | number_format(2, ',', '.')}} € </td>
+                                    <td class="text-right">{{ (klo_ki_event.allMwSt /100) | number_format(2, ',', '.')}} €</td>
+                                </tr>
+                                <tr>
+                                    <th></th>
+                                    <th>Gesamt-Preis:</th>
+                                    <th class="text-right">{{ (klo_ki_event.allBruttoPreis / 100) | number_format(2, ',', '.')}} €</th>
+                                    <th class="text-right">{{ (klo_ki_event.allMwSt / 100) | number_format(2, ',', '.')}} €</th>
+                                </tr>
+                            </table>
+                        </div>
                     </td>
                 </tr>
             {% endif %}

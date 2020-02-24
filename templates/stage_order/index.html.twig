@@ -3,33 +3,40 @@
 {% block title %}Bühnenanweisungen{% endblock %}
 
 {% block body %}
-    <h1>Bühnenanweisungen</h1>
+    <div class="container-fluid">
+        <h1>Bühnenanweisungen</h1>
 
-    <table class="table">
-        <thead>
+        <table class="table table-striped">
+            <thead>
             <tr>
                 <th>Name</th>
                 <th>Beschreibung</th>
+                <th>Anz. Events</th>
                 <th>Aktionen</th>
             </tr>
-        </thead>
-        <tbody>
-        {% for stage_order in stage_orders %}
-            <tr>
-                <td><a href="{{ path('getPdf', {'id': stage_order.pdfFileName}) }}">{{ stage_order.name }}</a></td>
-                <td>{{ stage_order.description }}</td>
-                <td>
-                    <a href="{{ path('stage_order_show', {'id': stage_order.id}) }}">show</a>
-                    <a href="{{ path('stage_order_edit', {'id': stage_order.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="7">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            {% for stage_order in stage_orders %}
+                <tr>
+                    <td><a href="{{ path('getPdf', {'id': stage_order.pdfFileName}) }}">{{ stage_order.name }}</a></td>
+                    <td>{{ stage_order.description }}</td>
+                    <td>{{ stage_order.kloKiEvents.count }}</td>
+                    <td>
+                        <a class="btn btn-primary" href="{{ path('stage_order_show', {'id': stage_order.id}) }}"><span class="fas fa-search"></span></a>
+                        <a class="btn btn-primary" href="{{ path('stage_order_edit', {'id': stage_order.id}) }}"><span class="fas fa-edit"></span></a>
+                        {% if stage_order.kloKiEvents.count == 0 %}
+                            {{ include('stage_order/_delete_form.html.twig') }}
+                        {% endif %}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="7">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
 
-    <a href="{{ path('stage_order_new') }}">Create new</a>
+        <a class="btn btn-primary" href="{{ path('stage_order_new') }}">Neue Bühnenanweisung</a>
+    </div>
 {% endblock %}

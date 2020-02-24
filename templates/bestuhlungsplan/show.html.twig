@@ -3,17 +3,18 @@
 {% block title %}Bestuhlungsplan{% endblock %}
 
 {% block body %}
-    <h1>Bestuhlungsplan</h1>
+    <div class="container">
+        <h1>Bestuhlungsplan</h1>
 
-    <table class="table">
-        <tbody>
+        <table class="table">
+            <tbody>
             <tr>
                 <th>Id</th>
                 <td>{{ bestuhlungsplan.id }}</td>
             </tr>
             <tr>
                 <th>Name</th>
-                <td>{{ bestuhlungsplan.name }}</td>
+                <td><a href="{{ path('getPdf', {'id': bestuhlungsplan.pdfFilePath}) }}">{{ bestuhlungsplan.name }}</a></td>
             </tr>
             <tr>
                 <th>Sitzplaetze</th>
@@ -31,12 +32,21 @@
                 <th>PngFilePath</th>
                 <td>{{ bestuhlungsplan.pngFilePath }}</td>
             </tr>
-        </tbody>
-    </table>
+            </tbody>
+        </table>
 
-    <a href="{{ path('bestuhlungsplan_index') }}">back to list</a>
 
-    <a href="{{ path('bestuhlungsplan_edit', {'id': bestuhlungsplan.id}) }}">edit</a>
+        <a class="btn btn-primary" href="{{ path('bestuhlungsplan_edit', {'id': bestuhlungsplan.id}) }}"><span class="fas fa-edit"></span></a>
+        <a class="btn btn-primary" href="{{ path('bestuhlungsplan_index') }}">Liste der Bestuhlungspläne</a>
 
-    {{ include('bestuhlungsplan/_delete_form.html.twig') }}
+        {% if bestuhlungsplan.kloKiEvents.count == 0 %}
+        {{ include('bestuhlungsplan/_delete_form.html.twig') }}
+        {% endif %}
+
+        {% if bestuhlungsplan.kloKiEvents.count > 0 %}
+            <hr/>
+            <h2>Events mit diesem Bestuhlungsplan</h2>
+        {{ include('klo_ki_event/_compact_list_table.html.twig', {'events': bestuhlungsplan.kloKiEvents}) }}
+        {% endif %}
+    </div>
 {% endblock %}

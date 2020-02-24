@@ -30,11 +30,10 @@
         {% if ausstattung.kloKiEvents.count == 0 %}
             {{ include('ausstattung/_delete_form.html.twig') }}
 
-            {% else %}
-               <h2>Verwendet in diesen Events (kann daher nicht gelöscht werden):</h2>
-               {% for e in ausstattung.kloKiEvents %}
-                   <a href="{{ path('klo_ki_event_show', {'id': e.id}) }}">{{ e }}</a><br/>
-               {% endfor %}
-            {% endif %}
+        {% else %}
+            <hr/>
+           <h2>Verwendet in diesen Events (kann daher nicht gelöscht werden):</h2>
+            {{ include('klo_ki_event/_compact_list_table.html.twig', {'events': ausstattung.kloKiEvents}) }}
+        {% endif %}
     </div>
 {% endblock %}

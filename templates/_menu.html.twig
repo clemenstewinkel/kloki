@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+<nav style="background-color: #750000" class="navbar navbar-expand-md navbar-dark fixed-top">
     <a class="navbar-brand" href="#">
         <img src="{{ asset('build/images/kk_logo.507fd84b.svg') }}" width="36" height="36" alt="">
     </a>
@@ -6,8 +6,6 @@
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarCollapse">
-
-
 
         <ul class="navbar-nav mr-auto">
             <li class="nav-item dropdown">
@@ -20,7 +18,6 @@
                     {% if app.user %}
                         {% if is_granted('ROLE_ADMIN') %}
                             <a class="dropdown-item" href="{{ path('user_index') }}">Liste der Benutzer</a>
-                            <a class="dropdown-item" href="{{ path('user_mypw_change') }}">Passwort ändern</a>
                         {% endif %}
                         <a class="dropdown-item" href="{{ path('user_mypw_change') }}">Mein Passwort ändern</a>
                         <a class="dropdown-item" href="{{ path('app_logout') }}">Logout</a>
@@ -39,6 +36,9 @@
                        aria-expanded="false">Events</a>
                     <div class="dropdown-menu" aria-labelledby="dropdown02">
                         <a class="dropdown-item" href="{{ path('event_calendar') }}">Kalender</a>
+                        {% if is_granted('ROLE_HELPER')%}
+                            <a class="dropdown-item" href="{{ path('klo_ki_event_index_helper') }}">Liste</a>
+                        {% endif %}
                         {% if is_granted('ROLE_ADMIN')%}
                             <a class="dropdown-item" href="{{ path('klo_ki_event_dispo') }}">Tagesdispo</a>
                         {% endif %}
@@ -66,13 +66,11 @@
                     </li>
                 {% endif %}
             {% endif %}
-
-
-
         </ul>
 
-
-
+        {% if app.user %}
+            <span style="color: white">Angemeldet: {{ app.user }}</span>
+        {% endif %}
 
     </div>
 </nav>

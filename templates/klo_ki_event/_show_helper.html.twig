@@ -1,0 +1,38 @@
+    <h1>{{ klo_ki_event.name }}</h1>
+    <table class="table table-sm table-striped">
+        <tbody>
+            <tr>
+                <th>Beginn und Dauer</th>
+                <td>{{ include('klo_ki_event/_time_range.html.twig', {'event': klo_ki_event}) }}</td>
+            </tr>
+            <tr>
+                <th>Eingeteilt für</th>
+                <td>
+                    {% if klo_ki_event.helperGarderobe    == app.user %}Garderobe{% endif %}
+                    {% if klo_ki_event.helperKasse        == app.user %}Kasse{% endif %}
+                    {% if klo_ki_event.helperEinlassEins  == app.user %}Einlass1{% endif %}
+                    {% if klo_ki_event.helperEinlassZwei  == app.user %}Einlass2{% endif %}
+                    {% if klo_ki_event.helperSpringerEins == app.user %}Springer1{% endif %}
+                    {% if klo_ki_event.helperSpringerZwei == app.user %}Springer2{% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>Hilfe zugesagt</th>
+                <td>{{ userInHelpers? 'Ja' : 'Nein' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    {% if userInHelpers %}
+        <form method="post" action="{{ path('klo_ki_event_icannothelp', {'id': klo_ki_event.id}) }}">
+            <input type="hidden" name="_token" value="{{ csrf_token('icannothelp' ~ klo_ki_event.id) }}">
+            <button class="btn btn-danger">Ich kann doch nicht helfen!</button>
+        </form>
+        {% else %}
+        <form method="post" action="{{ path('klo_ki_event_icanhelp', {'id': klo_ki_event.id}) }}">
+            <input type="hidden" name="_token" value="{{ csrf_token('icanhelp' ~ klo_ki_event.id) }}">
+            <button class="btn btn-primary">Ich kann helfen!</button>
+        </form>
+    {% endif %}
+
+

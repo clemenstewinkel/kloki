@@ -3,9 +3,11 @@
 {% block title %}Neue Bühnenanweisung{% endblock %}
 
 {% block body %}
-    <h1>Neue Bühnenanweisung</h1>
+    <div class="container">
+        <h1>Neue Bühnenanweisung</h1>
 
-    {{ include('stage_order/_form.html.twig') }}
+        {{ include('stage_order/_form.html.twig') }}
 
-    <a href="{{ path('stage_order_index') }}">back to list</a>
+        <a href="{{ path('stage_order_index') }}">back to list</a>
+    </div>
 {% endblock %}

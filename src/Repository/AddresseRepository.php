@@ -37,7 +37,7 @@ class AddresseRepository extends ServiceEntityRepository
     public function getMatchingQueryBuilder(string $query)
     {
         return $this->createQueryBuilder('a')
-            ->andWhere('a.vorname LIKE :query OR a.nachname LIKE :query OR a.strasse LIKE :query OR a.ort LIKE :query')
+            ->andWhere('a.firma LIKE :query OR a.vorname LIKE :query OR a.nachname LIKE :query OR a.strasse LIKE :query OR a.ort LIKE :query')
             ->setParameter('query', '%' .  $query . '%');
     }
 

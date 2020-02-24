@@ -59,12 +59,9 @@
 
 
     {% if adr.kloKiEvents.count > 0 %}
+        <hr/>
     <h2>Events zu dieser Adresse</h2>
-    <ul>
-        {% for event in adr.kloKiEvents %}
-            <li><a href="{{ path('klo_ki_event_show', {'id': event.id}) }}">{{ event }}</a></li>
-        {% endfor %}
-    </ul>
+        {{ include('klo_ki_event/_compact_list_table.html.twig', {'events': adr.kloKiEvents}) }}
     {% endif %}
 
     </div>

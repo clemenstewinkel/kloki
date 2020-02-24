@@ -3,39 +3,46 @@
 {% block title %}Bestuhlungspläne{% endblock %}
 
 {% block body %}
-    <h1>Bestuhlungspläne</h1>
+    <div class="container-fluid">
+        <h1>Bestuhlungspläne</h1>
 
-    <table class="table">
-        <thead>
+        <table class="table table-striped">
+            <thead>
             <tr>
                 <th>Name</th>
                 <th>Sitzplätze unten</th>
                 <th>Sitzplätze Empore</th>
                 <th>Stehplätze</th>
                 <th>Gesamt</th>
+                <th>Anz. Events</th>
                 <th>Aktionen</th>
             </tr>
-        </thead>
-        <tbody>
-        {% for bestuhlungsplan in bestuhlungsplans %}
-            <tr>
-                <td><a href="{{ path('getPdf', {'id': bestuhlungsplan.pdfFilePath}) }}">{{ bestuhlungsplan.name }}</a></td>
-                <td>{{ bestuhlungsplan.sitzplaetze }}</td>
-                <td>{{ bestuhlungsplan.sitzplaetzeOben }}</td>
-                <td>{{ bestuhlungsplan.stehplaetze }}</td>
-                <td>{{ bestuhlungsplan.stehplaetze + bestuhlungsplan.sitzplaetzeOben + bestuhlungsplan.sitzplaetze }}</td>
-                <td>
-                    <a href="{{ path('bestuhlungsplan_show', {'id': bestuhlungsplan.id}) }}">show</a>
-                    <a href="{{ path('bestuhlungsplan_edit', {'id': bestuhlungsplan.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="7">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            {% for bestuhlungsplan in bestuhlungsplans %}
+                <tr>
+                    <td><a href="{{ path('getPdf', {'id': bestuhlungsplan.pdfFilePath}) }}">{{ bestuhlungsplan.name }}</a></td>
+                    <td>{{ bestuhlungsplan.sitzplaetze }}</td>
+                    <td>{{ bestuhlungsplan.sitzplaetzeOben }}</td>
+                    <td>{{ bestuhlungsplan.stehplaetze }}</td>
+                    <td>{{ bestuhlungsplan.stehplaetze + bestuhlungsplan.sitzplaetzeOben + bestuhlungsplan.sitzplaetze }}</td>
+                    <td>{{ bestuhlungsplan.kloKiEvents.count }}</td>
+                    <td>
+                        <a class="btn btn-primary" href="{{ path('bestuhlungsplan_show', {'id': bestuhlungsplan.id}) }}"><span class="fas fa-search"></span></a>
+                        <a class="btn btn-primary" href="{{ path('bestuhlungsplan_edit', {'id': bestuhlungsplan.id}) }}"><span class="fas fa-edit"></span></a>
+                        {% if bestuhlungsplan.kloKiEvents.count == 0 %}
+                        {{ include('bestuhlungsplan/_delete_form.html.twig') }}
+                        {% endif %}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="7">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
 
-    <a href="{{ path('bestuhlungsplan_new') }}">Create new</a>
+        <a class="btn btn-primary" href="{{ path('bestuhlungsplan_new') }}">Neuer Bestuhlungsplan</a>
+    </div>
 {% endblock %}

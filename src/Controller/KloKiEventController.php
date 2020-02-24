@@ -35,6 +35,7 @@ class KloKiEventController extends AbstractController
 {
     /**
      * @Route("/", name="klo_ki_event_index", methods={"GET"})
+     * @IsGranted({"ROLE_ADMIN", "ROLE_FOOD"})
      */
     public function index(KloKiEventRepository $kloKiEventRepository, PaginatorInterface $paginator, RoomRepository $roomRepo, Request $request): Response
     {
@@ -51,7 +52,27 @@ class KloKiEventController extends AbstractController
     }
 
     /**
+     * @Route("/helper/index", name="klo_ki_event_index_helper", methods={"GET"})
+     * @IsGranted({"ROLE_HELPER"})
+     */
+    public function index_helper(KloKiEventRepository $kloKiEventRepository): Response
+    {
+        $events = $kloKiEventRepository->createQueryBuilder('e')
+            ->andWhere('e.helperRequired = 1')
+            ->andWhere('e.start > CURRENT_DATE()')
+            ->orderBy('e.start')
+            ->getQuery()
+            ->getResult();
+        return $this->render('klo_ki_event/index_helper.html.twig', [
+            'events' => $events
+        ]);
+    }
+
+
+
+    /**
      * @Route("/dispo", name="klo_ki_event_dispo", methods={"GET"})
+     * @IsGranted({"ROLE_ADMIN"})
      */
     public function dispo(KloKiEventRepository $eventRepo, Request $request): Response
     {
@@ -79,6 +100,7 @@ class KloKiEventController extends AbstractController
 
     /**
      * @Route("/resize", name="klo_ki_event_resize", methods={"POST"})
+     * @IsGranted({"ROLE_ADMIN"})
      */
     public function resize(Request $request, KloKiEventRepository $eventRepo)
     {
@@ -95,6 +117,7 @@ class KloKiEventController extends AbstractController
 
     /**
      * @Route("/replace", name="klo_ki_event_replace", methods={"POST"})
+     * @IsGranted({"ROLE_ADMIN"})
      */
     public function replace(Request $request, KloKiEventRepository $eventRepo, RoomRepository $roomRepo)
     {
@@ -260,15 +283,12 @@ class KloKiEventController extends AbstractController
             $entityManager->flush();
         }
         if ($request->isXmlHttpRequest()) {
-            return $this->render('klo_ki_event/_show.html.twig', [
+            return $this->render('klo_ki_event/_show_helper.html.twig', [
                 'klo_ki_event' => $kloKiEvent,
                 'userInHelpers' => $this->isInAvailableHelpers($kloKiEvent)
             ]);
         }
-        return $this->render('klo_ki_event/show.html.twig', [
-            'klo_ki_event' => $kloKiEvent,
-            'userInHelpers' => $this->isInAvailableHelpers($kloKiEvent)
-        ]);
+        return $this->redirectToRoute('klo_ki_event_index_helper');
     }
 
     /**
@@ -283,15 +303,12 @@ class KloKiEventController extends AbstractController
             $entityManager->flush();
         }
         if ($request->isXmlHttpRequest()) {
-            return $this->render('klo_ki_event/_show.html.twig', [
+            return $this->render('klo_ki_event/_show_helper.html.twig', [
                 'klo_ki_event' => $kloKiEvent,
                 'userInHelpers' => $this->isInAvailableHelpers($kloKiEvent)
             ]);
         }
-        return $this->render('klo_ki_event/show.html.twig', [
-            'klo_ki_event' => $kloKiEvent,
-            'userInHelpers' => $this->isInAvailableHelpers($kloKiEvent)
-        ]);
+        return $this->redirectToRoute('klo_ki_event_index_helper');
     }
 
 
@@ -334,7 +351,28 @@ class KloKiEventController extends AbstractController
     }
 
     /**
+     * @Route("/showHelper/{id}", name="klo_ki_event_show_helper", methods={"GET"})
+     * @IsGranted({"ROLE_HELPER"})
+     */
+    public function showHelper(KloKiEvent $kloKiEvent, Request $request): Response
+    {
+        if ($request->isXmlHttpRequest()) {
+            return $this->render('klo_ki_event/_show_helper.html.twig', [
+                'klo_ki_event' => $kloKiEvent,
+                'userInHelpers' => $this->isInAvailableHelpers($kloKiEvent)
+            ]);
+        }
+        return $this->render('klo_ki_event/show.html.twig', [
+            'klo_ki_event' => $kloKiEvent,
+            'userInHelpers' => $this->isInAvailableHelpers($kloKiEvent)
+        ]);
+    }
+
+
+
+    /**
      * @Route("/show/{id}", name="klo_ki_event_show", methods={"GET"})
+     * @IsGranted({"ROLE_ADMIN", "ROLE_FOOD"})
      */
     public function show(KloKiEvent $kloKiEvent, Request $request): Response
     {

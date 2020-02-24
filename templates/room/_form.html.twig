@@ -1,4 +1,5 @@
 {{ form_start(form) }}
     {{ form_widget(form) }}
-    <button class="btn btn-primary">{{ button_label|default('Save') }}</button>
+    <button class="btn btn-primary">{{ button_label|default('Speichern') }}</button>
+    <a class="btn btn-info" href="{{ path('room_index') }}">Liste der Räume</a>
 {{ form_end(form) }}

@@ -3,8 +3,16 @@
 {% block title %}Passwort ändern{% endblock %}
 
 {% block body %}
-    <h1>Passwort ändern</h1>
+    <div class="container">
+        <h1>Passwort ändern</h1>
+        {{ form_start(form) }}
 
-    {{ include('user/_form.html.twig', {'button_label': 'Ändern'}) }}
+        {{ form_row(form.plainPassword) }}
+
+        <button class="btn btn-primary">{{ button_label|default('Speichern') }}</button>
+        <a class="btn btn-info" href="{{ path('user_index') }}">Liste der Benutzer</a>
+        {{ form_end(form) }}
+    </div>
+
 
 {% endblock %}

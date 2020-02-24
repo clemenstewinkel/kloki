@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Events in der Klosterkirche{% endblock %}
+
+{% block body %}
+    <h1>Events in der Klosterkirche</h1>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Begin und Dauer</th>
+                <th>Eingeteilt für</th>
+                <th>Zugesagt</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for e in events %}
+            {# @var e \App\Entity\KloKiEvent #}
+            <tr>
+                <td>{{ e.name }}</td>
+                <td>{{ include('klo_ki_event/_time_range.html.twig', {'event': e}) }}</td>
+                <td>
+                    {% if e.helperGarderobe    == app.user %}Garderobe{% endif %}
+                    {% if e.helperKasse        == app.user %}Kasse{% endif %}
+                    {% if e.helperEinlassEins  == app.user %}Einlass1{% endif %}
+                    {% if e.helperEinlassZwei  == app.user %}Einlass2{% endif %}
+                    {% if e.helperSpringerEins == app.user %}Springer1{% endif %}
+                    {% if e.helperSpringerZwei == app.user %}Springer2{% endif %}
+                </td>
+                <td>{{ (app.user in e.availableHelpers) ?'Ja' : 'Nein' }}</td>
+                <td>
+                    {% if app.user in e.availableHelpers %}
+                        <form method="post" action="{{ path('klo_ki_event_icannothelp', {'id': e.id}) }}">
+                            <input type="hidden" name="_token" value="{{ csrf_token('icannothelp' ~ e.id) }}">
+                            <button class="btn btn-danger">Ich kann doch nicht helfen!</button>
+                        </form>
+                    {% else %}
+                        <form method="post" action="{{ path('klo_ki_event_icanhelp', {'id': e.id}) }}">
+                            <input type="hidden" name="_token" value="{{ csrf_token('icanhelp' ~ e.id) }}">
+                            <button class="btn btn-primary">Ich kann helfen!</button>
+                        </form>
+                    {% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -1,13 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Ausstattung{% endblock %}
+{% block title %}Ausstattung bearbeiten{% endblock %}
 
 {% block body %}
-    <h1>Edit Ausstattung</h1>
+    <div class="container">
+        <h1>Ausstattung bearbeiten</h1>
 
-    {{ include('ausstattung/_form.html.twig', {'button_label': 'Update'}) }}
+        {{ include('ausstattung/_form.html.twig', {'button_label': 'Update'}) }}
 
-    <a href="{{ path('ausstattung_index') }}">back to list</a>
-
-    {{ include('ausstattung/_delete_form.html.twig') }}
+    </div>
 {% endblock %}

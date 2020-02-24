@@ -3,40 +3,39 @@
 {% block title %}Room index{% endblock %}
 
 {% block body %}
-    <h1>Räume</h1>
+    <div class="container-fluid">
+        <h1>Räume</h1>
 
-    <table class="table">
-        <thead>
+        <table class="table table-striped">
+            <thead>
             <tr>
                 <th>Id</th>
                 <th>Name</th>
-                <th>Farbe im Kalender</th>
                 <th>Tagespreis</th>
                 <th>4h-Preis</th>
                 <th></th>
             </tr>
-        </thead>
-        <tbody>
-        {% for room in rooms %}
-            <tr>
-                <td>{{ room.id }}</td>
-                <td>{{ room.name }}</td>
-                <td><div style="background-color: {{ room.color }};">{{ room.color }}</div></td>
-                <td>{{ (room.fullDayPrice / 100) | number_format(2, ',', '.')}} €</td>
-                <td>{{ (room.halfDayPrice / 100) | number_format(2, ',', '.')}} €</td>
-                <td>
-                    <a href="{{ path('room_show', {'id': room.id}) }}"><span class="fas fa-eye"></span></a>
-                    <a href="{{ path('room_edit', {'id': room.id}) }}"><span class="fas fa-edit"></span></a>
-                </td>
+            </thead>
+            <tbody>
+            {% for room in rooms %}
+                <tr>
+                    <td>{{ room.id }}</td>
+                    <td>{{ room.name }}</td>
+                    <td>{{ (room.fullDayPrice / 100) | number_format(2, ',', '.')}} €</td>
+                    <td>{{ (room.halfDayPrice / 100) | number_format(2, ',', '.')}} €</td>
+                    <td>
+                        <a class="btn btn-primary" href="{{ path('room_edit', {'id': room.id}) }}"><span class="fas fa-edit"></span></a>
+                    </td>
 
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="4">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
 
-    <a class="btn btn-primary" href="{{ path('room_new') }}">Neuen Raum anlegen</a>
+        <a class="btn btn-primary" href="{{ path('room_new') }}">Neuen Raum anlegen</a>
+    </div>
 {% endblock %}

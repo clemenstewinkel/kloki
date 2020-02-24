@@ -3,7 +3,7 @@
 
 dnf install https://rpms.remirepo.net/enterprise/remi-release-8.rpm
 dnf module enable php:remi-7.4
-dnf install zip wget git httpd php php-pdo php-json php-xml php-intl npm mod_ssl mariadb-server
+dnf install tar zip wget git httpd php php-pdo php-json php-xml php-intl npm mod_ssl mariadb-server
 dnf install php-pecl-imagick php-pecl-mysql
 
 # install composer

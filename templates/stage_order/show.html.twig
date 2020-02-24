@@ -3,10 +3,11 @@
 {% block title %}StageOrder{% endblock %}
 
 {% block body %}
-    <h1>StageOrder</h1>
+    <div class="container">
+        <h1>StageOrder</h1>
 
-    <table class="table">
-        <tbody>
+        <table class="table">
+            <tbody>
             <tr>
                 <th>Id</th>
                 <td>{{ stage_order.id }}</td>
@@ -31,12 +32,18 @@
                 <th>UpdatedAt</th>
                 <td>{{ stage_order.updatedAt ? stage_order.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
-        </tbody>
-    </table>
+            </tbody>
+        </table>
 
-    <a href="{{ path('stage_order_index') }}">back to list</a>
+        <a class="btn btn-primary" href="{{ path('stage_order_index') }}">Liste</a>
+        <a class="btn btn-primary" href="{{ path('stage_order_edit', {'id': stage_order.id}) }}"><span class="fas fa-edit"></span></a>
 
-    <a href="{{ path('stage_order_edit', {'id': stage_order.id}) }}">edit</a>
-
-    {{ include('stage_order/_delete_form.html.twig') }}
+        {% if stage_order.kloKiEvents.count == 0 %}
+        {{ include('stage_order/_delete_form.html.twig') }}
+        {% else %}
+            <hr/>
+            <h2>Events mit diesem Bühnenplan</h2>
+            {{ include('klo_ki_event/_compact_list_table.html.twig', {'events': stage_order.kloKiEvents}) }}
+        {% endif %}
+    </div>
 {% endblock %}

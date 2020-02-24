@@ -1,0 +1,15 @@
+<table class="table-sm table-striped" width="100%">
+    <tr>
+        <th>Name</th>
+        <th>Datum</th>
+        <th>Saal</th>
+    </tr>
+    {% for e in events %}
+        {# @var e \App\Entity\KloKiEvent #}
+        <tr>
+            <td><a href="{{ path('klo_ki_event_show', {'id': e.id}) }}">{{ e.name }}</a></td>
+            <td>{{ include('klo_ki_event/_time_range.html.twig', {'event': e}) }}</td>
+            <td>{{ e.room }}</td>
+        </tr>
+    {% endfor %}
+</table>
