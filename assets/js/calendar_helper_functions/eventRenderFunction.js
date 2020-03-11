@@ -1,6 +1,7 @@
 import $ from "jquery";
 import isAssignedHelper from "./isAssignedHelper";
 import isInAvailableHelpers from "./isInAvailableHelpers";
+import setEventRoomId from "./setEventRoomId";
 import {userRoles} from "../calendar";
 
 export default function eventRenderFunction(info)
@@ -33,7 +34,7 @@ export default function eventRenderFunction(info)
         {
             $(info.el).find('div.fc-content').append(' <i class="fas fa-user"></i>');
         }
-        $(info.el).find('div.fc-content').append('<span style="float: right; font-weight: bold;">' + info.event.extendedProps.room.name[0] + '</span>');
+        setEventRoomId(info);
     }
     if(userRoles.includes('ROLE_HELPER'))
     {

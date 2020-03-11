@@ -23,6 +23,7 @@ export default function eventDataTransform(eventData)
         (userRoles.includes('ROLE_ADMIN') && (!eventData.isFixed)) ||
         (userRoles.includes('ROLE_FOOD') && (!eventData.isFixed) && isEventCreatedByFoodRole(eventData))
     );
+    eventData.resourceEditable = eventData.editable;
     return eventData;
 }
 

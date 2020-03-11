@@ -43,7 +43,7 @@ class KloKiEventController extends AbstractController
         $pagination = $paginator->paginate(
             $query,
             $request->query->getInt('page', 1),
-            10
+            $request->query->getInt('pp', 10)
         );
         return $this->render('klo_ki_event/index.html.twig', [
             'pagination' => $pagination,

@@ -22,7 +22,6 @@ export default function eventDropped(e)
         method: 'POST',
         data: JSON.stringify(formData),
         success: function(){
-            console.log('Event Drop AJAX Call: success!');
             loadShowEvent(formData['id']);
         },
         error: function(data) {

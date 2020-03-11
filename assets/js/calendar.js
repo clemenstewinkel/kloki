@@ -53,6 +53,7 @@ $(document).ready(function() {
             firstDay: 1,
             fixedWeekCount: false,
             navLinks: true,
+            // editable and resourceEditable are set in EventDataTransform for the single event!
             editable: userRoles.includes('ROLE_ADMIN') || userRoles.includes('ROLE_FOOD'),
             locale: 'de',
             timeZone: 'UTC',
