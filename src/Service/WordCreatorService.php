@@ -20,10 +20,10 @@ class WordCreatorService
 
     public function createWord(KloKiEvent $event)
     {
-        $source = $this->params->get('docx_directory');
-        $template = $this->twig->loadTemplate('klo_ki_event/mietvertrag_document.xml.twig');
+        $source = $this->params->get('odt_directory');
+        $template = $this->twig->loadTemplate('klo_ki_event/mietvertrag_content.xml.twig');
         $renderedDoc = $template->render(['e' => $event]);
-        file_put_contents($source . 'word/document.xml', $renderedDoc);
+        file_put_contents($source . 'content.xml', $renderedDoc);
         return shell_exec("cd $source; zip -rq - *");
     }
 }

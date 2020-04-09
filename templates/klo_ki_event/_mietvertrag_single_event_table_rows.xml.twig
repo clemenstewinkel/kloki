@@ -1,224 +1,69 @@
 {# Kopfzeile Raum #}
 {# @var e \App\Entity\KloKiEvent #}
-<w:tr>
-    <w:tc>
-        <w:tcPr>
-            <w:tcW w:w="1980" w:type="dxa"/>
-        </w:tcPr>
-        <w:p>
-            <w:pPr>
-                <w:rPr>
-                    <w:b/>
-                    <w:bCs/>
-                </w:rPr>
-            </w:pPr>
-            <w:r>
-                <w:rPr>
-                    <w:b/>
-                    <w:bCs/>
-                </w:rPr>
-                <w:t xml:space="preserve">Raum</w:t>
-            </w:r>
-        </w:p>
-    </w:tc>
-    <w:tc>
-        <w:tcPr>
-            <w:tcW w:w="5269" w:type="dxa"/>
-            <w:gridSpan w:val="3"/>
-        </w:tcPr>
-        <w:p>
-            <w:pPr>
-                <w:rPr>
-                    <w:b/>
-                    <w:bCs/>
-                </w:rPr>
-            </w:pPr>
-            <w:r>
-                <w:rPr>
-                    <w:b/>
-                    <w:bCs/>
-                </w:rPr>
-                <w:t>Zeitraum</w:t>
-            </w:r>
-        </w:p>
-    </w:tc>
-    <w:tc>
-        <w:tcPr>
-            <w:tcW w:w="1813" w:type="dxa"/>
-        </w:tcPr>
-        <w:p>
-            <w:pPr>
-                <w:rPr>
-                    <w:b/>
-                    <w:bCs/>
-                </w:rPr>
-            </w:pPr>
-            <w:r w:rsidRPr="00847596">
-                <w:rPr>
-                    <w:b/>
-                    <w:bCs/>
-                </w:rPr>
-                <w:t>Bruttobetrag*</w:t>
-            </w:r>
-        </w:p>
-    </w:tc>
-</w:tr>
+<table:table-row>
+    <table:table-cell table:style-name="Tabelle5.A1" office:value-type="string">
+        <text:p text:style-name="P15">Raum</text:p>
+    </table:table-cell>
+    <table:table-cell table:style-name="Tabelle5.A1" table:number-columns-spanned="3" office:value-type="string">
+        <text:p text:style-name="P15">Zeitraum</text:p>
+    </table:table-cell>
+    <table:covered-table-cell/>
+    <table:covered-table-cell/>
+    <table:table-cell table:style-name="Tabelle5.A1" office:value-type="string">
+        <text:p text:style-name="P15">Bruttobetrag*</text:p>
+    </table:table-cell>
+</table:table-row>
 
-{# Zeile für einen Raum #}
-<w:tr>
-<w:tc>
-    <w:tcPr>
-        <w:tcW w:w="1980" w:type="dxa"/>
-    </w:tcPr>
-    <w:p>
-        <w:r>
-            <w:t>{{ e.room }}</w:t>
-        </w:r>
-    </w:p>
-</w:tc>
-<w:tc>
-    <w:tcPr>
-        <w:tcW w:w="5269" w:type="dxa"/>
-        <w:gridSpan w:val="3"/>
-    </w:tcPr>
-    <w:p>
-        <w:r>
-            <w:t>{{ include('klo_ki_event/_time_range.html.twig', {'event': e}) }}</w:t>
-        </w:r>
-    </w:p>
-</w:tc>
-<w:tc>
-    <w:tcPr>
-        <w:tcW w:w="1813" w:type="dxa"/>
-    </w:tcPr>
-    <w:p>
-        <w:pPr>
-            <w:jc w:val="right"/>
-        </w:pPr>
-        <w:r>
-            <w:t>{{ (e.roomFee / 100) | number_format(2, ',', '.') }} €</w:t>
-        </w:r>
-    </w:p>
-</w:tc>
-</w:tr>
-
+<table:table-row>
+    <table:table-cell table:style-name="Tabelle5.A1" office:value-type="string">
+        <text:p text:style-name="P17">{{ e.room }}</text:p>
+    </table:table-cell>
+    <table:table-cell table:style-name="Tabelle5.A1" table:number-columns-spanned="3" office:value-type="string">
+        <text:p text:style-name="P17">{{ include('klo_ki_event/_time_range.html.twig', {'event': e}) }}</text:p>
+    </table:table-cell>
+    <table:covered-table-cell/>
+    <table:covered-table-cell/>
+    <table:table-cell table:style-name="Tabelle5.A1" office:value-type="string">
+        <text:p text:style-name="P18">{{ (e.roomFee / 100) | number_format(2, ',', '.') }} €</text:p>
+    </table:table-cell>
+</table:table-row>
 
 {# Kopfzeile Ausstattung, nur wenn wir auch Ausstattung haben...#}
 {% if e.ausstattung.count > 0 %}
-<w:tr>
-<w:tc>
-    <w:tcPr>
-        <w:tcW w:w="4106" w:type="dxa"/>
-        <w:gridSpan w:val="2"/>
-    </w:tcPr>
-    <w:p>
-        <w:pPr>
-            <w:rPr>
-                <w:b/>
-                <w:bCs/>
-            </w:rPr>
-        </w:pPr>
-        <w:r w:rsidRPr="00847596">
-            <w:rPr>
-                <w:b/>
-                <w:bCs/>
-            </w:rPr>
-            <w:t>Ausstattung</w:t>
-        </w:r>
-    </w:p>
-</w:tc>
-<w:tc>
-    <w:tcPr>
-        <w:tcW w:w="1701" w:type="dxa"/>
-    </w:tcPr>
-    <w:p>
-        <w:pPr>
-            <w:rPr>
-                <w:b/>
-                <w:bCs/>
-            </w:rPr>
-        </w:pPr>
-        <w:r>
-            <w:rPr>
-                <w:b/>
-                <w:bCs/>
-            </w:rPr>
-            <w:t>Nettobetrag</w:t>
-        </w:r>
-    </w:p>
-</w:tc>
-<w:tc>
-    <w:tcPr>
-        <w:tcW w:w="1442" w:type="dxa"/>
-    </w:tcPr>
-    <w:p>
-        <w:pPr>
-            <w:rPr>
-                <w:b/>
-                <w:bCs/>
-            </w:rPr>
-        </w:pPr>
-        <w:r>
-            <w:rPr>
-                <w:b/>
-                <w:bCs/>
-            </w:rPr>
-            <w:t>MwSt. 19%</w:t>
-        </w:r>
-    </w:p>
-</w:tc>
-<w:tc>
-    <w:tcPr>
-        <w:tcW w:w="1813" w:type="dxa"/>
-    </w:tcPr>
-    <w:p>
-        <w:pPr>
-            <w:rPr>
-                <w:b/>
-                <w:bCs/>
-            </w:rPr>
-        </w:pPr>
-        <w:r>
-            <w:rPr>
-                <w:b/>
-                <w:bCs/>
-            </w:rPr>
-            <w:t>Bruttobetrag</w:t>
-        </w:r>
-    </w:p>
-</w:tc>
-</w:tr>
+<table:table-row>
+    <table:table-cell table:style-name="Tabelle5.A1" table:number-columns-spanned="2" office:value-type="string">
+        <text:p text:style-name="P15">Ausstattung</text:p>
+    </table:table-cell>
+    <table:covered-table-cell/>
+    <table:table-cell table:style-name="Tabelle5.A1" office:value-type="string">
+        <text:p text:style-name="P15">Nettobetrag</text:p>
+    </table:table-cell>
+    <table:table-cell table:style-name="Tabelle5.A1" office:value-type="string">
+        <text:p text:style-name="P15">MwSt. 19%</text:p>
+    </table:table-cell>
+    <table:table-cell table:style-name="Tabelle5.A1" office:value-type="string">
+        <text:p text:style-name="P15">Bruttobetrag</text:p>
+    </table:table-cell>
+</table:table-row>
 {% endif %}
 
-
 {% for a in e.ausstattung %}
-{# @var a \App\Entity\Ausstattung #}
-{# Zeile für eine Ausstattung #}
-<w:tr>
-    <w:tc>
-        <w:tcPr><w:tcW w:w="4106" w:type="dxa"/><w:gridSpan w:val="2"/></w:tcPr>
-        <w:p><w:r><w:t>{{ a.description }}</w:t></w:r></w:p>
-    </w:tc>
-    <w:tc>
-        <w:tcPr><w:tcW w:w="1701" w:type="dxa"/></w:tcPr>
-        <w:p>
-            <w:pPr><w:jc w:val="right"/></w:pPr>
-            <w:r><w:t>{{ (a.nettopreis / 100) | number_format(2, ',', '.') }} €</w:t></w:r>
-        </w:p>
-    </w:tc>
-    <w:tc>
-        <w:tcPr><w:tcW w:w="1442" w:type="dxa"/></w:tcPr>
-        <w:p>
-            <w:pPr><w:jc w:val="right"/></w:pPr>
-            <w:r><w:t>{{ (a.mwSt / 100) | number_format(2, ',', '.') }} €</w:t></w:r>
-        </w:p>
-    </w:tc>
-    <w:tc>
-        <w:tcPr><w:tcW w:w="1813" w:type="dxa"/></w:tcPr>
-        <w:p>
-            <w:pPr><w:jc w:val="right"/></w:pPr>
-            <w:r><w:t>{{ (a.bruttoPreis / 100) | number_format(2, ',', '.') }} €</w:t></w:r>
-        </w:p>
-    </w:tc>
-</w:tr>
+    {# @var a \App\Entity\Ausstattung #}
+    {# Zeile für eine Ausstattung #}
+<table:table-row>
+    <table:table-cell table:style-name="Tabelle5.A1" table:number-columns-spanned="2" office:value-type="string">
+        <text:p text:style-name="P17">{{ a.description }}</text:p>
+    </table:table-cell>
+    <table:covered-table-cell/>
+    <table:table-cell table:style-name="Tabelle5.A1" office:value-type="string">
+        <text:p text:style-name="P18">{{ (a.nettopreis / 100) | number_format(2, ',', '.') }} €</text:p>
+    </table:table-cell>
+    <table:table-cell table:style-name="Tabelle5.A1" office:value-type="string">
+        <text:p text:style-name="P18">{{ (a.mwSt / 100) | number_format(2, ',', '.') }} €</text:p>
+    </table:table-cell>
+    <table:table-cell table:style-name="Tabelle5.A1" office:value-type="string">
+        <text:p text:style-name="P18">{{ (a.bruttoPreis / 100) | number_format(2, ',', '.') }} €</text:p>
+    </table:table-cell>
+</table:table-row>
 {% endfor %}
+{{ include('klo_ki_event/_mietvertrag_empty_table_row.xml.twig') }}

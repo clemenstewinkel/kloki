@@ -397,7 +397,7 @@ class KloKiEventController extends AbstractController
         $response = new Response($wService->createWord($kloKiEvent));
         $disposition = HeaderUtils::makeDisposition(
             HeaderUtils::DISPOSITION_ATTACHMENT,
-            'MietVertrag_'.$kloKiEvent->getContractNumber().'.docx'
+            'MietVertrag_'.$kloKiEvent->getContractNumber().'.odt'
         );
         $response->headers->set('Content-Disposition', $disposition);
         $response->headers->set('Content-Type', 'application/octet-stream');
