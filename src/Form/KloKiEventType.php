@@ -130,6 +130,7 @@ class KloKiEventType extends AbstractType
             ->add('bemerkung', TextareaType::class, ['required' => false])
             ->add('isFixed', ChoiceType::class, ['label' => 'Vertragsstatus', 'choices' => ['option' => 0, 'fest' => 1]])
             ->add('contractNumber')
+            ->add('contractRevision')
         ;
     }
 

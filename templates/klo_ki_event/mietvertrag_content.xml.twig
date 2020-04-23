@@ -268,7 +268,7 @@
                 </text:span>
                 <text:span text:style-name="Absatz-Standardschriftart"> </text:span>
             </text:p>
-            <text:p text:style-name="P29">Re.-<text:span text:style-name="T10">Nr.</text:span>: <text:tab/>{{ e.contractNumber }}<text:line-break/><text:span text:style-name="T9">Re.-Datum.:<text:tab/>{{ 'now' | localizeddate('long', 'none') }}</text:span></text:p>
+            <text:p text:style-name="P29">Re.-<text:span text:style-name="T10">Nr.</text:span>: <text:tab/>{{ e.contractNumber }}-{{ e.contractRevision }}-{{ e.start | date('Ymd') }}<text:line-break/><text:span text:style-name="T9">Re.-Datum.:<text:tab/>{{ 'now' | localizeddate('long', 'none') }}</text:span></text:p>
             <text:p text:style-name="P6">Zwischen dem Verein Kulturzentrum Klosterkirche e.V. und</text:p>
             <table:table table:name="Tabelle3" table:style-name="Tabelle3">
                 <table:table-column table:style-name="Tabelle3.A"/>

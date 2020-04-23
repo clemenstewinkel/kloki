@@ -392,12 +392,38 @@ class KloKiEventController extends AbstractController
      * @Route("/createWord/{id}", name="klo_ki_event_create_word", methods={"GET"})
      * @IsGranted({"ROLE_ADMIN"})
      */
-    public function create_word(WordCreatorService $wService, KloKiEvent $kloKiEvent): Response
+    public function create_word(KloKiEventRepository $klokiRepo, WordCreatorService $wService, KloKiEvent $kloKiEvent): Response
     {
+        // Hat dieses Event schon eine Vertrags-Nummer?
+        if($kloKiEvent->getContractNumber())
+        // Dann zählen wir die Revisions-Nummer eins hoch
+        {
+            $kloKiEvent->setContractRevision($kloKiEvent->getContractRevision() + 1);
+        }
+        else
+        {
+            // Hat das Event dagegen noch keine Vertrags-/Revisions-Nummer
+            // Dann suchen wir in der Datenbank nach der höchsten Vertragsnummer
+            // erhöhen um eins und setzen die Revisions-Nummer auf 1.
+            $highest_contract_number = $klokiRepo->createQueryBuilder('e')
+                ->select('MAX(e.contractNumber)')
+                ->getQuery()
+                ->getSingleScalarResult();
+            $kloKiEvent->setContractNumber($highest_contract_number ? ($highest_contract_number + 1) : 1);
+            $kloKiEvent->setContractRevision(1);
+        }
+
+
+        // In jedem Fall schreiben wir die neue Vertrags-/Revisions-Nummer in die Datenbank
+        $this->getDoctrine()->getManager()->flush();
+
         $response = new Response($wService->createWord($kloKiEvent));
         $disposition = HeaderUtils::makeDisposition(
             HeaderUtils::DISPOSITION_ATTACHMENT,
-            'MietVertrag_'.$kloKiEvent->getContractNumber().'.odt'
+            'V_'.$kloKiEvent->getContractNumber().'-'
+            .$kloKiEvent->getContractRevision().'-'
+            .$kloKiEvent->getStart()->format('Ymd').'-'
+            .$kloKiEvent->getKontakt()->getNachname().'.odt'
         );
         $response->headers->set('Content-Disposition', $disposition);
         $response->headers->set('Content-Type', 'application/octet-stream');

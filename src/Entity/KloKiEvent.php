@@ -297,9 +297,14 @@ class KloKiEvent
     private $overnightStays;
 
     /**
-     * @ORM\Column(type="string", length=32, nullable=true)
+     * @ORM\Column(type="integer", nullable=true)
      */
     private $contractNumber;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $contractRevision;
 
 
     public function __construct()
@@ -321,7 +326,6 @@ class KloKiEvent
 
     public function setName($name):                                   self { $this->name = $name;                             return $this; }
     public function setArt($art):                                     self { $this->art = $art;                               return $this; }
-    public function setContractNumber(?string $contractNumber):       self { $this->contractNumber = $contractNumber;         return $this; }
     public function setKategorie(?KloKiEventKategorie $kategorie):    self { $this->kategorie = $kategorie;                   return $this; }
     public function setRoom(?Room $room):                             self { $this->room = $room;                             return $this; }
     public function setKontakt(?Addresse $kontakt):                   self { $this->kontakt = $kontakt;                       return $this; }
@@ -346,6 +350,8 @@ class KloKiEvent
     public function setPressMaterialState($pressMaterialState):       self { $this->pressMaterialState = $pressMaterialState; return $this; }
     public function setGemaListState($gemaListState):                 self { $this->gemaListState = $gemaListState;           return $this; }
     public function setOvernightStays(?int $overnightStays):          self { $this->overnightStays = $overnightStays;         return $this; }
+    public function setContractNumber(?int $contractNumber):          self { $this->contractNumber = $contractNumber;         return $this; }
+    public function setContractRevision(?int $contractRevision):      self { $this->contractRevision = $contractRevision;     return $this; }
     public function setContractState($contractState):                 self { $this->contractState = $contractState;           return $this; }
     public function setParentEvent(?self $ParentEvent):               self { $this->ParentEvent = $ParentEvent;               return $this; }
     public function setBemerkung(?string $Bemerkung):                 self { $this->Bemerkung = $Bemerkung;                   return $this; }
@@ -458,6 +464,8 @@ class KloKiEvent
     public function getId():                    ?int    { return $this->id;                 }
     public function getAnzahlArtists():         ?int    { return $this->anzahlArtists;      }
     public function getOvernightStays():        ?int    { return $this->overnightStays;     }
+    public function getContractNumber():        ?int    { return $this->contractNumber;     }
+    public function getContractRevision():      ?int    { return $this->contractRevision;   }
 
     // User-Getters
     public function getHelperGarderobe():       ?User   { return $this->helperGarderobe;    }
@@ -481,7 +489,6 @@ class KloKiEvent
     // String-Getters
     public function getName():                  ?string { return $this->name;               }
     public function getBemerkung():             ?string { return $this->Bemerkung;          }
-    public function getContractNumber():        ?string { return $this->contractNumber;     }
 
     // Entity-Getters
     public function getKategorie():   ?KloKiEventKategorie  { return $this->kategorie;    }
@@ -845,6 +852,8 @@ class KloKiEvent
         }
         return $this;
     }
+
+
 
 
 
