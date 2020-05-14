@@ -21,12 +21,14 @@ import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid';
 import $ from 'jquery';
 import 'bootstrap'
 
-let calendarEl;
-let $calendarDetail;
-let userIsAuthenticated;
-let userId;
-let userRoles;
 let fullcalendar;
+let calendarEl;
+let userIsAuthenticated;
+
+export let $calendarDetail;
+export let userId;
+export let userRoles;
+
 
 /**
  * Hauptprogramm
@@ -101,4 +103,3 @@ $(document).ready(function() {
     window.$ = $;
 });
 
-export { userId, userRoles, $calendarDetail };
