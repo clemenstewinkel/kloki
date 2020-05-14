@@ -1,0 +1,81 @@
+{% extends 'email_base.html.twig' %}
+
+{% block title %}Aktuelle Informationen{% endblock %}
+
+{% block body %}
+    {# @var klo_ki_event \App\Entity\KloKiEvent #}
+    <h1>{{ klo_ki_event.name }} ({{ klo_ki_event.room }})</h1>
+    <table class="table table-sm table-striped">
+        <tbody>
+        <tr>
+            <th>Beginn und Dauer</th>
+            <td>{{ include('klo_ki_event/_time_range.html.twig', {'event': klo_ki_event}) }}</td>
+        </tr>
+        <tr>
+            <th>Art:</th>
+            <td>{{ klo_ki_event.art | readable_enum('EventArtType') }} / {{ klo_ki_event.kategorie }}</td>
+        </tr>
+
+        <tr>
+            <th>Anzahl der Künstler</th>
+            <td>{{ klo_ki_event.anzahlArtists }}</td>
+        </tr>
+        <tr>
+            <th>Bestuhlung nötig?</th>
+            <td>{{ klo_ki_event.isBestBenoetigt ? 'Ja' : 'Nein' }}</td>
+        </tr>
+        <tr>
+            <th>Licht nötig?</th>
+            <td>
+                {%  if klo_ki_event.isLichtBenoetigt %}
+                    Ja: {{ klo_ki_event.lichtTechniker ?: 'N/A' }}
+                {% else %}
+                    Nein
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Ton nötig?</th>
+            <td>
+                {% if klo_ki_event.isTonBenoetigt %}
+                    Ja: {{ klo_ki_event.tonTechniker ?: 'N/A'}}
+                {% else %}
+                    Nein
+                {% endif %}
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+
+    {% if klo_ki_event.ausstattung.count > 0 %}
+        <h2>Weitere Ausstattung</h2>
+        <ul>
+            {%  for a in klo_ki_event.ausstattung  %}
+                {# @ var a App\Entity\Ausstattung #}
+                <li>{{ a }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    {% if klo_ki_event.bestPlan %}
+        <h2>Bestuhlung</h2>
+        {{ klo_ki_event.bestPlan }}
+    {% endif %}
+
+    {% if klo_ki_event.stageOrder %}
+        <h2>Bühnenanweisung</h2>
+        <a class="js-no-retarget" href="{{ path('getPdf', {'id': klo_ki_event.stageOrder.pdfFileName}) }}">
+            <img alt="Bühnenanweisung" src="{{ path('getPng', {'id': klo_ki_event.stageOrder.pngFileName }) }}" />
+        </a>
+        {{ klo_ki_event.stageOrder }}
+    {% endif %}
+
+
+    {% if klo_ki_event.bemerkung %}
+        <h2>Bemerkung:</h2>
+        {{ klo_ki_event.bemerkung | raw }}
+    {% endif %}
+
+
+{% endblock %}

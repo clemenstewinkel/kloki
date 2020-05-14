@@ -1,6 +1,7 @@
 import prepare_event_form from "../prepare_event_form";
 import $ from "jquery";
 import { $calendarDetail } from "../calendar";
+import attachMailFunctions from "../helper_functions/attachMailFunctions";
 
 export default function reTargetLinks()
 {
@@ -33,4 +34,6 @@ export default function reTargetLinks()
             }
         });
     });
+
+    attachMailFunctions();
 }

@@ -1,0 +1,17 @@
+{% extends 'email_base.html.twig' %}
+
+{% block title %}Absage eines Helfers{% endblock %}
+
+{% block body %}
+    {# @var e \App\Entity\KloKiEvent #}
+    {# @var u \App\Entity\User #}
+    Für das Event {{ e.name }} am {{ e.startDate | localizeddate() }} hat ein Helfer abgesagt, der schon eingeteilt war.<br/>
+    {{ u.email }} ({{ u.name }}) war eingeteilt für
+    {% if e.helperGarderobe    == u %}Garderobe{% endif %}
+    {% if e.helperKasse        == u %}Kasse{% endif %}
+    {% if e.helperEinlassEins  == u %}Einlass1{% endif %}
+    {% if e.helperEinlassZwei  == u %}Einlass2{% endif %}
+    {% if e.helperSpringerEins == u %}Springer1{% endif %}
+    {% if e.helperSpringerZwei == u %}Springer2{% endif %}
+
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dienstpläne verschicken{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h3>Dienstpläne an Helfer schicken</h3>
+        <form action="{{ path('klo_ki_event_duty_mails') }}" method="POST">
+            <div class="form-group row">
+                <div class="col">
+                    <textarea type="textarea" class="form-control" autocomplete="off" name="additionalText" placeholder="zusätzlicher Text"></textarea>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <input type="text" id="event_filter_startDate" class="form-control" autocomplete="off" name="helperDutiesUntilDay" placeholder="bis Datum (einschl.)"/>
+                </div>
+                <div class="col">
+                    <input type="submit" value="Mails verschicken!" class="btn btn-primary" />
+                </div>
+            </div>
+        </form>
+
+    {{ encore_entry_script_tags('event-filter') }}
+    </div>
+{% endblock %}

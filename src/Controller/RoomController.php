@@ -11,14 +11,18 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+
 
 /**
  * @Route("/room")
+ * @isGranted({"ROLE_USER"})
  */
 class RoomController extends AbstractController
 {
     /**
      * @Route("/", name="room_index", methods={"GET"})
+     * @isGranted({"ROLE_ADMIN"})
      */
     public function index(RoomRepository $roomRepository): Response
     {
@@ -39,6 +43,7 @@ class RoomController extends AbstractController
 
     /**
      * @Route("/new", name="room_new", methods={"GET","POST"})
+     * @isGranted({"ROLE_ADMIN"})
      */
     public function new(Request $request): Response
     {
@@ -72,6 +77,7 @@ class RoomController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="room_edit", methods={"GET","POST"})
+     * @isGranted({"ROLE_ADMIN"})
      */
     public function edit(Request $request, Room $room): Response
     {
@@ -92,6 +98,7 @@ class RoomController extends AbstractController
 
     /**
      * @Route("/{id}", name="room_delete", methods={"DELETE"})
+     * @isGranted({"ROLE_ADMIN"})
      */
     public function delete(Request $request, Room $room): Response
     {

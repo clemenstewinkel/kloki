@@ -37,10 +37,12 @@
                     <div class="dropdown-menu" aria-labelledby="dropdown02">
                         <a class="dropdown-item" href="{{ path('event_calendar') }}">Kalender</a>
                         {% if is_granted('ROLE_HELPER')%}
-                            <a class="dropdown-item" href="{{ path('klo_ki_event_index_helper') }}">Liste</a>
+                            <a class="dropdown-item" href="{{ path('klo_ki_event_index_helper') }}">Veranstaltungen</a>
+                            <a class="dropdown-item" href="{{ path('klo_ki_event_duties_helper') }}">Dienste</a>
                         {% endif %}
                         {% if is_granted('ROLE_ADMIN')%}
                             <a class="dropdown-item" href="{{ path('klo_ki_event_dispo') }}">Tagesdispo</a>
+                            <a class="dropdown-item" href="{{ path('klo_ki_event_duty_mails') }}">Dienstpläne verschicken</a>
                         {% endif %}
                     </div>
                 </li>

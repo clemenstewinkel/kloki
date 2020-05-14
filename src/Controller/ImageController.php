@@ -5,10 +5,14 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
+
+/**
+ * @isGranted({"ROLE_USER"})
+ */
 class ImageController extends AbstractController
 {
-
     /**
      * @Route("/getPng/{id}", name="getPng")
      */
@@ -24,5 +28,4 @@ class ImageController extends AbstractController
     {
         return new BinaryFileResponse($this->getParameter('pdf_file_directory').$id);
     }
-
 }

@@ -22,25 +22,6 @@
         data-user-roles='{{ app.user ? app.user.roles|json_encode|e('html_attr') : 'false' }}'
     >
         {{ include('_menu.html.twig') }}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         <main role="main" class="container-fluid">
             {% for message in app.flashes('success') %}
                 <div class="alert alert-success alert-dismissible fade show">

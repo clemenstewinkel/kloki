@@ -1,0 +1,8 @@
+{% extends 'email_base.html.twig' %}
+
+{% block title %}Bitte einen Vertrag erstellen{% endblock %}
+
+{% block body %}
+    {# @var e \App\Entity\KloKiEvent #}
+    Für das Event {{ e.name }} am {{ e.startDate | localizeddate() }} soll der Vertrag erstellt werden!
+{% endblock %}

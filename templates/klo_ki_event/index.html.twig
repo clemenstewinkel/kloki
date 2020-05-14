@@ -159,7 +159,7 @@
                     {% endif %}
                 </td>
                 <td>{{ e.art | readable_enum('EventArtType') }}</td>
-                <td>{{ e.contractState | readable_enum('ContractStateType') }}</td>
+                <td>{{ e.contractState | readable_enum('ContractStateType') }} {% if e.contractState == 'requested' %} (<a href="{{ path('klo_ki_event_create_word', {'id': e.id}) }}">tu es!</a>) {% endif %} </td>
                 <td>
                     {{ e.hotelState | readable_enum('HotelStateType') }}
                     {% if e.hotelState == "needed" or e.hotelState == "booked" %}

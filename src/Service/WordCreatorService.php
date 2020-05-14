@@ -1,10 +1,12 @@
-<?php
+<?php /** @noinspection PhpInternalEntityUsedInspection */
 
 
 namespace App\Service;
 
 use App\Entity\KloKiEvent;
+use Exception;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Throwable;
 use Twig\Environment;
 
 class WordCreatorService
@@ -21,8 +23,16 @@ class WordCreatorService
     public function createWord(KloKiEvent $event)
     {
         $source = $this->params->get('odt_directory');
-        $template = $this->twig->loadTemplate('klo_ki_event/mietvertrag_content.xml.twig');
-        $renderedDoc = $template->render(['e' => $event]);
+        try {
+            $template = $this->twig->loadTemplate('klo_ki_event/mietvertrag_content.xml.twig');
+        } catch (Exception $e) {
+            return false;
+        }
+        try {
+            $renderedDoc = $template->render(['e' => $event]);
+        } catch (Throwable $e) {
+            return false;
+        }
         file_put_contents($source . 'content.xml', $renderedDoc);
         return shell_exec("cd $source; zip -rq - *");
     }

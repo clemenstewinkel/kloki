@@ -4,12 +4,11 @@ import setErrorNotAllowed from "./setErrorNotAllowed";
 import {$calendarDetail, userRoles} from "../calendar";
 import reTargetLinks from "./reTargetLinks";
 
-export default function loadChildEventForm(parentId)
+export default function loadCopyEventForm(parentId)
 {
     setSpinner();
     let url2call = '';
-    if (userRoles.includes('ROLE_FOOD')) url2call = 'newfood?parentIdForNewChild='+parentId;
-    if (userRoles.includes('ROLE_ADMIN')) url2call = 'new?parentIdForNewChild='+parentId;
+    if (userRoles.includes('ROLE_FOOD')) url2call = 'newfood?id2Copy='+parentId;
 
     $.ajax({
         url: url2call,

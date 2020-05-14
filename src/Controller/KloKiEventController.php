@@ -7,12 +7,15 @@ use App\DBAL\Types\EventArtType;
 use App\DBAL\Types\HotelStateType;
 use App\DBAL\Types\PressMaterialStateType;
 use App\Entity\KloKiEvent;
+use App\Entity\User;
 use App\Form\AddresseType;
 use App\Form\KloKiEventEditType;
 use App\Form\KloKiEventFoodType;
 use App\Form\KloKiEventType;
 use App\Repository\KloKiEventRepository;
 use App\Repository\RoomRepository;
+use App\Repository\UserRepository;
+use App\Service\SendMailService;
 use App\Service\WordCreatorService;
 use Knp\Component\Pager\PaginatorInterface;
 use Psr\Log\LoggerInterface;
@@ -59,12 +62,86 @@ class KloKiEventController extends AbstractController
     {
         $events = $kloKiEventRepository->createQueryBuilder('e')
             ->andWhere('e.helperRequired = 1')
-            ->andWhere('e.start > CURRENT_DATE()')
+            ->andWhere('e.start >= CURRENT_DATE()')
             ->orderBy('e.start')
             ->getQuery()
             ->getResult();
         return $this->render('klo_ki_event/index_helper.html.twig', [
             'events' => $events
+        ]);
+    }
+
+    /**
+     * @Route("/helper/duties", name="klo_ki_event_duties_helper", methods={"GET"})
+     * @IsGranted({"ROLE_HELPER"})
+     */
+    public function duties_helper(KloKiEventRepository $kloKiEventRepository): Response
+    {
+        $user_id = $this->getUser()->getId();
+        $events = $kloKiEventRepository->createQueryBuilder('e')
+            ->andWhere('e.helperRequired = 1')
+            ->andWhere('e.start >= CURRENT_DATE()')
+            ->andWhere("e.helperKasse        = $user_id OR 
+                        e.helperEinlassEins  = $user_id OR 
+                        e.helperEinlassZwei  = $user_id OR 
+                        e.helperSpringerEins = $user_id OR 
+                        e.helperSpringerZwei = $user_id OR 
+                        e.helperGarderobe    = $user_id")
+            ->orderBy('e.start')
+            ->getQuery()
+            ->getResult();
+        return $this->render('klo_ki_event/duties_helper.html.twig', [
+            'events' => $events
+        ]);
+    }
+
+
+
+    /**
+     * @Route("/dutyMails", name="klo_ki_event_duty_mails", methods={"GET", "POST"})
+     * @IsGranted({"ROLE_ADMIN"})
+     */
+    public function dutyMails(KloKiEventRepository $eventRepo, UserRepository $userRepo, Request $request, SendMailService $mailer): Response
+    {
+        if($request->isMethod("POST"))
+        {
+            if($last_day = $request->request->get('helperDutiesUntilDay'))
+            {
+                $allHelpers = $userRepo->createQueryBuilder('u')
+                    ->where('u.roles LIKE :roles')
+                    ->setParameter('roles', '%"ROLE_HELPER"%')
+                    ->orderBy('u.email', 'ASC')->getQuery()->getResult();
+
+                $mailCount = 0;
+                foreach($allHelpers as $helper)
+                {
+                    /** @var $helper User */
+                    $user_id = $helper->getId();
+                    $events = $eventRepo->createQueryBuilder('e')
+                        ->andWhere('e.helperRequired = 1')
+                        ->andWhere('e.start >= CURRENT_DATE()')
+                        ->andWhere("e.helperKasse    = $user_id OR 
+                        e.helperEinlassEins  = $user_id OR 
+                        e.helperEinlassZwei  = $user_id OR 
+                        e.helperSpringerEins = $user_id OR 
+                        e.helperSpringerZwei = $user_id OR 
+                        e.helperGarderobe    = $user_id")
+                        ->orderBy('e.start')
+                        ->getQuery()
+                        ->getResult();
+                    if(count($events) > 0)
+                    {
+                        if($mailer->sendDutyListToHelper($last_day, $events, $helper, $request->request->get('additionalText')))
+                        {
+                            $mailCount++;
+                        }
+                    }
+                }
+                $this->addFlash('success', "Es wurden $mailCount Mails versendet. Dienstpläne bis $last_day, addText: " . $request->request->get('additionalText'));
+            }
+        }
+
+        return $this->render('klo_ki_event/duty_mailer.html.twig', [
         ]);
     }
 
@@ -88,8 +165,10 @@ class KloKiEventController extends AbstractController
     }
 
 
+
     /**
      * @Route("/calendar", name="event_calendar", methods={"GET"})
+     * @IsGranted({"ROLE_ADMIN", "ROLE_FOOD", "ROLE_HELPER", "ROLE_TECH"})
      */
     public function calendar(KloKiEventRepository $eventRepository)
     {
@@ -148,7 +227,7 @@ class KloKiEventController extends AbstractController
     {
         $kloKiEvent = new KloKiEvent();
 
-        // Wenn wir in der URL den Paremeter parentIdForNewChild haben, übernehmen wir
+        // Wenn wir in der URL den Parameter parentIdForNewChild haben, übernehmen wir
         // einige Werte aus dem Mutter-Element
         if($parentId = $request->query->getInt('parentIdForNewChild'))
         {
@@ -207,11 +286,11 @@ class KloKiEventController extends AbstractController
      * @Route("/newfood", name="klo_ki_event_new_food", methods={"GET","POST"})
      * @IsGranted({"ROLE_FOOD"})
      */
-    public function newfood(LoggerInterface $logger, Request $request, KloKiEventRepository $eventRepo): Response
+    public function newfood(LoggerInterface $logger, Request $request, KloKiEventRepository $eventRepo, SendMailService $mailService): Response
     {
         $kloKiEvent = new KloKiEvent();
 
-        // Wenn wir in der URL den Paremeter parentIdForNewChild haben, übernehmen wir
+        // Wenn wir in der URL den Parameter parentIdForNewChild haben, übernehmen wir
         // einige Werte aus dem Mutter-Element
         if($parentId = $request->query->getInt('parentIdForNewChild'))
         {
@@ -229,6 +308,27 @@ class KloKiEventController extends AbstractController
             }
         }
 
+        // Wenn wir in der URL den Parameter id2Copy haben,
+        // kopieren wir fast alle Werte aus dem übergebenen Event
+        if($id2Copy = $request->query->getInt('id2Copy'))
+        {
+            $event2Copy = $eventRepo->findOneBy(['id' => $id2Copy]);
+            if($event2Copy)
+            {
+                $kloKiEvent->setStart(      $event2Copy->getStart());
+                $kloKiEvent->setEnd(        $event2Copy->getEnd());
+                $kloKiEvent->setAllDay(     $event2Copy->getAllDay());
+                $kloKiEvent->setName(       $event2Copy->getName() );
+                $kloKiEvent->setParentEvent($event2Copy->getParentEvent());
+                $kloKiEvent->setKontakt(    $event2Copy->getKontakt());
+                $kloKiEvent->setKategorie(  $event2Copy->getKategorie());
+                $kloKiEvent->setArt(        $event2Copy->getArt());
+                foreach($event2Copy->getAusstattung() as $a) $kloKiEvent->addAusstattung($a);
+            }
+        }
+
+
+
         $form = $this->get('form.factory')->createNamed('klo_ki_event', KloKiEventFoodType::class, $kloKiEvent);
         $kloKiEvent->setIsFixed(false);
         $kloKiEvent->setArt(EventArtType::RENTAL);
@@ -243,6 +343,7 @@ class KloKiEventController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($kloKiEvent);
             $entityManager->flush();
+            if($kloKiEvent->getContractState() == 'requested') $mailService->informAboutContractRequest($kloKiEvent);
             if ($request->isXmlHttpRequest()) {
                 return $this->render('klo_ki_event/_show.html.twig', [
                     'klo_ki_event' => $kloKiEvent,
@@ -255,7 +356,7 @@ class KloKiEventController extends AbstractController
         if ($request->isXmlHttpRequest()) {
             return $this->render($formTemplate, [
                 'klo_ki_event' => $kloKiEvent,
-                'klo_ki_form_action' => $this->generateUrl('klo_ki_event_new'),
+                'klo_ki_form_action' => $this->generateUrl('klo_ki_event_new_food'),
                 'form' => $form->createView()
             ]);
         }
@@ -288,17 +389,26 @@ class KloKiEventController extends AbstractController
                 'userInHelpers' => $this->isInAvailableHelpers($kloKiEvent)
             ]);
         }
-        return $this->redirectToRoute('klo_ki_event_index_helper');
+        return $this->redirect($request->headers->get('referer'));
     }
 
     /**
      * @Route("/icannothelp/{id}", name="klo_ki_event_icannothelp", methods={"POST"})
      * @IsGranted({"ROLE_HELPER"})
      */
-    public function sayICanNotHelp(Request $request, KloKiEvent $kloKiEvent)
+    public function sayICanNotHelp(Request $request, KloKiEvent $kloKiEvent, SendMailService $mailer)
     {
         if ($this->isCsrfTokenValid('icannothelp'.$kloKiEvent->getId(), $request->request->get('_token'))) {
             $kloKiEvent->removeAvailableHelper($this->getUser());
+            // Wenn der User schon eingeteilt war, informieren wir das Büro über die Absage:
+            if( $kloKiEvent->getHelperEinlassEins()  == $this->getUser() or
+                $kloKiEvent->getHelperEinlassZwei()  == $this->getUser() or
+                $kloKiEvent->getHelperSpringerEins() == $this->getUser() or
+                $kloKiEvent->getHelperSpringerZwei() == $this->getUser() or
+                $kloKiEvent->getHelperKasse()        == $this->getUser() or
+                $kloKiEvent->getHelperGarderobe()    == $this->getUser()
+            )
+            $mailer->informAboutHelperCancelled($kloKiEvent, $this->getUser());
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->flush();
         }
@@ -308,7 +418,7 @@ class KloKiEventController extends AbstractController
                 'userInHelpers' => $this->isInAvailableHelpers($kloKiEvent)
             ]);
         }
-        return $this->redirectToRoute('klo_ki_event_index_helper');
+        return $this->redirect($request->headers->get('referer'));
     }
 
 
@@ -434,8 +544,9 @@ class KloKiEventController extends AbstractController
     /**
      * @Route("/{id}/edit", name="klo_ki_event_edit", methods={"GET","POST"})
      * @IsGranted({"ROLE_ADMIN", "ROLE_FOOD"})
+     * @IsGranted("EVENT_EDIT", subject="kloKiEvent")
      */
-    public function edit(Request $request, KloKiEvent $kloKiEvent): Response
+    public function edit(Request $request, KloKiEvent $kloKiEvent, SendMailService $mailService): Response
     {
         // Wenn wir keine Admin sind, dürfen wir nur optionale Events anlegen!
         if ($this->isGranted("ROLE_ADMIN"))
@@ -457,6 +568,16 @@ class KloKiEventController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
+
+            // Wurde der Vertrags-Status auf "requested" gesetzt? Dann Mail-Versand
+            $uow = $entityManager->getUnitOfWork();
+            $uow->computeChangeSets();
+            $changeSet = $uow->getEntityChangeSet($kloKiEvent);
+            if(isset($changeSet['contractState']) and $changeSet['contractState'][1] == 'requested')
+            {
+                $mailService->informAboutContractRequest($kloKiEvent);
+            }
+
             $entityManager->persist($kloKiEvent->getKontakt());
             $entityManager->flush();
 
@@ -487,6 +608,8 @@ class KloKiEventController extends AbstractController
 
     /**
      * @Route("/{id}/delete", name="klo_ki_event_json_delete", methods={"DELETE"})
+     * @IsGranted({"ROLE_ADMIN", "ROLE_FOOD"})
+     * @IsGranted("EVENT_DELETE", subject="kloKiEvent")
      */
     public function json_delete(KloKiEvent $kloKiEvent): Response
     {
@@ -499,6 +622,8 @@ class KloKiEventController extends AbstractController
 
     /**
      * @Route("/{id}", name="klo_ki_event_delete", methods={"DELETE"})
+     * @IsGranted({"ROLE_ADMIN", "ROLE_FOOD"})
+     * @IsGranted("EVENT_DELETE", subject="kloKiEvent")
      */
     public function delete(Request $request, KloKiEvent $kloKiEvent): Response
     {
@@ -510,4 +635,26 @@ class KloKiEventController extends AbstractController
 
         return $this->redirectToRoute('klo_ki_event_index');
     }
+
+
+    /**
+     * @Route("/{id}/sendHelperMail", name="klo_ki_event_send_helper_mail", methods={"POST"})
+     * @IsGranted({"ROLE_ADMIN"})
+     */
+    public function send_helper_mail(Request $request, KloKiEvent $event, SendMailService $mailer): JsonResponse
+    {
+        $rcptsCount = $mailer->informHelpersAboutEvent($event, $request->request->get('message'));
+        return new JsonResponse(['sent' => $rcptsCount]);
+    }
+
+    /**
+     * @Route("/{id}/sendTechMail", name="klo_ki_event_send_tech_mail", methods={"POST"})
+     * @IsGranted({"ROLE_ADMIN"})
+     */
+    public function send_tech_mail(Request $request, KloKiEvent $event, SendMailService $mailer): JsonResponse
+    {
+        $rcptsCount = $mailer->informTechsAboutEvent($event, $request->request->get('message'));
+        return new JsonResponse(['sent' => $rcptsCount]);
+    }
+
 }

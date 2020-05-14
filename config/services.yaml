@@ -8,6 +8,7 @@ parameters:
     png_file_directory: '%kernel.project_dir%/uploaded_files/png/'
     odt_directory: '%kernel.project_dir%/mietvertrag/'
     mailer_rcpts: '%env(MAILER_RCPTS)%'
+    admin_mail_rcpts: '%env(ADMIN_MAIL_RCPTS)%'
 
 services:
     # default configuration for services in *this* file

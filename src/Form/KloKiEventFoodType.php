@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\KloKiEvent;
 use App\Entity\User;
+use App\Repository\KloKiEventKategorieRepository;
 use App\Repository\KloKiEventRepository;
 use App\Repository\UserRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -40,7 +41,11 @@ class KloKiEventFoodType extends AbstractType
             ->add('isReducedPrice', CheckboxType::class, ['required' => false])
             ->add('is4hPrice', CheckboxType::class, ['required' => false])
             ->add('helperRequired', null, ['label' => "Helfer werden benötigt"])
-            ->add('kategorie', null, ['label' => "Kategorie"])
+            ->add('kategorie', null, [
+                'label' => "Kategorie",
+                'query_builder' => function (KloKiEventKategorieRepository $katRepo) {
+                return $katRepo->createQueryBuilder('kat')->andWhere("kat.name = 'Tagung' OR kat.name = 'private Feier'");
+                }])
             ->add('room', null, ['label' => 'Raum'])
             ->add('kontakt', AddressSelectType::class, ['required' => true])
             ->add('bestPlan', null, ['label' => 'Bestuhlung'])

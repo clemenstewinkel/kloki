@@ -4,6 +4,7 @@ import loadEditEventForm from "./loadEditEventForm";
 import confirmDelete from "./confirmDelete";
 import {userRoles} from "../calendar";
 import loadChildEventForm from "./loadChildEventForm";
+import loadCopyEventForm from "./loadCopyEventForm";
 import isEventCreatedByFoodRole from "./isEventCreatedByFoodRole";
 
 
@@ -59,6 +60,7 @@ export default function create_context_menus()
                     case 'edit': loadEditEventForm(event_id); break;
                     case 'delete': confirmDelete(event_id); break;
                     case 'vertrag': window.open('createWord/' + event_id); break;
+                    case 'copy': console.dir(fullcalendar.getEventById(event_id).extendedProps.ParentEvent); loadCopyEventForm(event_id); break;
                     case 'child': console.dir(fullcalendar.getEventById(event_id).extendedProps.ParentEvent); loadChildEventForm(event_id); break;
                 }
             },
@@ -72,6 +74,15 @@ export default function create_context_menus()
                         return (isEventCreatedByFoodRole(eventData.extendedProps) && (!eventData.extendedProps.isFixed));
                     }
 
+                },
+                copy: {
+                    name: "Copy",
+                    icon: "copy",
+                    visible: function(key, opt) {
+                        let event_id = $(this).data('event-id');
+                        let eventData = fullcalendar.getEventById(event_id);
+                        return (isEventCreatedByFoodRole(eventData.extendedProps) && (!eventData.extendedProps.isFixed));
+                    }
                 },
                 delete: {
                     name: "Delete",

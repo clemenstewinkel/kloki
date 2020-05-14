@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\StageOrder;
-use App\Form\BestuhlungsplanType;
 use App\Form\StageOrderType;
 use App\Repository\StageOrderRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,9 +13,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Constraints\File;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @Route("/stage/order")
+ * @isGranted({"ROLE_ADMIN"})
  */
 class StageOrderController extends AbstractController
 {

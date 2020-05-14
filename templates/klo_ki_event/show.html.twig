@@ -1,9 +1,18 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}KloKiEvent{% endblock %}
+{% block styles %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('event-show') }}
+{% endblock %}
 
 {% block body %}
     <div class="container">
         {{ include('klo_ki_event/_show.html.twig') }}
     </div>
+{% endblock %}
+
+{% block javascript %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('event-show') }}
 {% endblock %}

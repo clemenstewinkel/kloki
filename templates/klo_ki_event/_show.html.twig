@@ -217,6 +217,14 @@
             Bearbeiten
         </a>
     {% endif %}
+    {% if is_granted('ROLE_ADMIN') %}
+        <button data-event-id="{{ klo_ki_event.id }}" id="js-mail2helper" class="btn btn-primary">
+            Mail an Helfer
+        </button>
+        <button data-event-id="{{ klo_ki_event.id }}" id="js-mail2techs" class="btn btn-primary" >
+            Mail an Techniker
+        </button>
+    {% endif %}
 
 
     {% if klo_ki_event.start %}
