@@ -64,7 +64,9 @@ class EventFixtures extends Fixture implements FixtureGroupInterface
             /** @var $start_time \DateTime $e */
             $e = new KloKiEvent();
             $e->setStart($start_time);
-            $e->setEnd($start_time->add(new \DateInterval('PT4H')));
+            $end_time = new \DateTime($start_time->format('Y-m-d H:i:s'));
+            $end_time->add(new \DateInterval('PT4H'));
+            $e->setEnd($end_time);
             $e->setName("A great event!");
             $e->setRoom($allRooms[rand(0, count($allRooms)-1)]);
             $e->setArt($allTypes[rand(0,2)]);
