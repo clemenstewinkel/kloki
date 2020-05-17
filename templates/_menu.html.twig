@@ -44,6 +44,9 @@
                             <a class="dropdown-item" href="{{ path('klo_ki_event_dispo') }}">Tagesdispo</a>
                             <a class="dropdown-item" href="{{ path('klo_ki_event_duty_mails') }}">Dienstpläne verschicken</a>
                         {% endif %}
+                        {% if is_granted('ROLE_FOOD')%}
+                            <a class="dropdown-item" href="{{ path('klo_ki_event_dispo') }}">Tagesdispo</a>
+                        {% endif %}
                     </div>
                 </li>
             {% endif %}

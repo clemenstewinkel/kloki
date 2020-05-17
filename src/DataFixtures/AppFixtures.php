@@ -126,6 +126,7 @@ class AppFixtures extends Fixture
                 $ba = new Bestuhlungsplan();
                 $ba->setName($file);
                 $ba->setSitzplaetze(123);
+                $ba->setSitzplaetzeOben(12);
                 $ba->setStehplaetze(456);
                 $ba->setPngFilePath($pngFileName);
                 $ba->setPdfFilePath($pdfFileName);

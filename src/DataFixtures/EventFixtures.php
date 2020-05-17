@@ -19,10 +19,11 @@ use App\Repository\RoomRepository;
 use App\Repository\UserRepository;
 use Cassandra\Date;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
-class EventFixtures extends Fixture
+class EventFixtures extends Fixture implements FixtureGroupInterface
 {
     private $params;
     private $userRepo;
@@ -46,94 +47,79 @@ class EventFixtures extends Fixture
 
     public function load(ObjectManager $manager)
     {
-        $roomIds = $this->roomRepo->createQueryBuilder('a')->select('a.id')->getQuery()->getArrayResult();
-        /**
-         * Events aus einer CSV-Datei lesen
-         */
-        $events = file(__DIR__ . '/../../dummy-daten/events.csv');
-        $fmt = new \IntlDateFormatter('de_DE', \IntlDateFormatter::FULL, \IntlDateFormatter::SHORT, 'UTC', \IntlDateFormatter::GREGORIAN);
-        $tag_fmt = new \IntlDateFormatter('de_DE', \IntlDateFormatter::FULL, \IntlDateFormatter::NONE, 'UTC', \IntlDateFormatter::GREGORIAN);
-        foreach($events as $event)
-        {
-            $e = new KloKiEvent();
-            $a = explode(';', $event);
-            $time_s = $a[0] . ' ' . $a[1];
-            $fullday = false;
-            $unix_ts_tag_beginn = $tag_fmt->parse($a[0]);
-            if(trim($a[1]) == '')
-            {
-                $fullday = true;
-                $unix_ts_start = $unix_ts_tag_beginn;
-                $unix_ts_end   = $unix_ts_tag_beginn + (24 * 3600);
-            }
-            else // kein ganzer Tag!
-            {
-                $unix_ts_start = $fmt->parse($time_s);
-                // Gibt es ein "-" in der Uhrzeit?
-                if(strstr($a[1], '-'))
-                {
-                    $b = explode('-', $a[1]);
-                    $unix_ts_end = $fmt->parse($a[0] . ' ' . trim($b[1]));
-                }
-                else // kein "-"
-                {
-                    // Bis mitternacht
-                    $unix_ts_end = $unix_ts_tag_beginn + (24 * 3600);
-                }
-            }
-            if($unix_ts_start)
-            {
-                dump('Neues Event: -->' . $time_s . '<--');
-                if($fullday)
-                {
-                    dump("Ganzer Tag: " . date('Y-m-d', $unix_ts_start));
-                }
-                else
-                {
-                    dump('Zeit: ' . date('Y-m-d H:i', $unix_ts_start) . ' bis ' . date('H:i', $unix_ts_end) );
-                }
-                $e->setStart(new \DateTime(date('Y-m-d H:i', $unix_ts_start)));
-                $e->setEnd(new \DateTime(date('Y-m-d H:i', $unix_ts_end)));
-                $e->setAllDay($fullday);
-                $e->setName(trim($a[2]));
-                $e->setIsFixed(true); // TODO
-                $e->setHelperEinlassEins( $this->userRepo->findOneBy(['name' => trim($a[7])]));
-                $e->setHelperEinlassZwei( $this->userRepo->findOneBy(['name' => trim($a[8])]));
-                $e->setHelperKasse(       $this->userRepo->findOneBy(['name' => trim($a[9])]));
-                $e->setHelperSpringerEins($this->userRepo->findOneBy(['name' => trim($a[10])]));
-                $e->setHelperSpringerZwei($this->userRepo->findOneBy(['name' => trim($a[11])]));
+        dump('Creating random events...');
+        dump('Creating 100 random start-times around current date');
+        $allRooms = $this->roomRepo->findAll();
+        $allKontakts = $this->addressRepo->findAll();
+        $allKategories = $this->katRepo->findAll();
+        $allTypes = [EventArtType::RENTAL, EventArtType::SHOW, EventArtType::FAIR];
 
-                if(strpos($a[3], 'Vermietung') !== false)
-                    $e->setArt(EventArtType::RENTAL);
-                elseif (strpos($a[3], 'Markt' ) !== false)
-                    $e->setArt(EventArtType::FAIR);
-                else
-                    $e->setArt(EventArtType::SHOW);
-
-                $roomId = array_rand($roomIds);
-                $e->setRoom($this->roomRepo->findOneBy(['id' => $roomIds[$roomId]['id']]));
-
-                $e->setIsBestBenoetigt(false); // TODO
-                $e->setIsFixed(true);// TODO
-                $e->setIsLichtBenoetigt(false);// TODO
-                $e->setIsTonBenoetigt(false); // TODO
-                $e->setKategorie($this->katRepo->findOneBy(['name' => 'Konzert'])); // TODO
-                $e->setKontakt($this->addressRepo->findOneBy(['vorname' => 'Sonja'])); // TODO
-                $e->setHelperRequired(true); // TODO
-                $e->setContractState(ContractStateType::NONE);
-                $e->setIsReducedPrice(false);
-                $e->setIs4hPrice(false);
-                $e->setHotelState(HotelStateType::NONE);
-                $e->setPressMaterialState(PressMaterialStateType::NONE);
-                $manager->persist($e);
-
-            }
-            else
-            {
-                dump("Kann die Zeit nicht lesen: -->" . $time_s . "<-- !!");
-            }
+        $start_times = array();
+        for($i = -50 ; $i < 50; $i++) {
+            array_push($start_times, new \DateTime(sprintf('-%d days +%d hours', $i, rand(-6, +6))));
         }
-
+        foreach ($start_times as $start_time)
+        {
+            /** @var $start_time \DateTime $e */
+            $e = new KloKiEvent();
+            $e->setStart($start_time);
+            $e->setEnd($start_time->add(new \DateInterval('PT4H')));
+            $e->setName("A great event!");
+            $e->setRoom($allRooms[rand(0, count($allRooms)-1)]);
+            $e->setArt($allTypes[rand(0,2)]);
+            $e->setHotelState(HotelStateType::NONE);
+            $e->setContractState(ContractStateType::NONE);
+            $e->setPressMaterialState(PressMaterialStateType::NONE);
+            $e->setKontakt($allKontakts[rand(0, count($allKontakts)-1)]);
+            $e->setKategorie($allKategories[rand(0, count($allKategories)-1)]);
+            $e->setIsBestBenoetigt(false); // TODO
+            $e->setIsFixed(true);// TODO
+            $e->setIsLichtBenoetigt(false);// TODO
+            $e->setIsTonBenoetigt(false); // TODO
+            $e->setHelperRequired(true); // TODO
+            $e->setIsReducedPrice(false);
+            $e->setIs4hPrice(false);
+            $e->setGemaListState(ContractStateType::NONE);
+            $manager->persist($e);
+        }
         $manager->flush();
+
+
+            /*            $e = new KloKiEvent();
+                        dump('Neues Event: -->' . $time_s . '<--');
+                        $e->setStart(new \DateTime(date('Y-m-d H:i', $unix_ts_start)));
+                        $e->setEnd(new \DateTime(date('Y-m-d H:i', $unix_ts_end)));
+                        $e->setAllDay($fullday);
+                        $e->setIsFixed(true); // TODO
+                        $e->setHelperEinlassEins( $this->userRepo->findOneBy(['name' => trim($a[7])]));
+                        $e->setHelperEinlassZwei( $this->userRepo->findOneBy(['name' => trim($a[8])]));
+                        $e->setHelperKasse(       $this->userRepo->findOneBy(['name' => trim($a[9])]));
+                        $e->setHelperSpringerEins($this->userRepo->findOneBy(['name' => trim($a[10])]));
+                        $e->setHelperSpringerZwei($this->userRepo->findOneBy(['name' => trim($a[11])]));
+
+                        if(strpos($a[3], 'Vermietung') !== false)
+                            $e->setArt(EventArtType::RENTAL);
+                        elseif (strpos($a[3], 'Markt' ) !== false)
+                            $e->setArt(EventArtType::FAIR);
+                        else
+                            $e->setArt(EventArtType::SHOW);
+
+                        $roomId = array_rand($roomIds);
+                        $e->setRoom($this->roomRepo->findOneBy(['id' => $roomIds[$roomId]['id']]));
+
+                        $e->setKategorie($this->katRepo->findOneBy(['name' => 'Konzert'])); // TODO
+                        $e->setKontakt($this->addressRepo->findOneBy(['vorname' => 'Sonja'])); // TODO
+                        $e->setContractState(ContractStateType::NONE);
+                        $e->setHotelState(HotelStateType::NONE);
+                        $e->setPressMaterialState(PressMaterialStateType::NONE);
+            */
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public static function getGroups(): array
+    {
+        return ['events'];
     }
 }

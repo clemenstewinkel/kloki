@@ -149,7 +149,7 @@ class KloKiEventController extends AbstractController
 
     /**
      * @Route("/dispo", name="klo_ki_event_dispo", methods={"GET"})
-     * @IsGranted({"ROLE_ADMIN"})
+     * @IsGranted({"ROLE_ADMIN", "ROLE_FOOD"})
      */
     public function dispo(KloKiEventRepository $eventRepo, Request $request): Response
     {

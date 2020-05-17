@@ -29,13 +29,15 @@ export let $calendarDetail;
 export let userId;
 export let userRoles;
 
-
 /**
  * Hauptprogramm
  */
 
 $(document).ready(function() {
-
+    // store resources here and create fullcalendar after successfull getting the resources.
+    // Letting fullcalendar fetch the resources leads to errors sometimes if
+    // fetching resources finishes after fetching first events.
+    let resources;
     calendarEl = document.getElementById('calendar');
     $calendarDetail = $('#js-calendar-detail');
 
@@ -46,60 +48,66 @@ $(document).ready(function() {
     userRoles           = $('body').data('userRoles');
     console.log("Angemeldet: " + userIsAuthenticated + ', User-ID: ' + userId, ', Rollen: ' + userRoles.join(', '));
 
-
-    fullcalendar = new Calendar(
-        calendarEl,
-        {
-            plugins: [ dayGridPlugin, interactionPlugin, bootstrapPlugin, timeGridPlugin, resourceTimeGridPlugin],
-            height: 'parent',
-            firstDay: 1,
-            fixedWeekCount: false,
-            navLinks: true,
-            // editable and resourceEditable are set in EventDataTransform for the single event!
-            editable: userRoles.includes('ROLE_ADMIN') || userRoles.includes('ROLE_FOOD'),
-            locale: 'de',
-            timeZone: 'UTC',
-            eventRender: eventRenderFunction,
-            eventOverlap: false,
-            resources: '../room/getResources',
-            //dateClick: (userRoles.includes('ROLE_ADMIN') || userRoles.includes('ROLE_FOOD'))?loadNewEventForm:false,
-            dateClick: loadNewEventForm,
-            weekNumbers: true,
-            eventResize: eventResized,
-            eventDrop: eventDropped,
-            eventDragStop: function(info){console.log('DragStop'); return false;},
-            eventResizeStop: function(info){console.log('ResizeStop')},
-            eventClick: function(info){loadShowEvent(info.event._def.publicId);},
-            //eventMouseEnter: showEventDetail,
-            header: {left: 'resourceTimeGridDay timeGridWeek dayGridMonth', center: 'title'},
-            buttonText: {
-                today:    'heute',
-                month:    'Monat',
-                week:     'Woche',
-                day:      'Tag',
-                list:     'Liste'
-            },
-            schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
-            forceEventDuration: true,
-            defaultTimedEventDuration: '04:00',
-            eventSources: [
+    $.ajax({
+        url: '../room/getResources',
+        type: 'GET',
+        async: true,
+        success: function(response){
+            resources=response;
+            console.log("resources fetched");
+            fullcalendar = new Calendar(
+                calendarEl,
                 {
-                    url: "eventRange",
-                    method: "GET",
-                    eventDataTransform: eventDataTransform,
-                    extraParams: {
-                        filters: JSON.stringify({})
+                    plugins: [ dayGridPlugin, interactionPlugin, bootstrapPlugin, timeGridPlugin, resourceTimeGridPlugin],
+                    height: 'parent',
+                    firstDay: 1,
+                    fixedWeekCount: false,
+                    navLinks: true,
+                    // editable and resourceEditable are set in EventDataTransform for the single event!
+                    editable: userRoles.includes('ROLE_ADMIN') || userRoles.includes('ROLE_FOOD'),
+                    locale: 'de',
+                    timeZone: 'UTC',
+                    eventRender: eventRenderFunction,
+                    eventOverlap: false,
+                    resources: resources, 
+                    dateClick: loadNewEventForm,
+                    weekNumbers: true,
+                    eventResize: eventResized,
+                    eventDrop: eventDropped,
+                    eventDragStop: function(info){console.log('DragStop'); return false;},
+                    eventResizeStop: function(info){console.log('ResizeStop')},
+                    eventClick: function(info){loadShowEvent(info.event._def.publicId);},
+                    header: {left: 'resourceTimeGridDay timeGridWeek dayGridMonth', center: 'title'},
+                    buttonText: {
+                        today:    'heute',
+                        month:    'Monat',
+                        week:     'Woche',
+                        day:      'Tag',
+                        list:     'Liste'
                     },
-                    failure: () => {
-                        alert("There was an error while fetching FullCalendar!");
-                    },
-                }
-            ],
-        });
-    fullcalendar.render();
-    create_context_menus();
-
-    window.fullcalendar = fullcalendar;
-    window.$ = $;
+                    schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
+                    forceEventDuration: true,
+                    defaultTimedEventDuration: '04:00',
+                    eventSources: [{
+                        url: "eventRange",
+                        method: "GET",
+                        eventDataTransform: eventDataTransform,
+                        extraParams: {
+                            filters: JSON.stringify({})
+                        },
+                        failure: event_source_failure
+                    }],
+                });
+            fullcalendar.render();
+            create_context_menus();
+        
+            window.fullcalendar = fullcalendar;
+            window.$ = $;
+        }
+    });
 });
 
+function event_source_failure() {
+    console.dir(window.fullcalendar.getResources());
+    alert("There was an error while fetching FullCalendar!");
+}
