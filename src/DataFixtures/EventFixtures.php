@@ -20,7 +20,7 @@ use App\Repository\UserRepository;
 use Cassandra\Date;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class EventFixtures extends Fixture implements FixtureGroupInterface
@@ -47,16 +47,17 @@ class EventFixtures extends Fixture implements FixtureGroupInterface
 
     public function load(ObjectManager $manager)
     {
-        dump('Creating random events...');
-        dump('Creating 100 random start-times around current date');
         $allRooms = $this->roomRepo->findAll();
         $allKontakts = $this->addressRepo->findAll();
         $allKategories = $this->katRepo->findAll();
         $allTypes = [EventArtType::RENTAL, EventArtType::SHOW, EventArtType::FAIR];
 
+        dump('Creating random events...');
+        dump('Creating 100 random start-times around current date');
         $start_times = array();
+        $today = date('Y-m-d');
         for($i = -50 ; $i < 50; $i++) {
-            array_push($start_times, new \DateTime(sprintf('-%d days +%d hours', $i, rand(-6, +6))));
+            array_push($start_times, new \DateTime(sprintf("$today 14:00:00 +%d days +%d hours", $i, rand(-5, +5))));
         }
         foreach ($start_times as $start_time)
         {
@@ -73,7 +74,7 @@ class EventFixtures extends Fixture implements FixtureGroupInterface
             $e->setKontakt($allKontakts[rand(0, count($allKontakts)-1)]);
             $e->setKategorie($allKategories[rand(0, count($allKategories)-1)]);
             $e->setIsBestBenoetigt(false); // TODO
-            $e->setIsFixed(true);// TODO
+            $e->setIsFixed(false);// TODO
             $e->setIsLichtBenoetigt(false);// TODO
             $e->setIsTonBenoetigt(false); // TODO
             $e->setHelperRequired(true); // TODO
