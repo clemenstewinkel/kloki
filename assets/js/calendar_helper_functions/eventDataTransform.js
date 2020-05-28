@@ -15,8 +15,8 @@ export default function eventDataTransform(eventData)
             eventData.borderColor = '#ceffde';
             break;
         case 'rental':
-            eventData.backgroundColor = '#ffb8ee';
-            eventData.borderColor = '#ffb8ee';
+            eventData.backgroundColor = '#f7bd52';
+            eventData.borderColor = '#f7bd52';
             break;
     }
     eventData.editable = (
