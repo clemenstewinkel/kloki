@@ -1,0 +1,8 @@
+Wenn nach einem Update die caches gelöscht werden mit
+bin/console ca:cl
+
+dann sollte man danach den Owner des caches auf apache setzen:
+
+chown -R apache:apache var/cache
+
+
