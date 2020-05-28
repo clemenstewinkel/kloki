@@ -533,7 +533,12 @@ class KloKiEventController extends AbstractController
             'V_'.$kloKiEvent->getContractNumber().'-'
             .$kloKiEvent->getContractRevision().'-'
             .$kloKiEvent->getStart()->format('Ymd').'-'
-            .$kloKiEvent->getKontakt()->getNachname().'.odt'
+            .
+            (
+                $kloKiEvent->getKontakt()->getFirma()?
+                    iconv("utf-8","ascii//TRANSLIT",$kloKiEvent->getKontakt()->getFirma()):
+                    iconv("utf-8","ascii//TRANSLIT",$kloKiEvent->getKontakt()->getNachname())
+            ) . '.odt'
         );
         $response->headers->set('Content-Disposition', $disposition);
         $response->headers->set('Content-Type', 'application/octet-stream');
