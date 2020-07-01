@@ -8,28 +8,36 @@ use App\DBAL\Types\HotelStateType;
 use App\DBAL\Types\PressMaterialStateType;
 use App\Entity\KloKiEvent;
 use App\Entity\User;
-use App\Form\AddresseType;
-use App\Form\KloKiEventEditType;
+//use App\Form\AddresseType;
+//use App\Form\KloKiEventEditType;
 use App\Form\KloKiEventFoodType;
+use App\Form\KloKiEventRemarkType;
 use App\Form\KloKiEventType;
 use App\Repository\KloKiEventRepository;
 use App\Repository\RoomRepository;
 use App\Repository\UserRepository;
 use App\Service\SendMailService;
 use App\Service\WordCreatorService;
+use DateTime;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
+use Exception;
 use Knp\Component\Pager\PaginatorInterface;
 use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
+//use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+//use Symfony\Component\Form\FormEvent;
+//use Symfony\Component\Form\FormEvents;
 use Symfony\Component\HttpFoundation\HeaderUtils;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+
 
 /**
  * @Route("/event")
@@ -38,7 +46,12 @@ class KloKiEventController extends AbstractController
 {
     /**
      * @Route("/", name="klo_ki_event_index", methods={"GET"})
-     * @IsGranted({"ROLE_ADMIN", "ROLE_FOOD"})
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_FOOD')")
+     * @param KloKiEventRepository $kloKiEventRepository
+     * @param PaginatorInterface $paginator
+     * @param RoomRepository $roomRepo
+     * @param Request $request
+     * @return Response
      */
     public function index(KloKiEventRepository $kloKiEventRepository, PaginatorInterface $paginator, RoomRepository $roomRepo, Request $request): Response
     {
@@ -56,7 +69,9 @@ class KloKiEventController extends AbstractController
 
     /**
      * @Route("/helper/index", name="klo_ki_event_index_helper", methods={"GET"})
-     * @IsGranted({"ROLE_HELPER"})
+     * @IsGranted("ROLE_HELPER")
+     * @param KloKiEventRepository $kloKiEventRepository
+     * @return Response
      */
     public function index_helper(KloKiEventRepository $kloKiEventRepository): Response
     {
@@ -73,7 +88,9 @@ class KloKiEventController extends AbstractController
 
     /**
      * @Route("/helper/duties", name="klo_ki_event_duties_helper", methods={"GET"})
-     * @IsGranted({"ROLE_HELPER"})
+     * @IsGranted("ROLE_HELPER")
+     * @param KloKiEventRepository $kloKiEventRepository
+     * @return Response
      */
     public function duties_helper(KloKiEventRepository $kloKiEventRepository): Response
     {
@@ -96,10 +113,14 @@ class KloKiEventController extends AbstractController
     }
 
 
-
     /**
      * @Route("/dutyMails", name="klo_ki_event_duty_mails", methods={"GET", "POST"})
-     * @IsGranted({"ROLE_ADMIN"})
+     * @IsGranted("ROLE_ADMIN")
+     * @param KloKiEventRepository $eventRepo
+     * @param UserRepository $userRepo
+     * @param Request $request
+     * @param SendMailService $mailer
+     * @return Response
      */
     public function dutyMails(KloKiEventRepository $eventRepo, UserRepository $userRepo, Request $request, SendMailService $mailer): Response
     {
@@ -146,10 +167,12 @@ class KloKiEventController extends AbstractController
     }
 
 
-
     /**
      * @Route("/dispo", name="klo_ki_event_dispo", methods={"GET"})
-     * @IsGranted({"ROLE_ADMIN", "ROLE_FOOD"})
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_FOOD')")
+     * @param KloKiEventRepository $eventRepo
+     * @param Request $request
+     * @return Response
      */
     public function dispo(KloKiEventRepository $eventRepo, Request $request): Response
     {
@@ -165,10 +188,11 @@ class KloKiEventController extends AbstractController
     }
 
 
-
     /**
      * @Route("/calendar", name="event_calendar", methods={"GET"})
-     * @IsGranted({"ROLE_ADMIN", "ROLE_FOOD", "ROLE_HELPER", "ROLE_TECH"})
+     * @IsGranted("ROLE_USER")
+     * @param KloKiEventRepository $eventRepository
+     * @return Response
      */
     public function calendar(KloKiEventRepository $eventRepository)
     {
@@ -179,7 +203,11 @@ class KloKiEventController extends AbstractController
 
     /**
      * @Route("/resize", name="klo_ki_event_resize", methods={"POST"})
-     * @IsGranted({"ROLE_ADMIN"})
+     * @IsGranted("ROLE_ADMIN")
+     * @param Request $request
+     * @param KloKiEventRepository $eventRepo
+     * @return Response
+     * @throws Exception
      */
     public function resize(Request $request, KloKiEventRepository $eventRepo)
     {
@@ -187,7 +215,7 @@ class KloKiEventController extends AbstractController
         $event = $eventRepo->findOneBy(['id' => $data['id']]);
         if($event)
         {
-            $event->set_FC_end(new \DateTime($data['enddate']));
+            $event->set_FC_end(new DateTime($data['enddate']));
             $this->getDoctrine()->getManager()->flush();
             return new Response('OK');
         }
@@ -196,7 +224,12 @@ class KloKiEventController extends AbstractController
 
     /**
      * @Route("/replace", name="klo_ki_event_replace", methods={"POST"})
-     * @IsGranted({"ROLE_ADMIN"})
+     * @IsGranted("ROLE_ADMIN")
+     * @param Request $request
+     * @param KloKiEventRepository $eventRepo
+     * @param RoomRepository $roomRepo
+     * @return Response
+     * @throws Exception
      */
     public function replace(Request $request, KloKiEventRepository $eventRepo, RoomRepository $roomRepo)
     {
@@ -205,8 +238,8 @@ class KloKiEventController extends AbstractController
         if($event)
         {
             $event->setAllDay($data['allDay']);
-            $event->setStart(new \DateTime($data['startdate']));
-            $event->set_FC_End(new \DateTime($data['enddate']));
+            $event->setStart(new DateTime($data['startdate']));
+            $event->set_FC_End(new DateTime($data['enddate']));
             if(isset($data['newResource']))
             {
                 $newRoom = $roomRepo->findOneBy(['id' => $data['newResource']]);
@@ -221,9 +254,12 @@ class KloKiEventController extends AbstractController
 
     /**
      * @Route("/new", name="klo_ki_event_new", methods={"GET","POST"})
-     * @IsGranted({"ROLE_ADMIN"})
+     * @IsGranted("ROLE_ADMIN")
+     * @param Request $request
+     * @param KloKiEventRepository $eventRepo
+     * @return Response
      */
-    public function new(LoggerInterface $logger, Request $request, KloKiEventRepository $eventRepo): Response
+    public function new(Request $request, KloKiEventRepository $eventRepo): Response
     {
         $kloKiEvent = new KloKiEvent();
 
@@ -284,9 +320,13 @@ class KloKiEventController extends AbstractController
 
     /**
      * @Route("/newfood", name="klo_ki_event_new_food", methods={"GET","POST"})
-     * @IsGranted({"ROLE_FOOD"})
+     * @IsGranted("ROLE_FOOD")
+     * @param Request $request
+     * @param KloKiEventRepository $eventRepo
+     * @param SendMailService $mailService
+     * @return Response
      */
-    public function newfood(LoggerInterface $logger, Request $request, KloKiEventRepository $eventRepo, SendMailService $mailService): Response
+    public function newfood(Request $request, KloKiEventRepository $eventRepo, SendMailService $mailService): Response
     {
         $kloKiEvent = new KloKiEvent();
 
@@ -326,8 +366,6 @@ class KloKiEventController extends AbstractController
                 foreach($event2Copy->getAusstattung() as $a) $kloKiEvent->addAusstattung($a);
             }
         }
-
-
 
         $form = $this->get('form.factory')->createNamed('klo_ki_event', KloKiEventFoodType::class, $kloKiEvent);
         $kloKiEvent->setIsFixed(false);
@@ -370,11 +408,12 @@ class KloKiEventController extends AbstractController
     }
 
 
-
-
     /**
      * @Route("/icanhelp/{id}", name="klo_ki_event_icanhelp", methods={"POST"})
-     * @IsGranted({"ROLE_HELPER"})
+     * @IsGranted("ROLE_HELPER")
+     * @param Request $request
+     * @param KloKiEvent $kloKiEvent
+     * @return RedirectResponse|Response
      */
     public function sayICanHelp(Request $request, KloKiEvent $kloKiEvent)
     {
@@ -394,7 +433,11 @@ class KloKiEventController extends AbstractController
 
     /**
      * @Route("/icannothelp/{id}", name="klo_ki_event_icannothelp", methods={"POST"})
-     * @IsGranted({"ROLE_HELPER"})
+     * @IsGranted("ROLE_HELPER")
+     * @param Request $request
+     * @param KloKiEvent $kloKiEvent
+     * @param SendMailService $mailer
+     * @return RedirectResponse|Response
      */
     public function sayICanNotHelp(Request $request, KloKiEvent $kloKiEvent, SendMailService $mailer)
     {
@@ -422,9 +465,12 @@ class KloKiEventController extends AbstractController
     }
 
 
-
     /**
      * @Route("/eventRange", name="klo_ki_event_json", methods={"GET"})
+     * @param SerializerInterface $serializer
+     * @param KloKiEventRepository $repo
+     * @param Request $request
+     * @return JsonResponse
      */
     public function getEventRange(SerializerInterface $serializer, KloKiEventRepository $repo, Request $request) : JsonResponse
     {
@@ -462,7 +508,10 @@ class KloKiEventController extends AbstractController
 
     /**
      * @Route("/showHelper/{id}", name="klo_ki_event_show_helper", methods={"GET"})
-     * @IsGranted({"ROLE_HELPER"})
+     * @IsGranted("ROLE_HELPER")
+     * @param KloKiEvent $kloKiEvent
+     * @param Request $request
+     * @return Response
      */
     public function showHelper(KloKiEvent $kloKiEvent, Request $request): Response
     {
@@ -479,10 +528,12 @@ class KloKiEventController extends AbstractController
     }
 
 
-
     /**
      * @Route("/show/{id}", name="klo_ki_event_show", methods={"GET"})
-     * @IsGranted({"ROLE_ADMIN", "ROLE_FOOD"})
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_FOOD')")
+     * @param KloKiEvent $kloKiEvent
+     * @param Request $request
+     * @return Response
      */
     public function show(KloKiEvent $kloKiEvent, Request $request): Response
     {
@@ -500,7 +551,13 @@ class KloKiEventController extends AbstractController
 
     /**
      * @Route("/createWord/{id}", name="klo_ki_event_create_word", methods={"GET"})
-     * @IsGranted({"ROLE_ADMIN"})
+     * @IsGranted("ROLE_ADMIN")
+     * @param KloKiEventRepository $klokiRepo
+     * @param WordCreatorService $wService
+     * @param KloKiEvent $kloKiEvent
+     * @return Response
+     * @throws NoResultException
+     * @throws NonUniqueResultException
      */
     public function create_word(KloKiEventRepository $klokiRepo, WordCreatorService $wService, KloKiEvent $kloKiEvent): Response
     {
@@ -550,6 +607,10 @@ class KloKiEventController extends AbstractController
      * @Route("/{id}/edit", name="klo_ki_event_edit", methods={"GET","POST"})
      * @IsGranted({"ROLE_ADMIN", "ROLE_FOOD"})
      * @IsGranted("EVENT_EDIT", subject="kloKiEvent")
+     * @param Request $request
+     * @param KloKiEvent $kloKiEvent
+     * @param SendMailService $mailService
+     * @return Response
      */
     public function edit(Request $request, KloKiEvent $kloKiEvent, SendMailService $mailService): Response
     {
@@ -611,10 +672,61 @@ class KloKiEventController extends AbstractController
         ]);
     }
 
+
+    /**
+     * @Route("/{id}/editRemark", name="klo_ki_event_edit_remark", methods={"GET","POST"})
+     * @IsGranted({"ROLE_FOOD", "ROLE_ADMIN"})
+     * @param Request $request
+     * @param KloKiEvent $kloKiEvent
+     * @param SendMailService $mailService
+     * @return Response
+     */
+    public function editRemark(Request $request, KloKiEvent $kloKiEvent, SendMailService $mailService): Response
+    {
+        $form = $this->get('form.factory')->createNamed('klo_ki_event', KloKiEventRemarkType::class, $kloKiEvent);
+        $form->handleRequest($request);
+        $formTemplate = 'klo_ki_event/_form_remark.html.twig';
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->flush();
+
+            if ($request->isXmlHttpRequest()) {
+                return $this->render('klo_ki_event/_show.html.twig', [
+                    'klo_ki_event' => $kloKiEvent,
+                ]);
+            }
+            return $this->redirectToRoute('klo_ki_event_index');
+        }
+
+        // Wenn die Anfrage über AJAX kam, rendern wir nur das Formular!
+        if ($request->isXmlHttpRequest()) {
+            return $this->render($formTemplate, [
+                'klo_ki_event' => $kloKiEvent,
+                'klo_ki_form_action' => $this->generateUrl('klo_ki_event_edit_remark', ['id' => $kloKiEvent->getId()]),
+                'form' => $form->createView()
+            ]);
+        }
+
+        return $this->render('klo_ki_event/edit.html.twig', [
+            'klo_ki_event' => $kloKiEvent,
+            'form_template' => $formTemplate,
+            'klo_ki_form_action' => $this->generateUrl('klo_ki_event_edit_remark', ['id' => $kloKiEvent->getId()]),
+            'form' => $form->createView(),
+        ]);
+    }
+
+
+
+
+
+
     /**
      * @Route("/{id}/delete", name="klo_ki_event_json_delete", methods={"DELETE"})
      * @IsGranted({"ROLE_ADMIN", "ROLE_FOOD"})
      * @IsGranted("EVENT_DELETE", subject="kloKiEvent")
+     * @param KloKiEvent $kloKiEvent
+     * @return Response
      */
     public function json_delete(KloKiEvent $kloKiEvent): Response
     {
@@ -629,6 +741,9 @@ class KloKiEventController extends AbstractController
      * @Route("/{id}", name="klo_ki_event_delete", methods={"DELETE"})
      * @IsGranted({"ROLE_ADMIN", "ROLE_FOOD"})
      * @IsGranted("EVENT_DELETE", subject="kloKiEvent")
+     * @param Request $request
+     * @param KloKiEvent $kloKiEvent
+     * @return Response
      */
     public function delete(Request $request, KloKiEvent $kloKiEvent): Response
     {
@@ -644,7 +759,11 @@ class KloKiEventController extends AbstractController
 
     /**
      * @Route("/{id}/sendHelperMail", name="klo_ki_event_send_helper_mail", methods={"POST"})
-     * @IsGranted({"ROLE_ADMIN"})
+     * @IsGranted("ROLE_ADMIN")
+     * @param Request $request
+     * @param KloKiEvent $event
+     * @param SendMailService $mailer
+     * @return JsonResponse
      */
     public function send_helper_mail(Request $request, KloKiEvent $event, SendMailService $mailer): JsonResponse
     {
@@ -654,7 +773,11 @@ class KloKiEventController extends AbstractController
 
     /**
      * @Route("/{id}/sendTechMail", name="klo_ki_event_send_tech_mail", methods={"POST"})
-     * @IsGranted({"ROLE_ADMIN"})
+     * @IsGranted("ROLE_ADMIN")
+     * @param Request $request
+     * @param KloKiEvent $event
+     * @param SendMailService $mailer
+     * @return JsonResponse
      */
     public function send_tech_mail(Request $request, KloKiEvent $event, SendMailService $mailer): JsonResponse
     {

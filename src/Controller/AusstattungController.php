@@ -13,7 +13,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @Route("/ausstattung")
- * @isGranted({"ROLE_ADMIN"})
+ * @isGranted("ROLE_ADMIN")
  */
 class AusstattungController extends AbstractController
 {

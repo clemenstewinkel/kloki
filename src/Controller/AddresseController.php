@@ -6,15 +6,15 @@ use App\Entity\Addresse;
 use App\Form\AddresseType;
 use App\Repository\AddresseRepository;
 use Knp\Component\Pager\PaginatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @Route("/addresse")
- * @isGranted({"ROLE_ADMIN", "ROLE_FOOD"})
+ * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_FOOD')")
  */
 class AddresseController extends AbstractController
 {

@@ -1,0 +1,64 @@
+{{ form_start(form, {'action': klo_ki_form_action, attr: {novalidate: 'novalidate'}}) }}
+<style>
+    .ck-editor__editable_inline {
+        min-height: 180px;
+    }
+</style>
+
+{{ include('klo_ki_event/_show_head.html.twig') }}
+{{ include('klo_ki_event/_show_table.html.twig') }}
+
+
+    {% if klo_ki_event.kontakt %}
+        <h2>Kontakt:</h2>
+        {{ include('addresse/addresse_kompakt.html.twig', {'addresse': klo_ki_event.kontakt}) }}
+    {% endif  %}
+
+    {% if klo_ki_event.ausstattung.count > 0 %}
+        <h2>Weitere Ausstattung</h2>
+        <ul>
+            {%  for a in klo_ki_event.ausstattung  %}
+                {# @ var a App\Entity\Ausstattung #}
+                <li>{{ a }} ({{ (a.nettoPreis/100) | number_format(2, ',', '.') }} € zuzügl. MwSt.)</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    {% if klo_ki_event.bestPlan %}
+        <h2>Bestuhlung</h2>
+        <a class="js-no-retarget" href="{{ path('getPdf', {'id': klo_ki_event.bestPlan.pdfFilePath}) }}">
+            <img alt="Bestuhlungsplan" src="{{ path('getPng', {'id': klo_ki_event.bestPlan.pngFilePath}) }}" />
+        </a>
+        {{ klo_ki_event.bestPlan }}
+    {% endif %}
+
+    {% if klo_ki_event.stageOrder %}
+        <h2>Bühnenanweisung</h2>
+        <a class="js-no-retarget" href="{{ path('getPdf', {'id': klo_ki_event.stageOrder.pdfFileName}) }}">
+            <img alt="Bühnenanweisung" src="{{ path('getPng', {'id': klo_ki_event.stageOrder.pngFileName }) }}" />
+        </a>
+        {{ klo_ki_event.stageOrder }}
+    {% endif %}
+
+
+    {% if klo_ki_event.childEvents.count > 0 %}
+        <h2>Dazugehörige Events</h2>
+        <ul>
+            {% for event in klo_ki_event.childEvents %}
+                <li>
+                    <a href="{{ path('klo_ki_event_show', {'id': event.id } ) }}">{{ event }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+
+    {% endif %}
+
+
+
+
+<div class="container kloki-form-div" style="background-color: #b6d893;">
+    {{ form_widget(form) }}
+</div>
+<button class="btn btn-primary">{{ button_label|default('Speichern') }}</button>
+
+{{ form_end(form) }}

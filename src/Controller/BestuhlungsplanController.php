@@ -17,7 +17,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @Route("/bestuhlungsplan")
- * @isGranted({"ROLE_ADMIN"})
+ * @isGranted("ROLE_ADMIN")
  */
 class BestuhlungsplanController extends AbstractController
 {

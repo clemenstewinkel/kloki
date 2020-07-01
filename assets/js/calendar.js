@@ -46,6 +46,7 @@ $(document).ready(function() {
     userIsAuthenticated = $('body').data('isAuthenticated');
     userId              = $('body').data('userId');
     userRoles           = $('body').data('userRoles');
+//    userRoles = ["ROLE_ADMIN", "ROLE_USER", "ROLE_HELPER"];
     console.log("Angemeldet: " + userIsAuthenticated + ', User-ID: ' + userId, ', Rollen: ' + userRoles.join(', '));
 
     $.ajax({
@@ -92,9 +93,9 @@ $(document).ready(function() {
                         url: "eventRange",
                         method: "GET",
                         eventDataTransform: eventDataTransform,
-                        extraParams: {
-                            filters: JSON.stringify({})
-                        },
+//                        extraParams: {
+//                            filters: JSON.stringify({})
+//                        },
                         failure: event_source_failure
                     }],
                 });
@@ -108,6 +109,5 @@ $(document).ready(function() {
 });
 
 function event_source_failure() {
-    console.dir(window.fullcalendar.getResources());
-    alert("There was an error while fetching FullCalendar!");
+    alert("There was a problem.");
 }

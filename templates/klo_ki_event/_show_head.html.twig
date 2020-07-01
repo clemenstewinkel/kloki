@@ -1,0 +1,5 @@
+<h1>{{ klo_ki_event.name }} ({{ klo_ki_event.room }})</h1>
+<small>
+    angelegt: {{ klo_ki_event.createdAt | localizeddate('short', 'short') }}, {{ klo_ki_event.createdBy ? klo_ki_event.createdBy.name : '' }} /
+    geändert: {{ klo_ki_event.updatedAt | localizeddate('short', 'short') }}, {{ klo_ki_event.updatedBy ? klo_ki_event.updatedBy.name : ''}}
+</small>

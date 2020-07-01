@@ -1,0 +1,139 @@
+<table class="table table-sm table-striped">
+    <tbody>
+    {% if klo_ki_event.getProblemDetails %}
+        <tr>
+            <th>Warnungen</th>
+            <td>
+                <a class="js-no-retarget" data-toggle="collapse" href="#event-problems-div" role="button" aria-expanded="false" aria-controls="collapseExample">
+                    Zeige Warnungen ({{ klo_ki_event.getProblemDetails | length }})
+                </a>
+                <div class="collapse" id="event-problems-div">
+                    <ul style="color: red;">
+                        {% for problem in klo_ki_event.getProblemDetails %}
+                            <li> {{ problem }} </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </td>
+        </tr>
+    {%  endif %}
+    {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_FOOD') %}
+        <tr>
+            <th>Status</th>
+            <td>{{ klo_ki_event.isFixed ? 'fest' : 'optioniert' }} / {{ klo_ki_event.contractState | readable_enum('ContractStateType') }}</td>
+        </tr>
+    {% endif %}
+    <tr>
+        <th>Beginn und Dauer</th>
+        <td>{{ include('klo_ki_event/_time_range.html.twig', {'event': klo_ki_event}) }}</td>
+    </tr>
+    <tr>
+        <th>Art:</th>
+        <td>{{ klo_ki_event.art | readable_enum('EventArtType') }} / {{ klo_ki_event.kategorie }}</td>
+    </tr>
+    {% if klo_ki_event.art == 'rental' and klo_ki_event.parentEvent == null %}
+        <tr>
+            <th>Preis:</th>
+            <td>
+                {{ (klo_ki_event.allBruttoPreis / 100) | number_format(2, ',', '.')}} € inkl. {{ (klo_ki_event.allMwSt / 100) | number_format(2, ',', '.')}} € MwSt. ({{ klo_ki_event.currentMwSt }}%)
+                <a class="js-no-retarget" data-toggle="collapse" href="#price-details-div" role="button" aria-expanded="false" aria-controls="collapseExample">
+                    (Details)
+                </a>
+
+                <div class="collapse" id="price-details-div">
+                    <table width="100%">
+                        <tr>
+                            <th colspan="2">Dieses Event</th>
+                            <th class="text-right">Brutto</th>
+                            <th class="text-right">Mwst.</th>
+                        </tr>
+
+                        {{ include('klo_ki_event/_preis_table_rows.html.twig', {'e': klo_ki_event}) }}
+                        {% for e in klo_ki_event.childEvents %}
+                            <tr>
+                                <th colspan="4">{{ e }}</th>
+                            </tr>
+                            {{ include('klo_ki_event/_preis_table_rows.html.twig') }}
+                        {% endfor %}
+                        <tr>
+                            <th colspan="4">Zusammenfassung:</th>
+                        </tr>
+                        <tr>
+                            <th></th>
+                            <th>MwSt.-frei (Raummieten): </th>
+                            <td class="text-right">{{ (klo_ki_event.allRoomFees/100) | number_format(2, ',', '.')}}€</td>
+                            <td class="text-right">0,00 €</td>
+                        </tr>
+                        <tr>
+                            <th></th>
+                            <th>Besteuert mit {{ klo_ki_event.currentMwSt }}% MwSt.: </th>
+                            <td class="text-right">{{ (klo_ki_event.allAusstattungBruttoPreis /100) | number_format(2, ',', '.')}} € </td>
+                            <td class="text-right">{{ (klo_ki_event.allMwSt /100) | number_format(2, ',', '.')}} €</td>
+                        </tr>
+                        <tr>
+                            <th></th>
+                            <th>Gesamt-Preis:</th>
+                            <th class="text-right">{{ (klo_ki_event.allBruttoPreis / 100) | number_format(2, ',', '.')}} €</th>
+                            <th class="text-right">{{ (klo_ki_event.allMwSt / 100) | number_format(2, ',', '.')}} €</th>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    {% endif %}
+
+    <tr>
+        <th>Anzahl der Künstler</th>
+        <td>{{ klo_ki_event.anzahlArtists }}</td>
+    </tr>
+    <tr>
+        <th>Bestuhlung nötig?</th>
+        <td>{{ klo_ki_event.isBestBenoetigt ? 'Ja' : 'Nein' }}</td>
+    </tr>
+    <tr>
+        <th>Licht nötig?</th>
+        <td>
+            {%  if klo_ki_event.isLichtBenoetigt %}
+                Ja: {{ klo_ki_event.lichtTechniker ?: 'N/A' }}
+            {% else %}
+                Nein
+            {% endif %}
+        </td>
+    </tr>
+    <tr>
+        <th>Ton nötig?</th>
+        <td>
+            {% if klo_ki_event.isTonBenoetigt %}
+                Ja: {{ klo_ki_event.tonTechniker ?: 'N/A'}}
+            {% else %}
+                Nein
+            {% endif %}
+        </td>
+    </tr>
+
+
+    <tr>
+        <th>Helfer nötig?</th>
+        <td>{% if klo_ki_event.helperRequired %}
+                Ja<br/>
+                <b>Einlass 1:  </b>{{ klo_ki_event.helperEinlassEins  ?: 'N/N'  }}<br/>
+                <b>Einlass 2:  </b>{{ klo_ki_event.helperEinlassZwei  ?: 'N/N'  }}<br/>
+                <b>Kasse:      </b>{{ klo_ki_event.helperKasse        ?: 'N/N'  }}<br/>
+                <b>Springer 1: </b>{{ klo_ki_event.helperSpringerEins ?: 'N/N'  }}<br/>
+                <b>Springer 2: </b>{{ klo_ki_event.helperSpringerZwei ?: 'N/N'  }}<br/>
+                <b>Garderobe:  </b>{{ klo_ki_event.helperGarderobe    ?: 'N/N'  }}<br/>
+                <hr/>
+                {% for helper in klo_ki_event.availableHelpers %}
+                    {{ helper }}
+                {% endfor %}
+            {% endif %}
+        </td>
+    </tr>
+    {% if klo_ki_event.parentEvent %}
+        <tr>
+            <th>Hauptereignis:</th>
+            <td><a href="{{ path('klo_ki_event_show', {'id': klo_ki_event.parentEvent.id } ) }}">{{ klo_ki_event.parentEvent }}</a></td>
+        </tr>
+    {% endif %}
+    </tbody>
+</table>

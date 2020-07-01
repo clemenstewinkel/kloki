@@ -50,6 +50,7 @@ export default function eventRenderFunction(info)
         {
             $(info.el).find('div.fc-content').append(' <i class="fas fa-user"></i>');
         }
+
     }
 
     $(info.el).attr('data-event-id', info.event.id);

@@ -29,7 +29,7 @@ class Ausstattung
     /**
      * @ORM\Column(type="integer")
      */
-    private $bruttopreis;
+    private $nettopreis;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\KloKiEvent", mappedBy="Ausstattung")
@@ -81,14 +81,14 @@ class Ausstattung
     }
 
 
-    public function getBruttoPreis(): ?int
+    public function getNettoPreis(): ?int
     {
-        return $this->bruttopreis;
+        return $this->nettopreis;
     }
 
-    public function setBruttopreis(int $bruttopreis): self
+    public function setNettopreis(int $nettopreis): self
     {
-        $this->bruttopreis = $bruttopreis;
+        $this->nettopreis = $nettopreis;
 
         return $this;
     }
@@ -99,16 +99,6 @@ class Ausstattung
     public function getKloKiEvents(): Collection
     {
         return $this->kloKiEvents;
-    }
-
-    public function getNettopreis(): ?int
-    {
-        return $this->bruttopreis - $this->getMwSt();
-    }
-
-    public function getMwSt(): ?int
-    {
-        return round($this->bruttopreis / (100 + $this->mwStSatz ) * ($this->mwStSatz));
     }
 
     public function addKloKiEvent(KloKiEvent $kloKiEvent): self

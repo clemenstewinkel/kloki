@@ -554,6 +554,14 @@ class KloKiEvent
      * Price-Functions
      *****************************/
 
+
+    public function getCurrentMwSt()
+    {
+        $d1 = new \DateTime('2020-07-01 00:00:00');
+        $d2 = new \DateTime('2021-01-01 00:00:00');
+        return ($this->start && $this->start > $d1 && $this->start < $d2)?16:19;
+    }
+
     /**
      * Gibt die Raummiete dieses Events zurück.
      * Dabei wird berücksichtigt, ob es ein 4h-Event ist und ob der
@@ -601,8 +609,9 @@ class KloKiEvent
     {
         $sum = 0;
         foreach($this->getAusstattung() as $a)
-            $sum += $a->getBruttoPreis();
-        return $sum;
+            /** @var $a Ausstattung */
+            $sum += $a->getNettoPreis();
+        return $sum * (1 + ($this->getCurrentMwSt() / 100));
     }
 
     /**
@@ -636,12 +645,13 @@ class KloKiEvent
      */
     public function getMwst() : ? int
     {
-        $mwst = 0;
+        $netto_sum = 0;
         foreach ($this->getAusstattung() as $a)
         {
-            $mwst += $a->getMwSt();
+            /** @var $a Ausstattung */
+            $netto_sum += $a->getNettoPreis();
         }
-        return $mwst;
+        return $netto_sum * $this->getCurrentMwSt() / 100 ;
     }
 
 

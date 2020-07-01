@@ -39,7 +39,7 @@
         <text:p text:style-name="P15">Nettobetrag</text:p>
     </table:table-cell>
     <table:table-cell table:style-name="Tabelle5.A1" office:value-type="string">
-        <text:p text:style-name="P15">MwSt. 19%</text:p>
+        <text:p text:style-name="P15">MwSt. {{ e.currentMwSt }}%</text:p>
     </table:table-cell>
     <table:table-cell table:style-name="Tabelle5.A1" office:value-type="string">
         <text:p text:style-name="P15">Bruttobetrag</text:p>
@@ -59,10 +59,10 @@
         <text:p text:style-name="P18">{{ (a.nettopreis / 100) | number_format(2, ',', '.') }} €</text:p>
     </table:table-cell>
     <table:table-cell table:style-name="Tabelle5.A1" office:value-type="string">
-        <text:p text:style-name="P18">{{ (a.mwSt / 100) | number_format(2, ',', '.') }} €</text:p>
+        <text:p text:style-name="P18">{{ ((a.nettoPreis * e.currentMwSt / 100) / 100) | number_format(2, ',', '.') }} €</text:p>
     </table:table-cell>
     <table:table-cell table:style-name="Tabelle5.A1" office:value-type="string">
-        <text:p text:style-name="P18">{{ (a.bruttoPreis / 100) | number_format(2, ',', '.') }} €</text:p>
+        <text:p text:style-name="P18">{{ (a.nettoPreis * (1 + e.currentMwSt/100) / 100) | number_format(2, ',', '.') }} €</text:p>
     </table:table-cell>
 </table:table-row>
 {% endfor %}

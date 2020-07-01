@@ -9,7 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 
 /**
- * @isGranted({"ROLE_USER"})
+ * @isGranted("ROLE_USER")
  */
 class ImageController extends AbstractController
 {

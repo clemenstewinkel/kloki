@@ -1,4 +1,3 @@
-
 ###> symfony/framework-bundle ###
 /.env.local
 /.env.local.php
@@ -22,7 +21,4 @@ yarn-error.log
 ###< symfony/webpack-encore-bundle ###
 /.idea/
 /uploaded_files/
-###> symfony/web-server-bundle ###
-/.web-server-pid
-###< symfony/web-server-bundle ###
 /mietvertrag/word/document.xml

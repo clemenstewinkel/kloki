@@ -1,5 +1,6 @@
 import $ from "jquery";
 import 'jquery-contextmenu';
+import loadEditEventRemarkForm from "./loadEditEventRemarkForm";
 import loadEditEventForm from "./loadEditEventForm";
 import confirmDelete from "./confirmDelete";
 import {userRoles} from "../calendar";
@@ -58,6 +59,7 @@ export default function create_context_menus()
                 let event_id = $(this).data('event-id');
                 switch(key){
                     case 'edit': loadEditEventForm(event_id); break;
+                    case 'editRemark': loadEditEventRemarkForm(event_id); break;
                     case 'delete': confirmDelete(event_id); break;
                     case 'vertrag': window.open('createWord/' + event_id); break;
                     case 'copy': console.dir(fullcalendar.getEventById(event_id).extendedProps.ParentEvent); loadCopyEventForm(event_id); break;
@@ -73,7 +75,15 @@ export default function create_context_menus()
                         let eventData = fullcalendar.getEventById(event_id);
                         return (isEventCreatedByFoodRole(eventData.extendedProps) && (!eventData.extendedProps.isFixed));
                     }
-
+                },
+                editRemark: {
+                    name: "Edit Remark",
+                    icon: "edit",
+                    visible: function(key, opt) {
+                        let event_id = $(this).data('event-id');
+                        let eventData = fullcalendar.getEventById(event_id);
+                        return ((!isEventCreatedByFoodRole(eventData.extendedProps)));
+                    }
                 },
                 copy: {
                     name: "Copy",
