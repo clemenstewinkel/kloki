@@ -4,7 +4,22 @@
 
 {% block body %}
     <h1>Events in der Klosterkirche</h1>
-    <form action="{{ path('klo_ki_event_index') }}" method="GET">
+    <div class="row d-none d-print-block">
+        {% if "rental"    in app.request.query.get('art')                %} {{ "rental"    | readable_enum('EventArtType')           }} {% endif %} 
+        {% if "show"      in app.request.query.get('art')                %} {{ "show"      | readable_enum('EventArtType')           }} {% endif %} 
+        {% if "fair"      in app.request.query.get('art')                %} {{ "fair"      | readable_enum('EventArtType')           }} {% endif %} 
+        {% if "none"      in app.request.query.get('contractState')      %} {{ "none"      | readable_enum('ContractStateType')      }} {% endif %} 
+        {% if "requested" in app.request.query.get('contractState')      %} {{ "requested" | readable_enum('ContractStateType')      }} {% endif %} 
+        {% if "sent"      in app.request.query.get('contractState')      %} {{ "sent"      | readable_enum('ContractStateType')      }} {% endif %} 
+        {% if "received"  in app.request.query.get('contractState')      %} {{ "received"  | readable_enum('ContractStateType')      }} {% endif %} 
+        {% if "none"      in app.request.query.get('hotelState')         %} {{ "none"      | readable_enum('HotelStateType')         }} {% endif %} 
+        {% if "needed"    in app.request.query.get('hotelState')         %} {{ "needed"    | readable_enum('HotelStateType')         }} {% endif %} 
+        {% if "booked"    in app.request.query.get('hotelState')         %} {{ "booked"    | readable_enum('HotelStateType')         }} {% endif %} 
+        {% if "none"      in app.request.query.get('pressMaterialState') %} {{ "none"      | readable_enum('PressMaterialStateType') }} {% endif %} 
+        {% if "needed"    in app.request.query.get('pressMaterialState') %} {{ "needed"    | readable_enum('PressMaterialStateType') }} {% endif %} 
+        {% if "available" in app.request.query.get('pressMaterialState') %} {{ "available" | readable_enum('PressMaterialStateType') }} {% endif %} 
+    </div>
+    <form action="{{ path('klo_ki_event_index') }}" method="GET" class="d-print-none">
         <div class="row">
             <div class="col">
                 <input type="text" class="form-control" name="name_contains" value="{{ app.request.query.get('name_contains') }}" placeholder="Name enthält"/>
@@ -100,11 +115,11 @@
     </form>
     <hr/>
     <div class="row">
-        <div class="col-4">
+        <div class="col-4 d-print-none">
             {{ knp_pagination_render(pagination) }}
         </div>
         <div class="col-4" align="center"><span class="page-link">{{ pagination.totalItemCount }} Events insgesamt</span></div>
-        <div class="col-4">
+        <div class="col-4 d-print-none">
             <nav>
                 <ul class="pagination justify-content-end">
                     <li><span class="page-link">Zeige pro Seite: </span></li>
@@ -125,17 +140,18 @@
         <thead>
             <tr>
                 <th>{{ knp_pagination_sortable(pagination, 'Name', 'event.name') }}</th>
-                <th>{{ knp_pagination_sortable(pagination, 'Ort', 'room.id') }}</th>
-                <th>{{ knp_pagination_sortable(pagination, 'Begin und Dauer', 'event.start') }}</th>
-                <th>Bestuhlt</th>
-                <th>Licht</th>
-                <th>Ton</th>
-                <th>Art</th>
+                <th class="d-print-none">{{ knp_pagination_sortable(pagination, 'Ort', 'room.id') }}</th>
+                <th class="d-print-none">{{ knp_pagination_sortable(pagination, 'Begin und Dauer', 'event.start') }}</th>
+                <th class="d-none d-print-block">Termin</th>
+                <th class="d-print-none">Bestuhlt</th>
+                <th class="d-print-none">Licht</th>
+                <th class="d-print-none">Ton</th>
+                <th class="d-print-none">Art</th>
                 <th>Vertrag</th>
                 <th>Hotel</th>
                 <th>PresseMat.</th>
                 <th>Gema</th>
-                <th width="200px"></th>
+                <th width="200px" class="d-print-none"></th>
             </tr>
         </thead>
         <tbody>
@@ -143,22 +159,23 @@
             {# @var e \App\Entity\KloKiEvent #}
             <tr>
                 <td><i class="fas {{ e.isFixed ? 'fa-lock' : 'fa-lock-open' }}"> </i> {{ e.name }}</td>
-                <td>{{ e.room }}</td>
-                <td>{{ include('klo_ki_event/_time_range.html.twig', {'event': e}) }}</td>
-                <td>{{ e.isBestBenoetigt ? 'Ja' : 'Nein' }}</td>
-                <td>
+                <td class="d-print-none">{{ e.room }}</td>
+                <td class="d-print-none">{{ include('klo_ki_event/_time_range.html.twig', {'event': e}) }}</td>
+                <td class="d-none d-print-block">{{ e.start | date('d.m.Y')  }}</td>
+                <td class="d-print-none">{{ e.isBestBenoetigt ? 'Ja' : 'Nein' }}</td>
+                <td class="d-print-none">
                     {{ e.isLichtBenoetigt ? ('Ja, ' ~ (e.lichtTechniker ?: 'N/N') ) : 'Nein' }}
                     {% if e.lichtTechniker %}
                         <br/>{{ e.lichtTechniker.name }}
                     {% endif %}
                 </td>
-                <td>
+                <td class="d-print-none">
                     {{ e.isTonBenoetigt ? ('Ja, ' ~ (e.tonTechniker ?: 'N/N')) : 'Nein' }}
                     {% if e.tonTechniker %}
                         <br/>{{ e.tonTechniker.name }}
                     {% endif %}
                 </td>
-                <td>{{ e.art | readable_enum('EventArtType') }}</td>
+                <td class="d-print-none">{{ e.art | readable_enum('EventArtType') }}</td>
                 <td>{{ e.contractState | readable_enum('ContractStateType') }} {% if e.contractState == 'requested' %} (<a href="{{ path('klo_ki_event_create_word', {'id': e.id}) }}">tu es!</a>) {% endif %} </td>
                 <td>
                     {{ e.hotelState | readable_enum('HotelStateType') }}
@@ -169,7 +186,7 @@
                 </td>
                 <td>{{ e.pressMaterialState | readable_enum('PressMaterialStateType')}}</td>
                 <td>{{ e.gemaListState | readable_enum('PressMaterialStateType')}}</td>
-                <td>
+                <td class="d-print-none">
                     <a class="btn btn-primary" href="{{ path('klo_ki_event_show', {'id': e.id}) }}"><span class="fas fa-search"></span></a>
                     <a class="btn btn-primary" href="{{ path('klo_ki_event_edit', {'id': e.id}) }}"><span class="fas fa-edit"></span></a>
                     {% if e.childEvents.count == 0 %}
@@ -189,6 +206,6 @@
         </tbody>
     </table>
 
-    <a class="btn btn-primary" href="{{ path('klo_ki_event_new') }}">Neues Event <span class="fas fa-edit"></span></a>
+    <a class="btn btn-primary d-print-none" href="{{ path('klo_ki_event_new') }}">Neues Event <span class="fas fa-edit"></span></a>
     {{ encore_entry_script_tags('event-filter') }}
 {% endblock %}

@@ -30,7 +30,7 @@
                     <td>
                         <a class="btn btn-primary" href="{{ path('user_edit', {'id': user.id}) }}">Bearbeiten</a>
                         <a class="btn btn-primary" href="{{ path('user_pw_change', {'id': user.id}) }}">Passwort setzen</a>
-                        {{ user.isDeletable ? include('user/_delete_form.html.twig') : '' }}
+                        {{ user != app.user ? include('user/_delete_form.html.twig') : '' }}
 
                     </td>
                 </tr>

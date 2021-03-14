@@ -495,7 +495,8 @@ class User implements UserInterface
 
     public function isDeletable(): bool
     {
-        return (
+	    return true;
+        /*return (
             $this->getEinlassEinsAtEvents()->isEmpty() &&
             $this->getEinlassZweiAtEvents()->isEmpty() &&
             $this->getKasseAtEvents()->isEmpty() &&
@@ -503,7 +504,7 @@ class User implements UserInterface
             $this->getSpringerZweiAtEvents()->isEmpty() &&
             $this->getEventsLicht()->isEmpty() &&
             $this->getEventsTon()->isEmpty()
-        );
+    );*/
     }
 
     /**

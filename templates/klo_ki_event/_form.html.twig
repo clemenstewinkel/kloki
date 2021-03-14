@@ -96,14 +96,14 @@
     <div class="form-group-sm row">
         <label class="col-form-label-sm col-sm-2">Benötigt:</label>
         <div class="col-sm-2">
-            {{ form_widget(form.isLichtBenoetigt, {'label': 'Licht'}) }}
+            {{ form_widget(form.isLichtBenoetigt, {'label': 'Technik'}) }}
         </div>
         <div class="col-sm-2">
             {{ form_widget(form.isBestBenoetigt, {'label': 'Stühle'}) }}
         </div>
-        <div class="col-sm-2">
+        <!--<div class="col-sm-2">
             {{ form_widget(form.isTonBenoetigt, {'label': 'Ton'}) }}
-        </div>
+        </div>-->
         <div class="col-sm-2">
             {{ form_widget(form.helperRequired, {'label': 'Helfer'}) }}
         </div>
@@ -133,14 +133,14 @@
 
 
     <div class="form-group-sm row">
-        <label class="col-form-label-sm col-sm-2">Licht-Te.</label>
+        <label class="col-form-label-sm col-sm-2">Technik</label>
         <div class="col-sm-4">
             {{ form_widget(form.LichtTechniker, {'attr': {'class': 'form-control-sm'}}) }}
         </div>
-        <label class="col-form-label-sm col-sm-2">Ton-Te.</label>
+       <!-- <label class="col-form-label-sm col-sm-2">Ton-Te.</label>
         <div class="col-sm-4">
             {{ form_widget(form.TonTechniker, {'attr': {'class': 'form-control-sm'}}) }}
-        </div>
+        </div>-->
     </div>
 
     <div class="form-group-sm row">

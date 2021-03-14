@@ -13,6 +13,11 @@ rm installer
 mv composer.phar /usr/bin/composer
 
 echo "#################################################"
+echo "# USE Composer version 1.x!! "
+echo "#################################################"
+composer self-update 1.10.1
+
+echo "#################################################"
 echo "# install yarn "
 echo "#################################################"
 npm install --global yarn

@@ -165,7 +165,7 @@ class KloKiEvent
      *
      * @Gedmo\Blameable(on="create")
      * @ORM\ManyToOne(targetEntity="App\Entity\User")
-     * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
+     * @ORM\JoinColumn(name="created_by", referencedColumnName="id", onDelete="SET NULL")
      * @Groups({"events:read"})
      */
     private $createdBy;
@@ -175,7 +175,7 @@ class KloKiEvent
      *
      * @Gedmo\Blameable(on="update")
      * @ORM\ManyToOne(targetEntity="App\Entity\User")
-     * @ORM\JoinColumn(name="updated_by", referencedColumnName="id")
+     * @ORM\JoinColumn(name="updated_by", referencedColumnName="id", onDelete="SET NULL")
      * @Groups({"events:read"})
      */
     private $updatedBy;
@@ -207,36 +207,43 @@ class KloKiEvent
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="einlassEinsAtEvents")
+     * @ORM\JoinColumn(onDelete="SET NULL")
      * @Groups({"events:read"})
      */
     private $helperEinlassEins;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="einlassZweiAtEvents")
+     * @ORM\JoinColumn(onDelete="SET NULL")
      * @Groups({"events:read"})
      */
     private $helperEinlassZwei;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="kasseAtEvents")
+     * @ORM\JoinColumn(onDelete="SET NULL")
      * @Groups({"events:read"})
      */
     private $helperKasse;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="springerEinsAtEvents")
+     * @ORM\JoinColumn(onDelete="SET NULL")
      * @Groups({"events:read"})
      */
     private $helperSpringerEins;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="springerZweiAtEvents")
+     * @ORM\JoinColumn(onDelete="SET NULL")
      * @Groups({"events:read"})
      */
     private $helperSpringerZwei;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="garderobeAtEvents")
+     * @ORM\JoinColumn(onDelete="SET NULL")
+     * @Groups({"events:read"})
      */
     private $helperGarderobe;
 
@@ -249,11 +256,13 @@ class KloKiEvent
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="eventsLicht")
+     * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $LichtTechniker;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="eventsTon")
+     * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $TonTechniker;
 
@@ -751,13 +760,14 @@ class KloKiEvent
     public function getProblemDetails() : array
     {
         $problems = array();
-        if($this->isTonBenoetigt && ($this->TonTechniker === null))
+        /*if($this->isTonBenoetigt && ($this->TonTechniker === null))
         {
             $problems[] = "Ton-Techniker fehlt";
-        }
+	}
+	 */
         if($this->isLichtBenoetigt && ($this->LichtTechniker === null))
         {
-            $problems[] = "Licht-Techniker fehlt";
+            $problems[] = "Techniker fehlt";
         }
         if($this->helperRequired)
         {

@@ -7,7 +7,7 @@
         <h1>Addressen</h1>
 
 
-        <div class="row">
+        <div class="row d-print-none">
             <div class="col">
                 {{ knp_pagination_render(pagination) }}
             </div>
@@ -43,7 +43,7 @@
                 <th>{{ knp_pagination_sortable(pagination, 'Ort',      'adr.ort') }}</th>
                 <th>{{ knp_pagination_sortable(pagination, 'Telefon',  'adr.telefon') }}</th>
                 <th>{{ knp_pagination_sortable(pagination, 'Email',    'adr.email') }}</th>
-                <th>Aktionen</th>
+                <th class="d-print-none">Aktionen</th>
             </tr>
             </thead>
             <tbody>
@@ -57,7 +57,7 @@
                     <td>{{ adr.ort }}</td>
                     <td>{{ adr.telefon }}</td>
                     <td>{% if adr.email %}<a href="mailto:{{ adr.email }}">{{ adr.email }}</a>{% endif %}</td>
-                    <td>
+                    <td class="d-print-none">
                         <a class="btn btn-primary" href="{{ path('addresse_show', {'id': adr.id}) }}"><span class="fas fa-search"></span></a>
                         <a class="btn btn-primary" href="{{ path('addresse_edit', {'id': adr.id}) }}"><span class="fas fa-edit"></span></a>
                         {% if adr.kloKiEvents.count == 0 and adr.users.count == 0%}
@@ -73,6 +73,6 @@
             </tbody>
         </table>
 
-        <a class="btn btn-primary" href="{{ path('addresse_new') }}">Neue Adresse anlegen</a>
+        <a class="btn btn-primary d-print-none" href="{{ path('addresse_new') }}">Neue Adresse anlegen</a>
     </div>
 {% endblock %}
