@@ -530,7 +530,7 @@ class KloKiEventController extends AbstractController
 
     /**
      * @Route("/show/{id}", name="klo_ki_event_show", methods={"GET"})
-     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_FOOD')")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_FOOD') or is_granted('ROLE_TECH')")
      * @param KloKiEvent $kloKiEvent
      * @param Request $request
      * @return Response

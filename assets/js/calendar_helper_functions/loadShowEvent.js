@@ -6,7 +6,7 @@ import {$calendarDetail, userRoles} from "../calendar";
 export default function loadShowEvent(event_id)
 {
     let url='';
-    if (userRoles.includes('ROLE_ADMIN') || userRoles.includes('ROLE_FOOD'))
+    if (userRoles.includes('ROLE_ADMIN') || userRoles.includes('ROLE_FOOD') || userRoles.includes('ROLE_TECH'))
     {
         url = 'show/' + event_id;
     }
