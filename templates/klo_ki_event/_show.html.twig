@@ -12,7 +12,7 @@
     <ul>
         {%  for a in klo_ki_event.ausstattung  %}
             {# @ var a App\Entity\Ausstattung #}
-        <li>{{ a }} ({{ (a.nettoPreis/100) | number_format(2, ',', '.') }} € zuzügl. MwSt.)</li>
+        <li>{{ a }} ({{ (klo_ki_event.isInternPrice ? a.nettoPreisIntern/100 : a.nettoPreis/100) | number_format(2, ',', '.') }} € zuzügl. MwSt.)</li>
         {% endfor %}
     </ul>
     {% endif %}

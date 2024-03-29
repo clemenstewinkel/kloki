@@ -32,6 +32,11 @@ class Ausstattung
     private $nettopreis;
 
     /**
+     * @ORM\Column(type="integer")
+     */
+    private $nettopreisIntern;
+
+    /**
      * @ORM\ManyToMany(targetEntity="App\Entity\KloKiEvent", mappedBy="Ausstattung")
      */
     private $kloKiEvents;
@@ -80,7 +85,6 @@ class Ausstattung
         return $this;
     }
 
-
     public function getNettoPreis(): ?int
     {
         return $this->nettopreis;
@@ -89,6 +93,18 @@ class Ausstattung
     public function setNettopreis(int $nettopreis): self
     {
         $this->nettopreis = $nettopreis;
+
+        return $this;
+    }
+
+    public function getNettoPreisIntern(): ?int
+    {
+        return $this->nettopreisIntern;
+    }
+
+    public function setNettopreisIntern(int $nettopreisIntern): self
+    {
+        $this->nettopreisIntern = $nettopreisIntern;
 
         return $this;
     }

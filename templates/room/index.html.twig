@@ -13,6 +13,8 @@
                 <th>Name</th>
                 <th>Tagespreis</th>
                 <th>4h-Preis</th>
+                <th>Tagespreis intern</th>
+                <th>4h-Preis intern</th>
                 <th></th>
             </tr>
             </thead>
@@ -23,6 +25,8 @@
                     <td>{{ room.name }}</td>
                     <td>{{ (room.fullDayPrice / 100) | number_format(2, ',', '.')}} €</td>
                     <td>{{ (room.halfDayPrice / 100) | number_format(2, ',', '.')}} €</td>
+                    <td>{{ (room.fullDayPriceIntern / 100) | number_format(2, ',', '.')}} €</td>
+                    <td>{{ (room.halfDayPriceIntern / 100) | number_format(2, ',', '.')}} €</td>
                     <td>
                         <a class="btn btn-primary" href="{{ path('room_edit', {'id': room.id}) }}"><span class="fas fa-edit"></span></a>
                     </td>

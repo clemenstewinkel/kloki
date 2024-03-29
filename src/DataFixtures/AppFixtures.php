@@ -34,12 +34,12 @@ class AppFixtures extends Fixture
 
         // Räume
         foreach([
-            ['Minoritensaal' , '#ff9797', 20825 , 15000],
-            ['Färbersaal'    , '#a6a6fa', 7000  , 5000],
-            ['Zwirnstube'    , '#ffff00', 5000  , 3000],
-            ['Foyer oben'    , '#00ffff', 5000  , 3000],
-            ['Webersaal'     , '#00ff00', 12500 , 8000],
-            ['Foyer unten'   , '#f2c197', 5000  , 3000]
+            ['Minoritensaal' , '#ff9797', 20825 , 15000 , 16000, 8000 ],
+            ['Färbersaal'    , '#a6a6fa', 7000  , 5000  , 3500 , 2000 ],
+            ['Zwirnstube'    , '#ffff00', 5000  , 3000  , 3000 , 1000 ],
+            ['Foyer oben'    , '#00ffff', 5000  , 3000  , 3000 , 1000 ],
+            ['Webersaal'     , '#00ff00', 12500 , 8000  , 8000 , 4000 ],
+            ['Foyer unten'   , '#f2c197', 5000  , 3000  , 3000 , 2000 ]
              ] as $room)
         {
             $x = new Room();
@@ -47,6 +47,8 @@ class AppFixtures extends Fixture
             $x->setColor($room[1]);
             $x->setFullDayPrice($room[2]);
             $x->setHalfDayPrice($room[3]);
+            $x->setFullDayPriceIntern($room[4]);
+            $x->setHalfDayPriceIntern($room[5]);
             $manager->persist($x);
         }
 
@@ -139,26 +141,27 @@ class AppFixtures extends Fixture
          * Ausstattung
          */
         $aa = [
-            ['Bühne',        'Bühne (inkl. Bühnenlicht, weiß, dimmbar)',                    8500],
-            ['Vorbühne 1/2', 'halbe Vorbühne',                                              4500],
-            ['Vorbühne 1/1', 'Volle Vorbühne',                                              9000],
-            ['Tonanlage',    'kleine Tonanlage in Selbstbedienung inkl. 1 Kabelmikrophon',  6500],
-            ['Headset',      'zusätzliches Headset (Funk)',                                 1500],
-            ['Ton/Licht',    'professionelle Ton- und Lichtanlage (inkl. Techniker)',       42500],
-            ['Leinwand',     'Leinwand',                                                    4000],
-            ['Beamer',       'Beamer',                                                      8500],
-            ['Klavier',      'Klavier inkl. Stimmung',                                      11000],
-            ['Flügel',       'Flügel inkl. Stimmung',                                       14000],
-            ['Monitor',      'Monitor im Foyer',                                            3000],
-            ['Kerzen',       'Kerzensatz',                                                  6500],
-            ['V-Pauschale',  'Veranstaltungspauschale (Ticketing, Website)',                5500],
+            ['Bühne',        'Bühne (inkl. Bühnenlicht, weiß, dimmbar)',                    8500,  6000],
+            ['Vorbühne 1/2', 'halbe Vorbühne',                                              4500,  3000],
+            ['Vorbühne 1/1', 'Volle Vorbühne',                                              9000,  7000],
+            ['Tonanlage',    'kleine Tonanlage in Selbstbedienung inkl. 1 Kabelmikrophon',  6500,  4000],
+            ['Headset',      'zusätzliches Headset (Funk)',                                 1500,  800],
+            ['Ton/Licht',    'professionelle Ton- und Lichtanlage (inkl. Techniker)',       42500, 30000],
+            ['Leinwand',     'Leinwand',                                                    4000,  3000],
+            ['Beamer',       'Beamer',                                                      8500,  5000],
+            ['Klavier',      'Klavier inkl. Stimmung',                                      11000, 9000],
+            ['Flügel',       'Flügel inkl. Stimmung',                                       14000, 11000],
+            ['Monitor',      'Monitor im Foyer',                                            3000,  2000],
+            ['Kerzen',       'Kerzensatz',                                                  6500,  4000],
+            ['V-Pauschale',  'Veranstaltungspauschale (Ticketing, Website)',                5500,  4000],
         ];
         foreach($aa as $a)
         {
             $x = new Ausstattung();
             $x->setName($a[0]);
             $x->setDescription($a[1]);
-            $x->setBruttopreis($a[2]);
+            $x->setNettopreis($a[2]);
+            $x->setNettopreisIntern($a[3]);
             $manager->persist($x);
         }
         $manager->flush();

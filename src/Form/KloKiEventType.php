@@ -111,6 +111,7 @@ class KloKiEventType extends AbstractType
             ])
             ->add('art', null, ['label' => "Art"])
             ->add('isReducedPrice', CheckboxType::class, ['required' => false])
+            ->add('isInternPrice', CheckboxType::class, ['required' => false])
             ->add('is4hPrice', CheckboxType::class, ['required' => false])
             ->add('kategorie', null, ['label' => "Kategorie"])
             ->add('room', null, ['label' => 'Raum'])

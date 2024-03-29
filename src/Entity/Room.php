@@ -49,6 +49,17 @@ class Room
     private $halfDayPrice;
 
     /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $fullDayPriceIntern;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $halfDayPriceIntern;
+
+
+    /**
     * @Groups({"room:read", "resource:read"})
     */
     public function getTitle()
@@ -157,6 +168,29 @@ class Room
     public function setHalfDayPrice(?int $halfDayPrice): self
     {
         $this->halfDayPrice = $halfDayPrice;
+
+        return $this;
+    }
+    public function getFullDayPriceIntern(): ?int
+    {
+        return $this->fullDayPriceIntern;
+    }
+
+    public function setFullDayPriceIntern(?int $fullDayPriceIntern): self
+    {
+        $this->fullDayPriceIntern = $fullDayPriceIntern;
+
+        return $this;
+    }
+
+    public function getHalfDayPriceIntern(): ?int
+    {
+        return $this->halfDayPriceIntern;
+    }
+
+    public function setHalfDayPriceIntern(?int $halfDayPriceIntern): self
+    {
+        $this->halfDayPriceIntern = $halfDayPriceIntern;
 
         return $this;
     }

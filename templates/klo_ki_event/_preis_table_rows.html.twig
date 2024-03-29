@@ -1,7 +1,7 @@
 {# @var e \App\Entity\KloKiEvent #}
 <tr>
     <th></th>
-    <th>Miete {{ e.room }}{{ e.is4hPrice ? ', 4h' : '' }}{{ e.isReducedPrice ? ', 10% Rabatt' }}</th>
+    <th>Miete {{ e.room }}{{ e.is4hPrice ? ', 4h' : '' }}{{ e.isReducedPrice ? ', 10% Rabatt' }}{{ e.isInternPrice ? ', intern' }}</th>
     <td class="text-right">{{ (e.roomFee / 100) | number_format(2, ',', '.')}} €</td>
     <td class="text-right">0,00 €</td>
 </tr>

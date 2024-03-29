@@ -18,6 +18,8 @@ class RoomType extends AbstractType
             ->add('color', ColorType::class)
             ->add('fullDayPrice', MoneyType::class, ['divisor' => 100, 'label' => 'Tagespreis'])
             ->add('halfDayPrice', MoneyType::class, ['divisor' => 100, 'label' => '4h-Preis'])
+            ->add('fullDayPriceIntern', MoneyType::class, ['divisor' => 100, 'label' => 'Tagespreis intern'])
+            ->add('halfDayPriceIntern', MoneyType::class, ['divisor' => 100, 'label' => '4h-Preis intern'])
         ;
     }
 

@@ -12,6 +12,7 @@
                 <th>Name</th>
                 <th>Langer Name (für Vertrag)</th>
                 <th>Nettopreis</th>
+                <th>Nettopreis intern</th>
                 <th>Anz. Events</th>
                 <th></th>
             </tr>
@@ -22,6 +23,7 @@
                     <td>{{ ausstattung.name }}</td>
                     <td>{{ ausstattung.description }}</td>
                     <td>{{ (ausstattung.nettopreis  / 100) | number_format(2, ',', '.') }} €</td>
+                    <td>{{ (ausstattung.nettopreisIntern  / 100) | number_format(2, ',', '.') }} €</td>
                     <td>{{ ausstattung.kloKiEvents.count }}</td>
                     <td>
                         <a class="btn btn-primary" href="{{ path('ausstattung_show', {'id': ausstattung.id}) }}"><span class="fas fa-search"></span></a>

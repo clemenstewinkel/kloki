@@ -282,6 +282,11 @@ class KloKiEvent
     private $is4hPrice;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isInternPrice;
+
+    /**
      * Note, that type of a field should be same as you set in Doctrine config
      * (in this case it is HotelStateType)
      *
@@ -353,6 +358,7 @@ class KloKiEvent
     public function setLichtTechniker(?User $LichtTechniker):         self { $this->LichtTechniker = $LichtTechniker;         return $this; }
     public function setTonTechniker(?User $TonTechniker):             self { $this->TonTechniker = $TonTechniker;             return $this; }
     public function setIsReducedPrice(bool $isReducedPrice):          self { $this->isReducedPrice = $isReducedPrice;         return $this; }
+    public function setIsInternPrice(bool $isInternPrice):            self { $this->isInternPrice = $isInternPrice;           return $this; }
     public function setIs4hPrice(bool $is4hPrice):                    self { $this->is4hPrice = $is4hPrice;                   return $this; }
     public function setHelperGarderobe(?User $helperGarderobe):       self { $this->helperGarderobe = $helperGarderobe;       return $this; }
     public function setHotelState($hotelState):                       self { $this->hotelState = $hotelState;                 return $this; }
@@ -461,6 +467,7 @@ class KloKiEvent
 
     // Boolean-Getters
     public function getIsReducedPrice():        ?bool   { return $this->isReducedPrice;     }
+    public function getIsInternPrice():         ?bool   { return $this->isInternPrice;      }
     public function getIs4hPrice():             ?bool   { return $this->is4hPrice;          }
     public function getAllDay():                ?bool   { return $this->allDay;             }
     public function getIsTonBenoetigt():        ?bool   { return $this->isTonBenoetigt;     }
@@ -573,14 +580,19 @@ class KloKiEvent
 
     /**
      * Gibt die Raummiete dieses Events zurück.
-     * Dabei wird berücksichtigt, ob es ein 4h-Event ist und ob der
-     * Kunde einen 10%-Rabatt bekommt.
+     * Dabei wird berücksichtigt, ob 
+     *  - es ein 4h-Event ist und
+     *  - ob es ein internes Event ist und ob
+     *  - der Kunde einen 10%-Rabatt bekommt.
      * Keine MwSt für Raummiete, also Brutto=Netto
      * @return int|null
      */
     public function getRoomFee() : ?int
     {
-        $fullPrice = $this->is4hPrice ? $this->getRoom()->getHalfDayPrice() : $this->getRoom()->getFullDayPrice();
+        if ($this->isInternPrice)
+            $fullPrice = $this->is4hPrice ? $this->getRoom()->getHalfDayPriceIntern() : $this->getRoom()->getFullDayPriceIntern();
+        else
+            $fullPrice = $this->is4hPrice ? $this->getRoom()->getHalfDayPrice() : $this->getRoom()->getFullDayPrice();
         return $this->getIsReducedPrice() ? $fullPrice * 0.9 : $fullPrice;
     }
 
@@ -606,7 +618,10 @@ class KloKiEvent
     {
         $sum = 0;
         foreach($this->getAusstattung() as $a)
-            $sum += $a->getNettopreis();
+            if ($this->isInternPrice)
+                $sum += $a->getNettoPreisIntern();
+            else
+                $sum += $a->getNettoPreis();
         return $sum;
     }
 
@@ -619,7 +634,10 @@ class KloKiEvent
         $sum = 0;
         foreach($this->getAusstattung() as $a)
             /** @var $a Ausstattung */
-            $sum += $a->getNettoPreis();
+            if ($this->isInternPrice)
+                $sum += $a->getNettoPreisIntern();
+            else
+                $sum += $a->getNettoPreis();
         return $sum * (1 + ($this->getCurrentMwSt() / 100));
     }
 
@@ -658,7 +676,10 @@ class KloKiEvent
         foreach ($this->getAusstattung() as $a)
         {
             /** @var $a Ausstattung */
-            $netto_sum += $a->getNettoPreis();
+            if ($this->isInternPrice)
+                $netto_sum += $a->getNettoPreisIntern();
+            else
+                $netto_sum += $a->getNettoPreis();
         }
         return $netto_sum * $this->getCurrentMwSt() / 100 ;
     }
@@ -709,16 +730,12 @@ class KloKiEvent
 
     /**
      * Liefert die Summe der Netto-Preise dieses Events
-     * und aller Unter-Events zurück
      * @return int|null
      */
     public function getNettoPreis() : ? int
     {
         $preis = $this->getRoomFee();
-        foreach ($this->getAusstattung() as $a)
-        {
-            $preis += $a->getNettoPreis();
-        }
+        $preis += $this->getAusstattungNetPreis();
         return $preis;
     }
 
@@ -729,11 +746,7 @@ class KloKiEvent
      */
     public function getAllNettoPreis() : ? int
     {
-        $preis = $this->getRoomFee();
-        foreach ($this->getAusstattung() as $a)
-        {
-            $preis += $a->getNettoPreis();
-        }
+        $preis = $this->getNettoPreis();
         foreach ($this->getChildEvents() as $e)
         {
             $preis += $e->getNettoPreis();

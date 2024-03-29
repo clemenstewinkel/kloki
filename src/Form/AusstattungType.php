@@ -16,6 +16,7 @@ class AusstattungType extends AbstractType
             ->add('name')
             ->add('description')
             ->add('nettopreis', MoneyType::class, ['divisor' => 100, 'label' => "Nettopreis"])
+            ->add('nettopreisIntern', MoneyType::class, ['divisor' => 100, 'label' => "Nettopreis intern"])
         ;
     }
 

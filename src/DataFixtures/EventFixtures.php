@@ -82,6 +82,7 @@ class EventFixtures extends Fixture implements FixtureGroupInterface
             $e->setHelperRequired(true); // TODO
             $e->setIsReducedPrice(false);
             $e->setIs4hPrice(false);
+            $e->setIsInternPrice(false);
             $e->setGemaListState(ContractStateType::NONE);
             $manager->persist($e);
         }
