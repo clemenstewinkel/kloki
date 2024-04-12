@@ -523,6 +523,20 @@ class KloKiEvent
     public function getAusstattung():      Collection    { return $this->Ausstattung;      }
     public function getAvailableHelpers(): Collection    { return $this->availableHelpers; }
 
+
+    /**
+     * @Groups({"event:autocomplete"})
+     */
+    public function getForAutoComplete()
+    {
+        return
+            $this->getStartDate()->format('Y-m-d H:i'). ' ' . 
+            $this->getRoom() . ' ' .
+            $this->getName() . ' ' .
+            ' (' .  $this->getId() .')';
+    }
+
+
     /**
      * @return mixed
      * @Assert\NotBlank()

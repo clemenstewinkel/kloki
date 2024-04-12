@@ -5,6 +5,7 @@ import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 //import '../css/algolia-autocomplete.css';
 import modal_address_dialog from "./modal_address_dialog";
 import prepare_address_autocomplete from "./helper_functions/prepare_address_autocomplete";
+import prepare_event_autocomplete from "./helper_functions/prepare_event_autocomplete";
 import 'bootstrap';
 import 'bootstrap-select';
 
@@ -119,6 +120,7 @@ export default function prepare_event_form()
         } );
 
     prepare_address_autocomplete();
+    prepare_event_autocomplete();
 
     $('#js-new-address-button').on('click', function(){
        modal_address_dialog();

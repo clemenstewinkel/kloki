@@ -44,6 +44,18 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
  */
 class KloKiEventController extends AbstractController
 {
+
+
+    /**
+     * @Route("/autoComplete", name="event_auto_complete", methods={"GET"})
+     */
+    public function forAutoComplete(Request $request, KloKiEventRepository $kloKiEventRepository)
+    {
+        $events = $kloKiEventRepository->findAllMatching($request->query->get('query'));
+        return $this->json(['events' => $events], 200, [], ['groups' => ['event:autocomplete']]);
+    }
+
+
     /**
      * @Route("/", name="klo_ki_event_index", methods={"GET"})
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_FOOD')")

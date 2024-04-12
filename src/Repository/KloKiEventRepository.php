@@ -15,6 +15,30 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class KloKiEventRepository extends ServiceEntityRepository
 {
+
+
+    public function getMatchingQueryBuilder(string $query)
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.start LIKE :query or a.name LIKE :query')
+            ->setParameter('query', '%' .  $query . '%');
+    }
+
+
+    /**
+     * @param string $query
+     * @param int $limit
+     * @return KloKiEvent[]
+     */
+    public function findAllMatching(string $query, int $limit = 10)
+    {
+        return $this->getMatchingQueryBuilder($query)
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
+
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, KloKiEvent::class);

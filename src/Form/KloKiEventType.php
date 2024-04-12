@@ -119,13 +119,16 @@ class KloKiEventType extends AbstractType
             ->add('bestPlan', null, ['label' => 'Bestuhlung'])
             ->add('stageOrder', null, ['label' => 'Bühnenanw.'])
 
+            ->add('ParentEvent', KloKiEventSelectType::class, ['required' => false])
 
+/*            
             ->add('ParentEvent', EntityType::class, [
                 'class' => KloKiEvent::class,
                 'required' => false,
                 'query_builder' => $event_query,
                 'label' => "Hauptevent"
             ])
+*/
 
             ->add('ausstattung', EntityType::class, ['required' => false, 'class' => 'App:Ausstattung', 'multiple' => true, 'expanded' => false, 'attr' => ['title' => 'Ausstattung auswählen']])
             ->add('bemerkung', TextareaType::class, ['required' => false])
