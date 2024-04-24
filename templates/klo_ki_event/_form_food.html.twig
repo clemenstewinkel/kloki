@@ -74,10 +74,13 @@
         <div class="col-sm-4">
             {{ form_widget(form.kategorie) }}
         </div>
-        <div class="col-sm-3">
+        <div class="col-sm-2">
             {{ form_widget(form.isReducedPrice, {'label': '10% Rabatt'}) }}
         </div>
-        <div class="col-sm-3">
+        <div class="col-sm-2">
+            {{ form_widget(form.isInternPrice, {'label': 'Intern'}) }}
+        </div>
+        <div class="col-sm-2">
             {{ form_widget(form.is4hPrice, {'label': '4h-Preis'}) }}
         </div>
     </div>

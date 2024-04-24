@@ -39,6 +39,7 @@ class KloKiEventFoodType extends AbstractType
             ->add('contractState',      null, ['label' => "Vertrags-Status", 'choices' => ['Noch kein Vertrag'=>'none','Bitte Vertrag erstellen' => 'requested']])
             //->add('pleaseMakeContract', CheckboxType::class, ['required' => true])
             ->add('isReducedPrice', CheckboxType::class, ['required' => false])
+            ->add('isInternPrice', CheckboxType::class, ['required' => false])
             ->add('is4hPrice', CheckboxType::class, ['required' => false])
             ->add('helperRequired', null, ['label' => "Helfer werden benötigt"])
             ->add('kategorie', null, [
@@ -50,13 +51,15 @@ class KloKiEventFoodType extends AbstractType
             ->add('kontakt', AddressSelectType::class, ['required' => true])
             ->add('bestPlan', null, ['label' => 'Bestuhlung'])
             ->add('stageOrder', null, ['label' => 'Bühnenanw.'])
+            ->add('ParentEvent', KloKiEventSelectType::class, ['required' => false])
+/*
             ->add('ParentEvent', EntityType::class, [
                 'class' => KloKiEvent::class,
                 'required' => false,
                 'query_builder' => $event_query,
                 'label' => "Hauptevent"
             ])
-
+*/
 
             ->add('ausstattung', EntityType::class, ['required' => false, 'class' => 'App:Ausstattung', 'multiple' => true, 'expanded' => false, 'attr' => ['title' => 'Ausstattung auswählen']])
             ->add('bemerkung', TextareaType::class, ['required' => false])
